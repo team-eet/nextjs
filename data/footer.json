@@ -1,0 +1,118 @@
+{
+  "footerOne": [
+    {
+      "description": " We’re always in search for talented and motivated people.Don’t be shy introduce yourself!",
+      "phone": "(406) 555-0120",
+      "mail": "rainbow@example.com",
+      "address": "North America, USA",
+      "usefulLinks": [
+        {
+          "text": "Home",
+          "link": "/12-marketplace"
+        },
+        {
+          "text": "About us",
+          "link": "/04-kindergarten"
+        },
+        {
+          "text": "My Learning",
+          "link": "/13-university-classic"
+        }
+      ],
+      "ourCompany": [
+        {
+          "text": "Terms",
+          "link": "/contact"
+        },
+        {
+          "text": "Privacy Policy",
+          "link": "/become-a-teacher"
+        },
+        {
+          "text": "Pricing promotions policy",
+          "link": "/blog-list"
+        },
+        {
+          "text": "Credits program",
+          "link": "/elements/team"
+        }
+      ],
+      "socialLink": [
+        {
+          "icon": "feather-facebook",
+          "link": "https://www.facebook.com/eet.englishetutorials"
+        },
+        {
+          "icon": "feather-twitter",
+          "link": "https://www.twitter.com"
+        },
+        {
+          "icon": "feather-instagram",
+          "link": "https://www.instagram.com/eet.english/"
+        },
+        {
+          "icon": "feather-youtube",
+          "link": "https://youtube.com"
+        }
+      ]
+    }
+  ],
+  "footerTwo": [
+    {
+      "description": " We’re always in search for talented and motivated people.Don’t be shy introduce yourself!",
+      "phone": "(406) 555-0120",
+      "mail": "rainbow@example.com",
+      "address": "North America, USA",
+      "usefulLinks": [
+        {
+          "text": "Home",
+          "link": "/12-marketplace"
+        },
+        {
+          "text": "About us",
+          "link": "/04-kindergarten"
+        },
+        {
+          "text": "My Learning",
+          "link": "/13-university-classic"
+        }
+      ],
+      "ourCompany": [
+        {
+          "text": "Terms",
+          "link": "/contact"
+        },
+        {
+          "text": "Privacy Policy",
+          "link": "/become-a-teacher"
+        },
+        {
+          "text": "Pricing promotions policy",
+          "link": "/blog-list"
+        },
+        {
+          "text": "Credits program",
+          "link": "/elements/team"
+        }
+      ],
+      "socialLink": [
+        {
+          "icon": "feather-facebook",
+          "link": "https://www.facebook.com/eet.englishetutorials"
+        },
+        {
+          "icon": "feather-twitter",
+          "link": "https://www.twitter.com"
+        },
+        {
+          "icon": "feather-instagram",
+          "link": "https://www.instagram.com/eet.english/"
+        },
+        {
+          "icon": "feather-youtube",
+          "link": "https://youtube.com"
+        }
+      ]
+    }
+  ]
+}
