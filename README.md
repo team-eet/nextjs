@@ -1,1 +1,1 @@
-# nextjs
+# histudy-nextjs
