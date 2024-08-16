@@ -15,7 +15,7 @@ import React, {useEffect, useState} from "react";
 import { Provider } from "react-redux";
 import {API_URL, API_KEY} from "../../../constants/constant";
 import Axios from "axios";
-import {ErrorDefaultAlert} from "@/components/services/SweetAlert";
+import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
 
 const TutorProfile = () => {
   const REACT_APP = API_URL

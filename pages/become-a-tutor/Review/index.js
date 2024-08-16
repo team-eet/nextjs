@@ -14,7 +14,7 @@ import Separator from "@/components/Common/Separator";
 import FooterOne from "@/components/Footer/Footer-One";
 import BackToTop from "../../backToTop";
 import Axios from "axios";
-import {ErrorDefaultAlert} from "@/components/services/SweetAlert";
+import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
 import {API_URL, API_KEY} from "../../../constants/constant";
 import ReviewPage from "@/components/Become-a-Tutor/Review";
 
