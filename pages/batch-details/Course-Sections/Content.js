@@ -2,9 +2,9 @@ import Link from "next/link";
 import React, {useEffect, useLayoutEffect, useState} from "react";
 import {API_URL, API_KEY} from "../../../constants/constant";
 import {useRouter} from "next/router";
-import {EncryptData} from "@/components/services/encrypt-decrypt";
+import {EncryptData} from "@/components/Services/encrypt-decrypt";
 import Axios from "axios";
-import {ErrorDefaultAlert} from "@/components/services/SweetAlert";
+import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
 import { useParams} from "react-router-dom";
 
 const Content = () => {

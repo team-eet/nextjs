@@ -9,8 +9,8 @@ import Requirements from "./Course-Sections/Requirements";
 import Review from "./Course-Sections/Review";
 import Viedo from "./Course-Sections/Viedo";
 import Axios from "axios";
-import {EncryptData} from "@/components/services/encrypt-decrypt";
-import {ErrorDefaultAlert} from "@/components/services/SweetAlert";
+import {EncryptData} from "@/components/Services/encrypt-decrypt";
+import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 

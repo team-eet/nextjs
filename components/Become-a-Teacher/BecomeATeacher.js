@@ -15,7 +15,7 @@ import useFetch from "@/context/useFetch";
 import CounterData from "@/data/elements/counter.json";
 import AccordionData from "@/data/elements/accordion.json";
 import {API_URL, API_KEY} from "../../constants/constant";
-import {ErrorDefaultAlert} from "@/components/services/SweetAlert";
+import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
 
 
 const BecomeATeacher = () => {
