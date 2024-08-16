@@ -1,6 +1,4 @@
 import React, { Fragment } from 'react'
-// import Avatar from '@components/avatar'
-import { Bell, Check, X, AlertTriangle, Info } from 'react-feather'
 
 const SuccessProgressToast = (props) => (
     <Fragment>

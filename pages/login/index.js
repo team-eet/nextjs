@@ -15,26 +15,18 @@ import { Provider } from "react-redux";
 const LoginPage = () => {
   return (
     <>
-      <PageHead title="Login & Register - Online Courses & Education NEXTJS14 Template" />
+      <PageHead title="Login & Register " />
       <Provider store={Store}>
         <Context>
           <HeaderStyleTen headerSticky="rbt-sticky" headerType="" />
           <MobileMenu />
           <Cart />
-          <BreadCrumb title="Login & Register" text="Login & Register" />
 
-          <div className="rbt-elements-area bg-color-white rbt-section-gap">
-            <div className="container">
-              <div className="row gy-5 row--30">
+          <div className="rbt-elements-area bg-color-white">
+              <div className="row row--30 mt-5 mb-5 justify-content-center">
                 <Login />
               </div>
-            </div>
           </div>
-
-          <div className="rbt-newsletter-area bg-gradient-6 ptb--50">
-            <NewsletterThree />
-          </div>
-
           <BackToTop />
           <FooterOne />
         </Context>
