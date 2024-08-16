@@ -92,7 +92,8 @@
 .form-group {
     position: relative;
     z-index: 2;
-    margin-bottom: 30px;
+    //margin-bottom: 30px;
+    //margin-right: 50px;
     display: block;
 
     label {
@@ -110,13 +111,13 @@
 
     input,
     textarea {
-        border: 0;
+        //border: 0;
         border-bottom: 2px solid var(--color-border);
         background-color: transparent;
-        padding-bottom: 8px;
-        padding-top: 20px;
-        border-radius: 0;
-        padding-left: 0;
+        //padding-bottom: 8px;
+        //padding-top: 20px;
+        border-radius: 5px;
+        padding-left: 5px;
         padding-right: 0;
     }
 

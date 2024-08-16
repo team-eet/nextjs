@@ -118,6 +118,7 @@
 
     @media #{$md-layout} {
         padding: 0 60px;
+        height: 1200px !important;
     }
 
     @media #{$sm-layout} {
@@ -143,10 +144,6 @@
 
         @media #{$sm-layout} {
             height: 109px;
-        }
-
-        @media (min-width: 1921px) {
-            height: 250px;
         }
     }
 
@@ -259,7 +256,9 @@
                 max-width: 534px;
 
                 @media #{$md-layout} {
-                    max-width: 450px;
+                    //max-width: 450px;
+                    max-width: 420px;
+                    margin-top: 106px;
                 }
 
                 @media #{$sm-layout} {

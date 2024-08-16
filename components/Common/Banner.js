@@ -1,7 +1,35 @@
 import Link from "next/link";
-import React from "react";
+import React, {useEffect, useState} from "react";
+import Axios from "axios";
+import {ErrorDefaultAlert} from "@/components/services/SweetAlert";
+import {API_URL, API_KEY} from "../../constants/constant";
 
 const Banner = ({ text, col, getBlog }) => {
+
+  const REACT_APP = API_URL
+  const [BlogCount, setBlogCount] = useState('')
+
+  const getBlogCount = () => {
+    Axios.get(`${API_URL}/api/blog/GetAllBlog/0`, {
+      headers: {
+        ApiKey: `${API_KEY}`
+      }
+    })
+        .then(res => {
+          setBlogCount(res.data)
+          // console.log(res.data)
+          // setBlogs(res.data)
+        })
+        .catch(err => {
+          { ErrorDefaultAlert(err) }
+
+        })
+  }
+
+  useEffect(() => {
+    getBlogCount()
+  }, []);
+
   return (
     <>
       <div className="rbt-page-banner-wrapper">
@@ -27,7 +55,7 @@ const Banner = ({ text, col, getBlog }) => {
                     <h1 className="title mb--0">{text}</h1>
                     <Link href="#" className="rbt-badge-2">
                       <div className="image">🎉</div>{" "}
-                      {getBlog ? `${getBlog.length} Articles` : "50 Articles"}
+                        {BlogCount.length} Blogs
                     </Link>
                   </div>
 

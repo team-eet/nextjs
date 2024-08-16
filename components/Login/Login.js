@@ -9,8 +9,8 @@ import Axios from 'axios'
 import * as Yup from 'yup'
 import { useRouter } from 'next/router';
 import { API_URL, API_KEY } from "../../constants/constant";
-import { SuccessProgressToast, ErrorMessageToast  } from "@/components/Services/Toast";
-import {InfoAlert, SuccessAlert, ErrorAlert} from "@/components/Services/SweetAlert";
+import { SuccessProgressToast } from '@/components/Services/Toast'
+import { InfoAlert, ErrorAlert } from "@/components/Services/SweetAlert";
 
 const UserValidationSchema = Yup.object().shape({
   username: Yup.string()

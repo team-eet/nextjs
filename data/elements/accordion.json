@@ -13,8 +13,8 @@
           "expanded": true,
           "collapsed": true,
           "show": true,
-          "accordionTitle": "What is Histudy ? How does it work?",
-          "desc": "You can run Histudy easily. Any School, University, College can be use this histudy education template for their educational purpose. A university can be run their online leaning management system by histudy education template."
+          "accordionTitle": "Diverse Teaching Opportunities",
+          "desc": "Online tutoring platforms cover a wide range of subjects and levels, providing opportunities to teach anything from academic subjects to language learning, test preparation, and specialized skills."
         },
         {
           "collapse": "collapseTwo",
@@ -22,8 +22,8 @@
           "expanded": false,
           "collapsed": false,
           "show": false,
-          "accordionTitle": "How can I get the customer support?",
-          "desc": "After purchasing the product need you any support you can be share with us with sending mail to rainbowit10@gmail.com."
+          "accordionTitle": "Convenience",
+          "desc": "Both tutors and students can enjoy the convenience of online tutoring. There's no need to commute to a physical location, saving time and money on transportation."
         },
         {
           "collapse": "collapseThree",
@@ -31,17 +31,8 @@
           "expanded": false,
           "collapsed": false,
           "show": false,
-          "accordionTitle": "Can I get update regularly and For how long do I get updates?",
-          "desc": "Yes, We will get update the Histudy. And you can get it any time. Next time we will comes with more feature. You can be get update for unlimited times. Our dedicated team works for update."
-        },
-        {
-          "collapse": "collapseFour",
-          "heading": "headingFour",
-          "expanded": false,
-          "collapsed": false,
-          "show": false,
-          "accordionTitle": "15 Things To Know About Education?",
-          "desc": "If you're looking for random paragraphs, you've come to the right place. When a random word or a random sentence isn't quite enough, the next logical step is to find a random paragraph."
+          "accordionTitle": "Accessibility",
+          "desc": "Online tutoring breaks down geographical barriers, allowing you to reach students from around the world. This expands your potential client base and increases opportunities for tutoring sessions."
         }
       ]
     }

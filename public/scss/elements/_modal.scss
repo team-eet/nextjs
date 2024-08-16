@@ -13,16 +13,12 @@ body {
     z-index: 99999999;
     background: var(--color-white);
     padding: 60px 15px !important;
-
     .modal-news {
         max-width: 1000px !important;
     }
-
     .modal-dialog {
         width: 100%;
-        // max-width: 1230px;
-        max-width: 900px;
-
+        max-width: 1230px;
         .modal-content {
             padding: 45px;
             border-radius: 10px;
@@ -31,19 +27,15 @@ body {
             z-index: 1;
             background: var(--color-white);
             box-shadow: var(--shadow-1);
-
             @media #{$sm-layout} {
                 padding: 30px;
             }
-
             @media #{$small-mobile} {
                 padding: 40px 15px 25px 15px;
             }
-
             .modal-header {
                 padding: 0;
                 border: none;
-
                 .rbt-round-btn {
                     right: 20px;
                     position: absolute;
@@ -52,11 +44,9 @@ body {
                     transition: var(--transition);
                 }
             }
-
             .modal-body {
                 .inner {
                     position: relative;
-
                     .thumb {
                         img {
                             border-radius: 6px;
@@ -68,11 +58,9 @@ body {
                 .rbt-team-details {
                     .author-info {
                         margin-bottom: 20px;
-
                         .title {
                             margin-bottom: 7px;
                         }
-
                         .designation {
                             display: block;
                             font-size: 19px;
@@ -80,14 +68,11 @@ body {
                             margin-bottom: 12px;
                         }
                     }
-
                     p {
                         padding-right: 16%;
-
                         @media #{$md-layout} {
                             padding-right: 0;
                         }
-
                         @media #{$sm-layout} {
                             padding-right: 0;
                         }
@@ -99,14 +84,13 @@ body {
                         margin-bottom: 12px;
                         letter-spacing: 0.6px;
                         font-style: italic;
-
                         img {
                             padding-right: 10px;
                             max-height: 18px;
                         }
                     }
 
-
+                    
                 }
             }
         }
@@ -114,38 +98,7 @@ body {
 }
 
 
-.quiz-modal {
-    .progress {
-        height: 2px;
-        background: var(--bs-border-color);
-    }
 
-    .quiz-modal-btn {
-        width: 20px;
-        height: 20px;
-        border-radius: 100%;
-        color: var(--color-white);
-        background: var(--color-gray);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid transparent;
-    }
 
-    &__active {
-        color: var(--color-white);
-        background: var(--color-primary) !important;
-    }
 
-    &__edit-btn {
-        font-size: 20px;
-        color: #000;
-        padding: 0;
-        outline: 0 !important;
-        border: 1px solid transparent !important;
 
-        &::after {
-            display: none;
-        }
-    }
-}

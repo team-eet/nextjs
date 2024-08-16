@@ -3,15 +3,14 @@ import Link from "next/link";
 import { API_URL, API_KEY } from "../../constants/constant";
 import {useEffect, useState} from "react";
 import Axios from "axios";
-import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
+import { ErrorDefaultAlert } from "@/components/Services/SweetAlert";
 import { Row, Col } from 'reactstrap'
 import "rc-slider/assets/index.css";
 import { useRouter } from "next/router";
 import Pagination from "@/components/Common/Pagination";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import {EncryptData} from "@/components/Services/encrypt-decrypt";
-
+import { EncryptData } from "@/components/Services/encrypt-decrypt";
 
 let categoryId;
 let tutordId;

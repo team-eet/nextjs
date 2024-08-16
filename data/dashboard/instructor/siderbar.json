@@ -1,69 +1,83 @@
 {
   "siderbar": [
     {
-      "link": "/instructor/instructor-dashboard",
-      "text": "Dashboard",
-      "icon": "feather-home"
+      "link": "basics",
+      "text": "Basics",
+      "icon": "feather-home",
+      "pending": "feather-clock",
+      "approved": "feather-check-circle",
+      "disapproved": "feather-x-circle"
     },
     {
-      "link": "/instructor/instructor-profile",
-      "text": "My Profile",
-      "icon": "feather-user"
+      "link": "profile-photo",
+      "text": "Profile Photo",
+      "icon": "feather-user",
+      "pending": "feather-clock",
+      "approved": "feather-check-circle",
+      "disapproved": "feather-x-circle"    },
+    {
+      "link": "cover-photo",
+      "text": "Cover Photo",
+      "icon": "feather-user",
+      "pending": "feather-clock",
+      "approved": "feather-check-circle",
+      "disapproved": "feather-x-circle"
     },
     {
-      "link": "/instructor/instructor-enrolled-course",
-      "text": "Enrolled Courses",
-      "icon": "feather-book-open"
+      "link": "education",
+      "text": "Education",
+      "icon": "feather-book-open",
+      "pending": "feather-clock",
+      "approved": "feather-check-circle",
+      "disapproved": "feather-x-circle"
     },
     {
-      "link": "/instructor/instructor-wishlist",
-      "text": "Wishlist",
-      "icon": "feather-bookmark"
+      "link": "certification",
+      "text": "Certification",
+      "icon": "feather-bookmark",
+      "pending": "feather-clock",
+      "approved": "feather-check-circle",
+      "disapproved": "feather-x-circle"
     },
     {
-      "link": "/instructor/instructor-reviews",
-      "text": "Reviews",
-      "icon": "feather-star"
+      "link": "teaching-experience",
+      "text": "Teaching Experience",
+      "icon": "feather-star",
+      "pending": "feather-clock",
+      "approved": "feather-check-circle",
+      "disapproved": "feather-x-circle"
     },
     {
-      "link": "/instructor/instructor-quiz-attempts",
-      "text": "My Quiz Attempts",
-      "icon": "feather-help-circle"
+      "link": "description",
+      "text": "Description",
+      "icon": "feather-help-circle",
+      "pending": "feather-clock",
+      "approved": "feather-check-circle",
+      "disapproved": "feather-x-circle"
     },
     {
-      "link": "/instructor/instructor-order-history",
-      "text": "Order History",
-      "icon": "feather-shopping-bag"
+      "link": "intro-video",
+      "text": "Intro Video",
+      "icon": "feather-shopping-bag",
+      "pending": "feather-clock",
+      "approved": "feather-check-circle",
+      "disapproved": "feather-x-circle"
     },
     {
-      "link": "/instructor/instructor-personal-courses",
-      "text": "My Courses",
-      "icon": "feather-monitor"
+      "link": "interest",
+      "text": "Interests",
+      "icon": "feather-monitor",
+      "pending": "feather-clock",
+      "approved": "feather-check-circle",
+      "disapproved": "feather-x-circle"
     },
     {
-      "link": "/instructor/instructor-announcements",
-      "text": "Announcements",
-      "icon": "feather-volume-2"
-    },
-    {
-      "link": "/instructor/instructor-quiz-attempts",
-      "text": "Quiz Attempts",
-      "icon": "feather-message-square"
-    },
-    {
-      "link": "/instructor/instructor-assignments",
-      "text": "Assignments",
-      "icon": "feather-list"
-    },
-    {
-      "link": "/instructor/instructor-settings",
-      "text": "Settings",
-      "icon": "feather-settings"
-    },
-    {
-      "link": "/",
-      "text": "Logout",
-      "icon": "feather-log-out"
+      "link": "time-availability",
+      "text": "Time Availability",
+      "icon": "feather-volume-2",
+      "pending": "feather-clock",
+      "approved": "feather-check-circle",
+      "disapproved": "feather-x-circle"
     }
   ]
 }

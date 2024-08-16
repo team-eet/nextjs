@@ -99,7 +99,7 @@ Course Sidebar
     .rbt-default-sidebar-list {
         @extend %liststyle;
         li {
-            display: flex;
+            //display: flex;
             justify-content: space-between;
             i {
                 color: var(--color-body);

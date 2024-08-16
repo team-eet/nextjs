@@ -6,7 +6,7 @@ import Scroll from "./Testimonial-Scroll/Scroll";
 const TestimonialSix = ({ tag }) => {
   return (
     <>
-      <div className="col-xl-9">
+      <div className="col-xl-8">
         <div className="overflow-hidden">
           <Scroll
             testimonial={TestimonialData}

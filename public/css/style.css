@@ -149,7 +149,7 @@
   --white-opacity: #ffffff21;
   --danger-opacity: #FF000310;
   --warning-opacity: #FF8F3C10;
-  --success-opacity: #3EB75E10;
+  --success-opacity: rgba(10, 234, 69, 0.06);
   --black-opacity: rgba(0, 0, 0, 0.04);
   --heading-opacity: #19233550;
   --color-card-1: #fffccf;
@@ -238,6 +238,9 @@
   --gradient-7: linear-gradient(218.15deg, var(--color-secondary) 0%, var(--color-primary) 100%);
   --gradient-8: linear-gradient(270deg, #9e77ff 0%, #4460ff 100%);
   --gradient-9: linear-gradient(180deg, #6827FF 0%, #E3F0FF 100%);
+  /*background: linear-gradient(270deg, var(--color-secondary) 0%, var(--color-primary) 100%) !important;*/
+
+  --gradient-10: linear-gradient(270deg, #b966e7 0%, #2f57ef 100%);
 }
 
 /**
@@ -1596,6 +1599,8 @@ ul.rbt-dropdown-menu li a {
   background: var(--coral-opacity) !important;
   color: var(--color-coral) !important;
 }
+
+
 
 .bg-violet-opacity {
   background: var(--violet-opacity) !important;
@@ -34796,5 +34801,6 @@ Course Sidebar
     font-size: 14px;
   }
 }
+
 
 /*# sourceMappingURL=../maps/style.css.map */

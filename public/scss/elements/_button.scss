@@ -107,12 +107,6 @@ fieldset:disabled {
         }
     }
 
-    &.btn-active {
-        background: var(--color-primary);
-        border: 2px solid transparent;
-        color: var(--color-white);
-    }
-
 
     // Gradient varient 
     &.btn-gradient {
@@ -594,7 +588,7 @@ fieldset:disabled {
         height: 70px;
         line-height: 70px;
         padding: 0 35px;
-        font-size: 18px;
+        //font-size: 18px;
 
         @media #{$sm-layout} {
             padding: 0 17px;
@@ -805,6 +799,7 @@ button {
 /*-----------------------
     Modern Button  
 ------------------------*/
+
 a {
     &.rbt-moderbt-btn {
         position: relative;
@@ -859,7 +854,60 @@ a {
         }
     }
 }
+button {
+    &.rbt-moderbt-btn {
+        position: relative;
+        height: 60px;
+        line-height: 56px;
+        transition: all .2s ease;
+        padding: 0 26px;
+        display: inline-block;
+        z-index: 1;
+        color: var(--color-heading);
 
+        @media #{$sm-layout} {
+            padding: 0 10px;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            border-radius: 28px;
+            background: var(--color-primary);
+            opacity: 0.5;
+            width: 56px;
+            height: 56px;
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        i {
+            position: relative;
+            top: 2px;
+            margin-left: 10px;
+            transform: translateX(-5px);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        &:hover {
+            color: var(--color-white);
+
+            i {
+                transform: translateX(0);
+            }
+
+            &::before {
+                width: 100%;
+                background: var(--color-primary);
+                opacity: 1;
+            }
+        }
+    }
+}
 
 /*----------------------------------
     Education Transparent Button 

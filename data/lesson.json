@@ -1,8 +1,7 @@
 {
   "lesson": [
     {
-      "id": 1,
-      "title": "Welcome",
+      "title": "Welcome History",
       "isShow": true,
       "listItem": [
         {
@@ -26,7 +25,6 @@
       ]
     },
     {
-      "id": 2,
       "title": "Welcome Lessons",
       "isShow": false,
       "listItem": [
@@ -57,64 +55,9 @@
       ]
     },
     {
-      "id": 3,
       "title": "Histudy Quiz",
       "isShow": false,
       "listItem": [
-        {
-          "lssonLink": "/questions-types",
-          "lessonName": "Questions Types",
-          "lable": true,
-          "time": 0,
-          "unread": true,
-          "isCircle": false,
-          "iconHelp": true
-        },
-        {
-          "lssonLink": "/all-questions",
-          "lessonName": "Questions Below Each Other",
-          "lable": true,
-          "time": 0,
-          "unread": true,
-          "isCircle": false,
-          "iconHelp": true
-        },
-        {
-          "lssonLink": "/pagination-quiz",
-          "lessonName": "Pagination Quiz Style",
-          "lable": true,
-          "time": 0,
-          "unread": true,
-          "isCircle": false,
-          "iconHelp": true
-        },
-        {
-          "lssonLink": "/single-question",
-          "lessonName": "Single Question",
-          "lable": true,
-          "time": 0,
-          "unread": true,
-          "isCircle": false,
-          "iconHelp": true
-        },
-        {
-          "lssonLink": "/quiz-with-point",
-          "lessonName": "Quiz with individual point",
-          "lable": true,
-          "time": 0,
-          "unread": true,
-          "isCircle": false,
-          "iconHelp": true
-        },
-        {
-          "lssonLink": "/quiz-with-custom-timer",
-          "lessonName": "Quiz with custom timer",
-          "lable": true,
-          "time": 0,
-          "unread": true,
-          "isCircle": false,
-          "iconHelp": true
-        },
         {
           "lssonLink": "/lesson-quiz",
           "lessonName": "Histudy Quiz Start",
@@ -136,7 +79,6 @@
       ]
     },
     {
-      "id": 4,
       "title": "Histudy Assignments",
       "isShow": false,
       "listItem": [
@@ -167,8 +109,6 @@
       "qus": 4,
       "tm": 8,
       "ca": 4,
-      "ia": 4,
-      "marks": 0,
       "isPass": true
     },
     {
@@ -176,8 +116,13 @@
       "qus": 4,
       "tm": 8,
       "ca": 4,
-      "ia": 0,
-      "marks": 0,
+      "isPass": false
+    },
+    {
+      "date": "December 26, 2024",
+      "qus": 4,
+      "tm": 8,
+      "ca": 4,
       "isPass": true
     },
     {
@@ -185,17 +130,6 @@
       "qus": 4,
       "tm": 8,
       "ca": 4,
-      "ia": 0,
-      "marks": 0,
-      "isPass": true
-    },
-    {
-      "date": "December 26, 2024",
-      "qus": 4,
-      "tm": 8,
-      "ca": 4,
-      "ia": 1,
-      "marks": 0,
       "isPass": false
     }
   ]

@@ -12,7 +12,7 @@
     },
     {
       "link": "/student/student-enrolled-course",
-      "text": "Enrolled Courses",
+      "text": "Enrolled",
       "icon": "feather-book-open"
     },
     {
@@ -24,11 +24,6 @@
       "link": "/student/student-reviews",
       "text": "Reviews",
       "icon": "feather-star"
-    },
-    {
-      "link": "/student/student-quiz-attempts",
-      "text": "My Quiz Attempts",
-      "icon": "feather-help-circle"
     },
     {
       "link": "/student/student-order-history",

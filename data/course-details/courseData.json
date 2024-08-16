@@ -8116,7 +8116,7 @@
       "userImg": "/images/client/avater-01.png",
       "courseImg": "/images/course/course-elegant-05.jpg",
       "awardImg": "/images/icons/best-seller-icon.png",
-      "userName": "Rainbow",
+      "userName": "Rafi",
       "userCategory": "Frontend",
       "cateDesc": "Design is Art",
       "date": "12/2024",
@@ -8427,13 +8427,13 @@
               "sellsType": "Bestseller",
               "contact": "+1-202-555-0174",
               "mail": "example@gmail.com",
-              "name": "Rainbow",
+              "name": "Rafi",
               "type": "Frontend",
               "ratingNumber": "215,475",
               "studentNumber": "616,029",
               "star": "4.8",
               "course": "15",
-              "desc": "Rainbow is a brilliant educator, whose life was spent for computer science and love of nature.",
+              "desc": "Rafi is a brilliant educator, whose life was spent for computer science and love of nature.",
               "social": [
                 {
                   "link": "https://www.facebook.com",
@@ -8490,13 +8490,13 @@
       ],
       "relatedCourse": [
         {
-          "userName": "Rainbow",
+          "userName": "Rafi",
           "userCategory": "Frontend",
           "body": [
             {
               "id": 3,
               "title": "React Front To Back",
-              "author": "Rainbow",
+              "author": "Rafi",
               "post": "Frontend",
               "link": "/course-details",
               "img": "/images/course/course-online-01.jpg",
@@ -8513,7 +8513,7 @@
             {
               "id": 3,
               "title": "PHP Beginner Advanced",
-              "author": "Rainbow",
+              "author": "Rafi",
               "post": "Frontend",
               "link": "/course-details",
               "img": "/images/course/course-online-02.jpg",
@@ -9735,7 +9735,7 @@
       ]
     }
   ],
-  "courseTab": [
+  "courseTab":[
     {
       "id": 13,
       "courseTitle": "The Complete Histudy 2024: From Zero to Expert!",

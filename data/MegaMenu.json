@@ -202,7 +202,7 @@
         },
         {
           "title": "Course Details Two",
-          "link": "/course-details-two"
+          "link": "/course-details-2"
         },
         {
           "title": "Course Lesson",
@@ -624,7 +624,8 @@
         {
           "id": 4,
           "title": "Blog With Sidebar",
-          "link": "/blog-with-sidebar"
+          "link": "/blog-with-sidebar",
+          "coming": "Coming"
         },
         {
           "id": 5,
@@ -634,27 +635,32 @@
         {
           "id": 6,
           "title": "Post Format Standard",
-          "link": "/post-format-standard"
+          "link": "/post-format-standard",
+          "coming": "Coming"
         },
         {
           "id": 7,
           "title": "Post Format Gallery",
-          "link": "/post-format-gallery"
+          "link": "/post-format-gallery",
+          "coming": "Coming"
         },
         {
           "id": 8,
           "title": "Post Format Quote",
-          "link": "/post-format-quote"
+          "link": "/post-format-quote",
+          "coming": "Coming"
         },
         {
           "id": 9,
           "title": "Post Format Audio",
-          "link": "/post-format-audio"
+          "link": "/post-format-audio",
+          "coming": "Coming"
         },
         {
           "id": 10,
           "title": "Post Format Video",
-          "link": "/post-format-video"
+          "link": "/post-format-video",
+          "coming": "Coming"
         },
         {
           "id": 11,

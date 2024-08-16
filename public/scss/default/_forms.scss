@@ -20,7 +20,7 @@ input {
 
 select {
     transition: 0.3s;
-    height: 60px;
+    height: 50px;
     line-height: 28px;
     padding: 10px 20px;
     outline: none;
@@ -134,17 +134,6 @@ textarea {
     input {
         @extend .p-holder__active;
     }
-}
-
-.form-blank-input {
-    width: 140px;
-    height: 30px !important;
-    border-top: 1px solid transparent !important;
-    border-left: 1px solid transparent !important;
-    border-right: 1px solid transparent !important;
-    outline: 0 !important;
-    border-radius: 0 !important;
-    padding: 0 4px !important
 }
 
 .input-error {
@@ -265,38 +254,10 @@ input[type="radio"] {
     }
 }
 
-.react-select__indicator {
-    svg {
-        color: var(--color-body);
-    }
-}
 
-.rbt-category-update .update-category-dropdown .inner .dropdown-parent-wrapper .dropdown-parent-list .dropdown-child-wrapper .child-inner .dropdown-child-list a {
-    color: var(--color-white-off);
-
-    &:hover {
-        color: var(--color-primary);
-    }
-}
-
-.react-select2 .react-select__control {
-    background-color: transparent;
-    border-radius: 28px 0 0 28px;
-    height: 45px !important;
-    min-width: 250px;
-    border-color: transparent !important;
-
-    .react-select__input-container {
-        padding-top: 0;
-    }
-}
-
-.react-select {
-    max-width: 250px;
-}
 
 .form-group {
-    margin-bottom: 20px;
+    //margin-bottom: 20px;
     display: inline-block;
 
     input {
