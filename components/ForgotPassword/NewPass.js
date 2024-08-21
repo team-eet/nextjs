@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { Row, Col, CardTitle, CardText, FormGroup, Label, Button } from 'reactstrap';
 // import '@styles/base/pages/page-auth.scss';
 import { SuccessAlert, ErrorAlert, ErrorDefaultAlert } from '../Services/SweetAlert';
-import { DecryptData, EncryptData } from '../services/encrypt-decrypt';
+import { DecryptData, EncryptData } from '../Services/encrypt-decrypt';
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import {API_URL, API_KEY} from "../../constants/constant";
