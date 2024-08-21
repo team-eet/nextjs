@@ -1,7 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
+import {EncryptData} from "@/components/services/encrypt-decrypt";
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import {useState} from "react";
 
 const BlogListItems = ({ start, end, selectedBlogs }) => {
+  const [isLoading, setisLoading] = useState(true);
+
   return (
     <>
       {selectedBlogs &&
@@ -11,22 +17,21 @@ const BlogListItems = ({ start, end, selectedBlogs }) => {
             key={index}
           >
             <div className="rbt-card-img">
-              <Link href={`/blog-details/${item.id}`}>
-                <Image
-                  src={item.img}
+              <Link href={`/blog-details/${EncryptData(item.nBId)}`}>
+                <img
+                  src={item.sImagePath}
                   width={580}
                   height={300}
-                  priority
                   alt="Card image"
                 />{" "}
               </Link>
             </div>
             <div className="rbt-card-body">
               <h5 className="rbt-card-title">
-                <Link href={`/blog-details/${item.id}`}>{item.title}</Link>
+                <Link href={`/blog-details/${EncryptData(item.nBId)}`}>{item.sBlogTitle}</Link>
               </h5>
               <div className="rbt-card-bottom">
-                <Link className="transparent-button" href={`/blog-details/${item.id}`}>
+                <Link className="transparent-button" href={`/blog-details/${EncryptData(item.nBId)}`}>
                   Read Article
                   <i>
                     <svg

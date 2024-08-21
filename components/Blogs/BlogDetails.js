@@ -1,200 +1,137 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useRef } from "react";
-
-import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Navigation } from "swiper/modules";
 
 import BlogAuthor from "./Blog-Sections/Blog-Author";
 import ComntForm from "./Blog-Sections/ComntForm";
 import Comment from "./Blog-Sections/Comment";
+import parse from "html-react-parser";
+import {useEffect, useState} from "react";
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
-const BlogDetails = ({ matchedBlog, isSlider, isQuote, isAudio, isVideo }) => {
-  const thumbsSwiperRef = useRef(null);
+const BlogDetails = ({ matchedBlog }) => {
+    const [isLoading, setisLoading] = useState(true)
+    useEffect(() => {
+        setTimeout(() => {
+            setisLoading(false)
+        }, 4000)
+    },[])
+// console.log()
   return (
     <>
       <div className="content">
-        {isQuote || isAudio || isVideo ? (
-          ""
-        ) : (
-          <>
-            {isSlider ? (
-              <div className="post-thumbnail mb--30 position-relative wp-block-image blog-post-gallery-wrapper alignwide">
-                <Swiper
-                  className="swiper rbt-arrow-between blog-post-gallery-activation"
-                  modules={[FreeMode, Navigation]}
-                  ref={thumbsSwiperRef}
-                  slidesPerView={1}
-                  spaceBetween={0}
-                  loop={false}
-                  autoHeight={true}
-                  navigation={{
-                    nextEl: ".rbt-arrow-left",
-                    prevEl: ".rbt-arrow-right",
-                    clickable: true,
-                  }}
-                >
-                  <div className="swiper-wrapper">
-                    {matchedBlog &&
-                      matchedBlog.gallery.map((item, innerIndex) => (
-                        <SwiperSlide className="swiper-slide" key={innerIndex}>
-                          <figure>
-                            <Image
-                              src={item.galleryImg}
-                              width={1085}
-                              height={645}
-                              priority
-                              alt="Blog Images"
-                            />
-                          </figure>
-                        </SwiperSlide>
-                      ))}
-                  </div>
-                  <div className="rbt-swiper-arrow rbt-arrow-left">
-                    <div className="custom-overfolow">
-                      <i className="rbt-icon feather-arrow-left"></i>
-                      <i className="rbt-icon-top feather-arrow-left"></i>
-                    </div>
-                  </div>
-
-                  <div className="rbt-swiper-arrow rbt-arrow-right">
-                    <div className="custom-overfolow">
-                      <i className="rbt-icon feather-arrow-right"></i>
-                      <i className="rbt-icon-top feather-arrow-right"></i>
-                    </div>
-                  </div>
-                </Swiper>
-              </div>
-            ) : (
-              <div className="post-thumbnail mb--30 position-relative wp-block-image alignwide">
-                <figure>
-                  {matchedBlog.gallery && (
-                    <Image
-                      src={matchedBlog.gallery[0].galleryImg}
-                      width={1085}
-                      height={645}
-                      priority
-                      alt="Blog Images"
-                    />
-                  )}
-                  <figcaption>{matchedBlog.caption}</figcaption>
-                </figure>
-              </div>
-            )}
-          </>
-        )}
-
-        {isAudio ? (
-          <audio className="mb--40" controls>
-            <source
-              src="http://axilthemes.com/themes/blogar/wp-content/uploads/2021/01/audio.mp3"
-              type="audio/ogg"
-            />
-            Your browser does not support the audio tag.
-          </audio>
-        ) : (
-          ""
-        )}
-
-        {isVideo ? (
-          <div className="ratio ratio-16x9 alignwide mb--30">
-            <iframe
-              className="square"
-              src="https://www.youtube.com/embed/vlDzYIIOYmM"
-              title="YouTube video"
-              allowFullScreen
-            ></iframe>
-          </div>
-        ) : (
-          ""
-        )}
-
-        <p>{matchedBlog.descOne}</p>
-        <blockquote
-          className={`${
-            isQuote
-              ? "rbt-blockquote mt--0 alignwide square rbt-border-none bg-color-gray-light"
-              : "wp-block-quote"
-          }`}
-        >
-          <p>{matchedBlog.quote}</p>
-          <cite>
-            <Link href="https://themeforest.net/user/rainbow-themes/portfolio">
-              {matchedBlog.city}
-            </Link>
-          </cite>
-        </blockquote>
-        <div className="wp-block-gallery columns-3 is-cropped">
-          <ul className="blocks-gallery-grid">
-            {matchedBlog &&
-              matchedBlog.gallery.map((item, innerIndex) => (
-                <li className="blocks-gallery-item" key={innerIndex}>
-                  <figure>
-                    {item.galleryImg && (
+        <div className="post-thumbnail mb--30 position-relative wp-block-image alignwide">
+          <figure>
+              {isLoading ? <>
+                <Skeleton height={150} />
+              </> : <>
+                  {matchedBlog[0] && (
                       <Image
-                        className="radius-4"
-                        src={item.galleryImg}
-                        width={255}
-                        height={143}
-                        priority
-                        alt="Blog Images"
+                          src={matchedBlog[0].sImagePath}
+                          width={1085}
+                          height={645}
+                          priority
+                          alt="Blog Images"
+                          className={"position-relative"}
                       />
-                    )}
-                  </figure>
-                </li>
-              ))}
-          </ul>
+                  )}
+              </>}
+
+            {/*<figcaption>{matchedBlog.caption}</figcaption>*/}
+          </figure>
         </div>
+          {isLoading ? <>
+                <Skeleton height={50} />
+              <Skeleton height={50} />
+              <Skeleton height={50} />
+              <Skeleton height={50} />
+              <Skeleton height={50} />
+              <Skeleton height={50} />
 
-        <h4>{matchedBlog.title}</h4>
+          </> : <>
+              <p>{matchedBlog[0] ? parse(matchedBlog[0]['sBlogContent']) : ''}</p>
+          </>}
+
+        {/*<blockquote className="wp-block-quote">*/}
+        {/*  <p>{matchedBlog.quote}</p>*/}
+        {/*  <cite>*/}
+        {/*    <Link href="https://themeforest.net/user/rainbow-themes/portfolio">*/}
+        {/*      {matchedBlog.city}*/}
+        {/*    </Link>*/}
+        {/*  </cite>*/}
+        {/*</blockquote>*/}
+
+        {/*<div className="wp-block-gallery columns-3 is-cropped">*/}
+        {/*  <ul className="blocks-gallery-grid">*/}
+        {/*    {matchedBlog &&*/}
+        {/*      matchedBlog.gallery.map((item, innerIndex) => (*/}
+        {/*        <li className="blocks-gallery-item" key={innerIndex}>*/}
+        {/*          <figure>*/}
+        {/*            {item.galleryImg && (*/}
+        {/*              <Image*/}
+        {/*                className="radius-4"*/}
+        {/*                src={item.galleryImg}*/}
+        {/*                width={255}*/}
+        {/*                height={143}*/}
+        {/*                priority*/}
+        {/*                alt="Blog Images"*/}
+        {/*              />*/}
+        {/*            )}*/}
+        {/*          </figure>*/}
+        {/*        </li>*/}
+        {/*      ))}*/}
+        {/*  </ul>*/}
+        {/*</div>*/}
+
+        {/*<h4>{matchedBlog.title}</h4>*/}
+
+        {/*<p>*/}
+        {/*  <Link href="#">{matchedBlog.linkOne}</Link> {matchedBlog.descTwo}*/}
+        {/*</p>*/}
+
+        {/*<p>{matchedBlog.descThree}</p>*/}
+
+        {/*<h4>{matchedBlog.titleTwo}</h4>*/}
 
         <p>
-          <Link href="#">{matchedBlog.linkOne}</Link> {matchedBlog.descTwo}
-        </p>
-
-        <p>{matchedBlog.descThree}</p>
-
-        <h4>{matchedBlog.titleTwo}</h4>
-
-        <p>
-          <Link href="#">{matchedBlog.linkTwo}</Link> {matchedBlog.descSaven}
+          {/*<Link href="#">{matchedBlog.linkTwo}</Link> {matchedBlog.descSaven}*/}
         </p>
 
         <div className="post-thumbnail mb--30 position-relative wp-block-image alignwide">
-          <figure>
-            {matchedBlog.addImg && (
-              <Image
-                src={matchedBlog.addImg}
-                width={1085}
-                height={645}
-                priority
-                alt="Blog Images"
-              />
-            )}
+          {/*<figure>*/}
+          {/*  {matchedBlog.addImg && (*/}
+          {/*    <Image*/}
+          {/*      src={matchedBlog.addImg}*/}
+          {/*      width={1085}*/}
+          {/*      height={645}*/}
+          {/*      priority*/}
+          {/*      alt="Blog Images"*/}
+          {/*    />*/}
+          {/*  )}*/}
 
-            <figcaption>{matchedBlog.caption}</figcaption>
-          </figure>
+          {/*  /!*<figcaption>{matchedBlog.caption}</figcaption>*!/*/}
+          {/*</figure>*/}
         </div>
 
-        <p>{matchedBlog.descFive}</p>
-        <h4>{matchedBlog.titleTwo}</h4>
+        {/*<p>{matchedBlog.descFive}</p>*/}
+        {/*<h4>{matchedBlog.titleTwo}</h4>*/}
 
-        <p>
-          {matchedBlog.descSix}
-          <Link href="#">{matchedBlog.linkThree}</Link>.
-        </p>
+        {/*<p>*/}
+        {/*  {matchedBlog.descSix}*/}
+        {/*  <Link href="#">{matchedBlog.linkThree}</Link>.*/}
+        {/*</p>*/}
 
-        <p>
-          <Link href="#">{matchedBlog.linkTwo}</Link> {matchedBlog.descFive}
-        </p>
+        {/*<p>*/}
+        {/*  <Link href="#">{matchedBlog.linkTwo}</Link> {matchedBlog.descFive}*/}
+        {/*</p>*/}
 
         <div className="tagcloud">
-          {matchedBlog &&
-            matchedBlog.tag.map((tagItem, innerIndex) => (
-              <Link href="#" key={innerIndex}>
-                {tagItem.tag}
-              </Link>
-            ))}
+          {/*{matchedBlog &&*/}
+          {/*  matchedBlog.tag.map((tagItem, innerIndex) => (*/}
+          {/*    <Link href="#" key={innerIndex}>*/}
+          {/*      {tagItem.tag}*/}
+          {/*    </Link>*/}
+          {/*  ))}*/}
         </div>
 
         <div className="social-share-block">
@@ -204,53 +141,74 @@ const BlogDetails = ({ matchedBlog, isSlider, isQuote, isAudio, isVideo }) => {
               <span>2.2k Like</span>
             </Link>
           </div>
-          <ul className="social-icon social-default transparent-with-border">
-            {matchedBlog &&
-              matchedBlog.social.map((socialItem, innerIndex) => (
-                <li key={innerIndex}>
-                  <Link href={socialItem.url}>
-                    <i className={socialItem.icon}></i>
-                  </Link>
+            <ul className="social-icon social-default transparent-with-border">
+                <li>
+                    <Link href={''}>
+                        <i className={'feather-facebook'}></i>
+                    </Link>
                 </li>
-              ))}
-          </ul>
+                <li>
+                    <Link href={''}>
+                        <i className={'feather-twitter'}></i>
+                    </Link>
+                </li>
+                <li>
+                    <Link href={''}>
+                        <i className={'feather-instagram'}></i>
+                    </Link>
+                </li>
+                <li>
+                    <Link href={''}>
+                        <i className={'feather-linkedin'}></i>
+                    </Link>
+                </li>
+                {/*/// {matchedBlog &&
+              matchedBlog.social.map((socialItem, innerIndex) => (
+
+              ))}*/}
+            </ul>
         </div>
 
-        <div className="about-author">
-          {matchedBlog &&
-            matchedBlog.author.map((author, innerIndex) => (
-              <BlogAuthor {...author} author={author} key={innerIndex} />
-            ))}
-        </div>
+          {/*<div className="about-author">*/}
+          {/*  {matchedBlog &&*/}
+          {/*    matchedBlog.author.map((author, innerIndex) => (*/}
+        {/*      <BlogAuthor {...author} author={author} key={innerIndex} />*/}
+        {/*    ))}*/}
+        {/*</div>*/}
 
-        <div className="rbt-comment-area">
-          <div className="rbt-total-comment-post">
-            <div className="title">
-              <h4 className="mb--0">30+ Comments</h4>
-            </div>
-            <div className="add-comment-button">
-              <a
-                className="rbt-btn btn-gradient icon-hover radius-round btn-md"
-                href="#"
-              >
-                <span className="btn-text">Add Your Comment</span>
-                <span className="btn-icon">
-                  <i className="feather-arrow-right"></i>
-                </span>
-              </a>
-            </div>
-          </div>
-          <ComntForm />
-        </div>
-        <div className="rbt-comment-area">
-          <h4 className="title">2 comments</h4>
-          <ul className="comment-list">
-            {matchedBlog &&
-              matchedBlog.comment.map((comnt, innerIndex) => (
-                <Comment {...comnt} comnt={comnt} key={innerIndex} />
-              ))}
-          </ul>
-        </div>
+          {matchedBlog[0] ? <>
+              {matchedBlog[0]['bIsCommentAllowed'] === 'yes' ? <>
+                  <div className="rbt-comment-area">
+                      {/*<div className="rbt-total-comment-post">*/}
+                      {/*    <div className="title">*/}
+                      {/*        <h4 className="mb--0">30+ Comments</h4>*/}
+                      {/*    </div>*/}
+                      {/*    <div className="add-comment-button">*/}
+                      {/*        <a*/}
+                      {/*            className="rbt-btn btn-gradient icon-hover radius-round btn-md"*/}
+                      {/*            href="#"*/}
+                      {/*        >*/}
+                      {/*            <span className="btn-text">Add Your Comment</span>*/}
+                      {/*            <span className="btn-icon">*/}
+                      {/*               <i className="feather-arrow-right"></i>*/}
+                      {/*            </span>*/}
+                      {/*        </a>*/}
+                      {/*    </div>*/}
+                      {/*</div>*/}
+                      <ComntForm/>
+                  </div>
+              </> : <></>}
+          </> : <></>}
+
+          {/*<div className="rbt-comment-area">*/}
+          {/*  <h4 className="title">2 comments</h4>*/}
+          {/*  <ul className="comment-list">*/}
+          {/*    {matchedBlog &&*/}
+          {/*      matchedBlog.comment.map((comnt, innerIndex) => (*/}
+          {/*        <Comment {...comnt} comnt={comnt} key={innerIndex} />*/}
+          {/*      ))}*/}
+          {/*  </ul>*/}
+          {/*</div>*/}
       </div>
     </>
   );

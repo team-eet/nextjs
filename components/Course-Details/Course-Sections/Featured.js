@@ -25,6 +25,7 @@ const Featured = ({ coursesFeatured }) => {
                       src={user.userImg}
                       width={105}
                       height={105}
+                      className={'position-relative'}
                       alt="Author Images"
                     />
                   </Link>

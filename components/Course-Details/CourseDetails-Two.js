@@ -17,11 +17,11 @@ import VideoImg from "../../public/images/others/video-07.jpg";
 
 const CourseDetailsTwo = ({ checkMatchCourses }) => {
   useEffect(() => {
-    import("venobox/dist/venobox.min.js").then((venobox) => {
-      new venobox.default({
-        selector: ".popup-video",
-      });
-    });
+    // import("venobox/dist/venobox.min.js").then((venobox) => {
+    //   new venobox.default({
+    //     selector: ".popup-video",
+    //   });
+    // });
   }, []);
   return (
     <>
@@ -34,7 +34,7 @@ const CourseDetailsTwo = ({ checkMatchCourses }) => {
           >
             <div className="video-content">
               <Image
-                className="w-100 rbt-radius"
+                className="position-relative rbt-radius"
                 // src={checkMatchCourses.courseImg}
                 src={VideoImg}
                 width={1305}

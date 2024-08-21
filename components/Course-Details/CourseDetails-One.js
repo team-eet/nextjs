@@ -8,34 +8,60 @@ import RelatedCourse from "./Course-Sections/RelatedCourse";
 import Requirements from "./Course-Sections/Requirements";
 import Review from "./Course-Sections/Review";
 import Viedo from "./Course-Sections/Viedo";
+import Axios from "axios";
+import {EncryptData} from "@/components/Services/encrypt-decrypt";
+import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/router";
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
+
 
 const CourseDetailsOne = ({ checkMatchCourses }) => {
+  const [isLoading, setisLoading] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setisLoading(false)
+    }, 9000)
+  }, []);
+  // console.log(checkMatchCourses)
   return (
     <>
-      <div className="col-lg-8">
+      <div className="col-lg-8 mt-0">
         <div className="course-details-content">
-          <div className="rbt-course-feature-box rbt-shadow-box thuumbnail">
-            {checkMatchCourses.courseImg && (
-              <CourseBanner bannerImg={checkMatchCourses.courseImg} />
-            )}
-          </div>
-          <div className="rbt-inner-onepage-navigation sticky-top mt--30">
-            <CourseMenu />
+
+
+          <div className="rbt-inner-onepage-navigation sticky-top">
+            {isLoading ? <>
+              <Skeleton height={50} />
+            </> : <>
+              <CourseMenu />
+            </>}
           </div>
 
-          {checkMatchCourses &&
-            checkMatchCourses.courseOverview.map((data, index) => (
-              <Overview {...data} key={index} checkMatchCourses={data} />
-            ))}
+
+          {isLoading ? <>
+            <Skeleton height={200} />
+          </> : <>
+            {checkMatchCourses && checkMatchCourses.sFullDesc ?
+                <Overview checkMatchCourses={checkMatchCourses.sFullDesc} /> : ''
+            }
+          </>
+          }
+
 
           <div
             className="course-content rbt-shadow-box coursecontent-wrapper mt--30"
             id="coursecontent"
           >
-            {checkMatchCourses &&
-              checkMatchCourses.courseContent.map((data, index) => (
-                <Content {...data} key={index} checkMatchCourses={data} />
-              ))}
+            {isLoading ? <>
+              <Skeleton height={200} />
+            </> : <>
+              <Content />
+            </>}
+
           </div>
 
           <div
@@ -43,14 +69,11 @@ const CourseDetailsOne = ({ checkMatchCourses }) => {
             id="details"
           >
             <div className="row g-5">
-              {checkMatchCourses &&
-                checkMatchCourses.courseRequirement.map((data, index) => (
+              {checkMatchCourses.sPrerequisite &&
                   <Requirements
-                    {...data}
-                    key={index}
-                    checkMatchCourses={data}
+                    checkMatchCourses={checkMatchCourses.sPrerequisite}
                   />
-                ))}
+              }
             </div>
           </div>
           <div
@@ -58,9 +81,9 @@ const CourseDetailsOne = ({ checkMatchCourses }) => {
             id="intructor"
           >
             {checkMatchCourses &&
-              checkMatchCourses.courseInstructor.map((data, index) => (
-                <Instructor {...data} key={index} checkMatchCourses={data} />
-              ))}
+
+                <Instructor checkMatchCourses={checkMatchCourses} />
+            }
           </div>
           <div
             className="rbt-review-wrapper rbt-shadow-box review-wrapper mt--30"
@@ -69,23 +92,28 @@ const CourseDetailsOne = ({ checkMatchCourses }) => {
             <Review />
           </div>
 
-          {checkMatchCourses &&
-            checkMatchCourses.featuredReview.map((data, index) => (
-              <Featured {...data} key={index} coursesFeatured={data} />
-            ))}
+          {/*{checkMatchCourses &&*/}
+          {/*  checkMatchCourses.featuredReview.map((data, index) => (*/}
+          {/*    <Featured {...data} key={index} coursesFeatured={data} />*/}
+          {/*  ))}*/}
         </div>
-        <div className="related-course mt--60">
-          {checkMatchCourses &&
-            checkMatchCourses.relatedCourse.map((data, index) => (
-              <RelatedCourse {...data} key={index} checkMatchCourses={data} />
-            ))}
-        </div>
+        {/*<div className="related-course mt--60">*/}
+        {/*  {checkMatchCourses &&*/}
+        {/*    checkMatchCourses.relatedCourse.map((data, index) => (*/}
+        {/*      <RelatedCourse {...data} key={index} checkMatchCourses={data} />*/}
+        {/*    ))}*/}
+        {/*</div>*/}
       </div>
 
       <div className="col-lg-4">
+
         <div className="course-sidebar sticky-top rbt-shadow-box course-sidebar-top rbt-gradient-border">
           <div className="inner">
-            <Viedo checkMatchCourses={checkMatchCourses && checkMatchCourses} />
+            {isLoading ? <>
+              <Skeleton height={700} />
+            </> : <>
+              <Viedo checkMatchCourses={checkMatchCourses && checkMatchCourses} />
+            </>}
           </div>
         </div>
       </div>

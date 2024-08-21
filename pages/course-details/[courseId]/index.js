@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
-import sal from "sal.js";
+// import sal from "sal.js";
 import CourseData from "../../../data/course-details/courseData.json";
 import { Provider } from "react-redux";
 import Store from "@/redux/store";
@@ -10,33 +10,91 @@ import MobileMenu from "@/components/Header/MobileMenu";
 import HeaderStyleTen from "@/components/Header/HeaderStyle-Ten";
 import Cart from "@/components/Header/Offcanvas/Cart";
 import BackToTop from "@/pages/backToTop";
-import Separator from "@/components/Common/Separator";
 import FooterOne from "@/components/Footer/Footer-One";
 import CourseHead from "@/components/Course-Details/Course-Sections/course-head";
 import CourseDetailsOne from "@/components/Course-Details/CourseDetails-One";
 import PageHead from "@/pages/Head";
 import CourseActionBottom from "@/components/Course-Details/Course-Sections/Course-Action-Bottom";
 import SimilarCourses from "@/components/Course-Details/Course-Sections/SimilarCourses";
+import Axios from "axios";
+import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
+import {API_URL, API_KEY} from "../../../constants/constant";
+import {EncryptData} from "@/components/Services/encrypt-decrypt";
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const SingleCourse = () => {
-  const router = useRouter();
-  const postId = parseInt(router.query.courseId);
-  let getCourse;
+    const router = useRouter();
+  // const postId = parseInt(router.query.courseId);
+    const [getcourseData, setcourseData] = useState([])
+    const[getsectionItems, setsectionItems] = useState([])
+    const [Tag, setTag] = useState(false)
+    const [courseTag, setCourseTag] = useState([])
+    const REACT_APP = API_URL
+    const [isLoading, setisLoading] = useState(true)
 
-  getCourse = JSON.parse(JSON.stringify(CourseData.courseDetails));
 
-  const checkMatch = getCourse.find((course) => course.id === postId);
+
+    // let getCourse;
+
+  const getCourse = () => {
+    const url = window.location.href
+    const parts = url.split("/");
+    const courseId = parts[parts.length - 1];
+    Axios.get(`${API_URL}/api/coursemain/GetCoursesView/${courseId}`, {
+      headers: {
+        ApiKey: `${API_KEY}`
+      }
+    })
+        .then(res => {
+          if (res.data) {
+            // console.log(res.data)
+            if (res.data.length !== 0) {
+                  setcourseData(res.data)
+                    setisLoading(false)
+                // console.log(EncryptData(res.data[0]['nCTId']))
+                if(res.data[0]['nCTId'] !== null){
+                    Axios.get(`${API_URL}/api/CourseTag/GetCourseTag/${EncryptData(res.data[0]['nCTId'])}`, {
+                        headers: {
+                            ApiKey: `${API_KEY}`
+                        }
+                    })
+                        .then(res => {
+                            if (res.data) {
+                                // console.log(res.data)
+                                setCourseTag(res.data)
+                                setTag(true)
+                                setisLoading(false)
+                            }
+                        })
+                        .catch(err => {
+                            { ErrorDefaultAlert(err) }
+                        })
+                }
+
+
+              }
+            }
+        })
+        .catch(err => {
+          { ErrorDefaultAlert(err) }
+        })
+  }
+
+  // getCourse = JSON.parse(JSON.stringify(CourseData.courseDetails));
+
+  const checkMatch = getcourseData.length !== 0 ? getcourseData[0] : ''
+  // console.log(checkMatch)
+  // console.log(EncryptData(postId), EncryptData(0))
+
+
+  const courseContentMatch = getsectionItems.length !== 0 ? getsectionItems : ''
+
 
   useEffect(() => {
-    if (postId && checkMatch === undefined) {
-      router.push("/course-filter-one-toggle");
-    }
-
-    sal({
-      threshold: 0.01,
-      once: true,
-    });
-  }, [checkMatch, router]);
+      getCourse();
+      // console.log(getcourseData)
+    //
+  }, []);
 
   return (
     <>
@@ -48,17 +106,13 @@ const SingleCourse = () => {
           <Cart />
 
           <div className="rbt-breadcrumb-default rbt-breadcrumb-style-3">
-            <CourseHead
-              checkMatch={checkMatch !== undefined ? checkMatch : ""}
-            />
+              <CourseHead CourseTag={Tag} Tag={courseTag} checkMatch={checkMatch !== undefined ? checkMatch : ""} />
           </div>
 
           <div className="rbt-course-details-area ptb--60">
             <div className="container">
               <div className="row g-5">
-                <CourseDetailsOne
-                  checkMatchCourses={checkMatch !== undefined ? checkMatch : ""}
-                />
+                <CourseDetailsOne checkMatchCourses={checkMatch !== undefined ? checkMatch : ""} />
               </div>
             </div>
           </div>
@@ -70,13 +124,13 @@ const SingleCourse = () => {
           <div className="rbt-related-course-area bg-color-white pt--60 rbt-section-gapBottom">
             <SimilarCourses
               checkMatchCourses={
-                checkMatch !== undefined ? checkMatch.similarCourse : ""
+                checkMatch !== undefined ? checkMatch.nCCId : ""
               }
             />
           </div>
 
           <BackToTop />
-          <Separator />
+
           <FooterOne />
         </Context>
       </Provider>

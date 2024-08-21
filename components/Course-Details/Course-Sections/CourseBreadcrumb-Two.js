@@ -16,11 +16,12 @@ const CourseBreadcrumbTwo = ({ getMatchCourse }) => {
                       src={getMatchCourse.awardImg}
                       width={30}
                       height={30}
+                      className={'position-relative'}
                       alt="Best Seller Icon"
                     />
                   )}
                 </span>{" "}
-                {getMatchCourse.sellsType}
+                Best seller
               </span>
             </div>
             <div className="feature-sin rating">
@@ -43,23 +44,24 @@ const CourseBreadcrumbTwo = ({ getMatchCourse }) => {
             </div>
             <div className="feature-sin total-rating">
               <Link className="rbt-badge-4" href="#">
-                {getMatchCourse.ratingNumber} rating
+                {getMatchCourse.user_rate_cnt} rating
               </Link>
             </div>
             <div className="feature-sin total-student">
               <span>{getMatchCourse.studentNumber} students</span>
             </div>
           </div>
-          <h2 className="title theme-gradient">{getMatchCourse.courseTitle}</h2>
+          <h2 className="title theme-gradient">{getMatchCourse.sCourseTitle}</h2>
 
           <div className="rbt-author-meta mb--20 justify-content-center">
             <div className="rbt-avater">
               <Link href={`/profile/${getMatchCourse.id}`}>
-                {getMatchCourse.userImg && (
+                {getMatchCourse.tutor_image && (
                   <Image
                     width={40}
                     height={40}
-                    src={getMatchCourse.userImg}
+                    className={'position-relative'}
+                    src={getMatchCourse.tutor_image}
                     alt={getMatchCourse.userName}
                   />
                 )}
@@ -67,10 +69,10 @@ const CourseBreadcrumbTwo = ({ getMatchCourse }) => {
             </div>
             <div className="rbt-author-info">
               By{" "}
-              <Link href={`/profile/${getMatchCourse.id}`}>
-                {getMatchCourse.userName}
-              </Link>{" "}
-              In <Link href="#">{getMatchCourse.userCategory}</Link>
+              {/*<Link href={`/profile/${getMatchCourse.nCId}`}>*/}
+                {getMatchCourse.sFName} {getMatchCourse.sLName}
+              {/*</Link>{" "}*/}
+              {" "}In <Link href="#">{getMatchCourse.sCategory}</Link>
             </div>
           </div>
 
@@ -81,11 +83,11 @@ const CourseBreadcrumbTwo = ({ getMatchCourse }) => {
             </li>
             <li>
               <i className="feather-globe"></i>
-              {getMatchCourse.language}
+              English
             </li>
             <li>
               <i className="feather-award"></i>
-              {getMatchCourse.courseAward}
+              Verified
             </li>
           </ul>
         </div>
