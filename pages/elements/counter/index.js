@@ -9,12 +9,12 @@ import BreadCrumb from "@/components/Common/BreadCrumb";
 import Separator from "@/components/Common/Separator";
 import FooterOne from "@/components/Footer/Footer-One";
 import HeaderStyleTen from "@/components/Header/HeaderStyle-Ten";
-import Counter from "@/components/Counters/Counter";
-import CounterTwo from "@/components/Counters/Counter-Two";
-import CounterThree from "@/components/Counters/Counter-Three";
-import CounterFour from "@/components/Counters/Counter-Four";
-import CounterFive from "@/components/Counters/Counter-Five";
-import CounterSix from "@/components/Counters/Counter-Six";
+// import Counter from "@/components/Counters/Counter";
+// import CounterTwo from "@/components/Counters/Counter-Two";
+// import CounterThree from "@/components/Counters/Counter-Three";
+// import CounterFour from "@/components/Counters/Counter-Four";
+// import CounterFive from "@/components/Counters/Counter-Five";
+// import CounterSix from "@/components/Counters/Counter-Six";
 import BackToTop from "@/pages/backToTop";
 
 const page = () => {
@@ -30,20 +30,20 @@ const page = () => {
           <BreadCrumb title="Counter" text="Counter" />
 
           <div className="rbt-counterup-area bg-color-white rbt-section-gap">
-            <Counter isDesc={true} />
+            {/*<Counter isDesc={true} />*/}
           </div>
 
           <div className="rbt-counterup-area bg-color-extra2 rbt-section-gap">
-            <CounterTwo />
+            {/*<CounterTwo />*/}
           </div>
 
           <div className="rbt-counterup-area bg-color-white rbt-section-gap">
-            <CounterThree />
+            {/*<CounterThree />*/}
           </div>
 
           <div className="rbt-counterup-area bg-color-extra2 rbt-section-gap">
             <div className="conter-style-2">
-              <CounterFour />
+              {/*<CounterFour />*/}
             </div>
           </div>
 
@@ -52,12 +52,12 @@ const page = () => {
             data-black-overlay="4"
           >
             <div className="conter-style-2">
-              <CounterFive />
+              {/*<CounterFive />*/}
             </div>
           </div>
 
           <div className="rbt-counterup-area bg-color-white rbt-section-gap">
-            <CounterSix />
+            {/*<CounterSix />*/}
           </div>
 
           <BackToTop />
