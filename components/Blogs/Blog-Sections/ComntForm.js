@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import Axios from 'axios'
 import {API_URL} from '../../../constants/constant'
-import { ErrorDefaultAlert, ErrorAlert, SuccessAlert } from "@/components/services/SweetAlert";
+import { ErrorDefaultAlert, ErrorAlert, SuccessAlert } from "@/components/Services/SweetAlert";
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import { DecryptData, EncryptData } from "@/components/services/encrypt-decrypt";
+import { DecryptData, EncryptData } from "@/components/Services/encrypt-decrypt";
 import { Row, Col, Card, CardBody, CardText, CardTitle, CardImg, Badge, Media, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle, Input, Button, FormGroup, CustomInput } from 'reactstrap'
 
 

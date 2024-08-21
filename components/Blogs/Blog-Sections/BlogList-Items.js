@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import {EncryptData} from "@/components/services/encrypt-decrypt";
+import {EncryptData} from "@/components/Services/encrypt-decrypt";
 import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import {useState} from "react";
