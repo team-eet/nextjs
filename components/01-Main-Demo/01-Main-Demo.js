@@ -13,7 +13,7 @@ import EventCarouse from "../Events/EventCarouse";
 import { API_URL, API_KEY } from "../../constants/constant";
 import Axios from "axios";
 import { SuccessAlert, SuccessAlert2, ErrorDefaultAlert } from "@/components/Services/SweetAlert";
-import userImg from '../../public/images/banner/intro.png'
+import userImg from '../../public/images/banner/intro.PNG'
 import Image from "next/image";
 
 import NewsletterTwo from "../Newsletters/Newsletter-Two";

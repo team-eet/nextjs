@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import img from "../../public/images/contact/contact.png";
+import img from "../../public/images/contact/contact.PNG"
 
 const ContactForm = ({ gap }) => {
   return (
