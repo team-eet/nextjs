@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import Axios from "axios";
 import {API_URL, API_KEY} from "../../constants/constant";
 import {useRouter} from "next/router";
-import {ErrorDefaultAlert} from "@/components/services/SweetAlert";
+import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
 const CartBreadCrumb = ({ title, text }) => {
     const router = useRouter()
     const REACT_APP = API_URL

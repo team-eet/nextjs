@@ -6,7 +6,6 @@ import Context from "@/context/Context";
 import HeaderStyleTen from "@/components/Header/HeaderStyle-Ten";
 import MobileMenu from "@/components/Header/MobileMenu";
 import Cart from "@/components/Header/Offcanvas/Cart";
-import BreadCrumb from "@/components/Common/BreadCrumb";
 import CartPage from "@/components/Cart/CartPage";
 import Separator from "@/components/Common/Separator";
 import FooterOne from "@/components/Footer/Footer-One";
