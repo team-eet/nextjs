@@ -1,9 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import {useEffect, useState} from "react";
-import Axios from "axios";
-import {ErrorDefaultAlert} from "@/components/services/SweetAlert";
-import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 
