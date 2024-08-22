@@ -57,9 +57,19 @@ const  Nav = () => {
       <ul className="mainmenu">
         <li className="">
           <Link
-            className={`${activeMenuItem === "courses" ? "open" : ""}`}
-            // onClick={() => toggleMenuItem("home")}
-            href="/all-course"
+              className={`${activeMenuItem === "home" ? "open" : ""}`}
+              // onClick={() => toggleMenuItem("home")}
+              href="/"
+          >
+            Home
+
+          </Link>
+        </li>
+        <li className="">
+          <Link
+              className={`${activeMenuItem === "courses" ? "open" : ""}`}
+              // onClick={() => toggleMenuItem("home")}
+              href="/all-course"
           >
             Courses
 
@@ -68,8 +78,8 @@ const  Nav = () => {
 
         <li className="">
           <Link
-            className={`${activeMenuItem === "batches" ? "open" : ""}`}
-            href="/all-batch"
+              className={`${activeMenuItem === "batches" ? "open" : ""}`}
+              href="/all-batch"
           >
             Batches
           </Link>
@@ -97,16 +107,16 @@ const  Nav = () => {
         </li>
         <li className="">
           <Link
-            href="/blog-list"
-            className={`${activeMenuItem === "blog" ? "open" : ""}`}
+              href="/blog-list"
+              className={`${activeMenuItem === "blog" ? "open" : ""}`}
           >
             Blog
           </Link>
         </li>
         <li className="">
           <Link
-            href="#"
-            className={`${activeMenuItem === "about" ? "open" : ""}`}
+              href="#"
+              className={`${activeMenuItem === "about" ? "open" : ""}`}
           >
             About
           </Link>

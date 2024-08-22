@@ -7,34 +7,38 @@
       "address": "North America, USA",
       "usefulLinks": [
         {
-          "text": "Home",
-          "link": "/12-marketplace"
+          "text": "Learn Courses",
+          "link": "/all-courses"
         },
         {
-          "text": "About us",
-          "link": "/04-kindergarten"
+          "text": "Join Batch",
+          "link": "/all-batches"
         },
         {
-          "text": "My Learning",
-          "link": "/13-university-classic"
+          "text": "Fast track",
+          "link": "/"
+        },
+        {
+          "text": "FAQ",
+          "link": "/"
         }
       ],
       "ourCompany": [
         {
-          "text": "Terms",
+          "text": "Contact Us",
           "link": "/contact"
         },
         {
-          "text": "Privacy Policy",
+          "text": "Become a teacher",
           "link": "/become-a-teacher"
         },
         {
-          "text": "Pricing promotions policy",
+          "text": "Blogs",
           "link": "/blog-list"
         },
         {
-          "text": "Credits program",
-          "link": "/elements/team"
+          "text": "Success Story",
+          "link": "/"
         }
       ],
       "socialLink": [
@@ -79,19 +83,19 @@
       ],
       "ourCompany": [
         {
-          "text": "Terms",
+          "text": "Contact us",
           "link": "/contact"
         },
         {
-          "text": "Privacy Policy",
+          "text": "Become a teacher",
           "link": "/become-a-teacher"
         },
         {
-          "text": "Pricing promotions policy",
+          "text": "Blog",
           "link": "/blog-list"
         },
         {
-          "text": "Credits program",
+          "text": "Success Story",
           "link": "/elements/team"
         }
       ],

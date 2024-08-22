@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import img from "../../public/images/about/contact.jpg";
+import img from "../../public/images/contact/contact.png";
 
 const ContactForm = ({ gap }) => {
   return (
@@ -39,6 +39,7 @@ const ContactForm = ({ gap }) => {
                       name="contact-name"
                       id="contact-name"
                       type="text"
+                      className={'mt-2'}
                       placeholder="Name"
                     />
                     <span className="focus-border"></span>
@@ -47,6 +48,7 @@ const ContactForm = ({ gap }) => {
                     <input
                       name="contact-phone"
                       type="email"
+                      className={'mt-2'}
                       placeholder="Email"
                     />
                     <span className="focus-border"></span>
@@ -56,6 +58,7 @@ const ContactForm = ({ gap }) => {
                       type="text"
                       id="subject"
                       name="subject"
+                      className={'mt-2'}
                       placeholder="Your Subject"
                     />
                     <span className="focus-border"></span>
@@ -65,6 +68,7 @@ const ContactForm = ({ gap }) => {
                       name="contact-message"
                       id="contact-message"
                       placeholder="Message"
+                      className={'mt-2 border'}
                     ></textarea>
                     <span className="focus-border"></span>
                   </div>
@@ -73,7 +77,7 @@ const ContactForm = ({ gap }) => {
                       name="submit"
                       type="submit"
                       id="submit"
-                      className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
+                      className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100 mt-2"
                     >
                       <span className="icon-reverse-wrapper">
                         <span className="btn-text">GET IT NOW</span>

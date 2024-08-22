@@ -16,7 +16,7 @@ const FooterThree = () => {
             {FooterData &&
               FooterData.footerOne.map((footer, index) => (
                 <div className="row row--15 mt_dec--30" key={index}>
-                  <div className="col-lg-5 col-md-6 col-sm-6 col-12 mt--30">
+                  <div className="col-lg-3 col-md-6 col-sm-6 col-12 mt--30">
                     <div className="footer-widget">
                       <div className="logo">
                         <Link href="/">
@@ -32,38 +32,38 @@ const FooterThree = () => {
 
                       <p className="description mt--20">{footer.description}</p>
 
-                      {/*<div className="contact-btn mt--30">*/}
-                      {/*  <Link*/}
-                      {/*    className="rbt-btn hover-icon-reverse btn-border-gradient radius-round"*/}
-                      {/*    href="#"*/}
-                      {/*  >*/}
-                      {/*    <div className="icon-reverse-wrapper">*/}
-                      {/*      <span className="btn-text">Contact With Us</span>*/}
-                      {/*      <span className="btn-icon">*/}
-                      {/*        <i className="feather-arrow-right"></i>*/}
-                      {/*      </span>*/}
-                      {/*      <span className="btn-icon">*/}
-                      {/*        <i className="feather-arrow-right"></i>*/}
-                      {/*      </span>*/}
-                      {/*    </div>*/}
-                      {/*  </Link>*/}
-                      {/*</div>*/}
+                      <div className="contact-btn mt--30">
+                        <Link
+                          className="rbt-btn hover-icon-reverse btn-border-gradient radius-round"
+                          href="/contact"
+                        >
+                          <div className="icon-reverse-wrapper">
+                            <span className="btn-text">Contact With Us</span>
+                            <span className="btn-icon">
+                              <i className="feather-arrow-right"></i>
+                            </span>
+                            <span className="btn-icon">
+                              <i className="feather-arrow-right"></i>
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
                     </div>
                   </div>
 
                   <SingleFooter
                     classOne="offset-lg-1 col-lg-2 col-md-6 col-sm-6 col-12 mt--30"
-                    // title="Useful Links"
+                    title="Useful Links"
                     footerType={footer.usefulLinks}
                   />
 
-                  {/*<SingleFooter*/}
-                  {/*  classOne="col-lg-3 col-md-6 col-sm-6 col-12 mt--30"*/}
-                  {/*  // title="Our Company"*/}
-                  {/*  footerType={footer.ourCompany}*/}
-                  {/*/>*/}
+                  <SingleFooter
+                    classOne="col-lg-3 col-md-6 col-sm-6 col-12 mt--30"
+                    title="Our Company"
+                    footerType={footer.ourCompany}
+                  />
 
-                  <div className="col-lg-4 col-md-6 col-sm-6 col-12 mt--30">
+                  <div className="col-lg-3 col-md-6 col-sm-6 col-12 mt--30">
                     <div className="footer-widget">
                       <h5 className="ft-title">Get Contact</h5>
                       <ul className="ft-link">
@@ -73,7 +73,7 @@ const FooterThree = () => {
                         </li>
                         <li>
                           <span>E-mail:</span>{" "}
-                          <Link href="info@eet.english.com">
+                          <Link href="info@eetenglish.com">
                               info@eet.english.com
                           </Link>
                         </li>

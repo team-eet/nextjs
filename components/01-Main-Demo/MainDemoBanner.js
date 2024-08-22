@@ -70,10 +70,10 @@ const MainDemoBanner = () => {
                     <div className="slider-btn">
                       <Link
                           className="rbt-btn btn-gradient hover-icon-reverse mt-3 ms-3"
-                          href="#"
+                          href="/register"
                       >
                     <span className="icon-reverse-wrapper">
-                      <span className="btn-text">Free Access</span>
+                      <span className="btn-text">Free Trial</span>
                       <span className="btn-icon">
                         <i className="feather-arrow-right"></i>
                       </span>

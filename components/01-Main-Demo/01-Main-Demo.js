@@ -13,7 +13,7 @@ import EventCarouse from "../Events/EventCarouse";
 import { API_URL, API_KEY } from "../../constants/constant";
 import Axios from "axios";
 import { SuccessAlert, SuccessAlert2, ErrorDefaultAlert } from "@/components/Services/SweetAlert";
-import userImg from '../../public/images/about/eetgirl.png'
+import userImg from '../../public/images/banner/intro.png'
 import Image from "next/image";
 
 import NewsletterTwo from "../Newsletters/Newsletter-Two";
@@ -1026,7 +1026,7 @@ const MainDemo = () => {
             </div>
           </div>
 
-          <div className={'container mt-5'}>
+          <div className={'container mt-5 d-none'}>
             <div className={'row'}>
               <div className={'col-lg-4 col-md-12 h-100 mt-3'}>
                 <div className="rbt-service rbt-service-2 rbt-hover-02 bg-no-shadow card-bg-1">
@@ -1316,7 +1316,7 @@ const MainDemo = () => {
                   {/*<span className="subtitle bg-white-opacity">*/}
                   {/*  STIMULATED TO TAKE PART IN?*/}
                   {/*</span>*/}
-                  <h2 className="title color-white">Upcoming Events</h2>
+                  <h2 className="title color-white">Upcoming Courses</h2>
                 </div>
               </div>
               <div className="row">

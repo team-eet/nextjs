@@ -19,9 +19,9 @@ const FooterOne = ({ bgColor }) => {
         <div className="footer-top">
           <div className="container">
             {FooterData &&
-              FooterData.footerTwo.map((footer, index) => (
+              FooterData.footerOne.map((footer, index) => (
                   <div className="row g-5" key={index}>
-                      <div className="col-lg-5 col-md-6 col-sm-6 col-12">
+                      <div className="col-lg-4 col-md-6 col-sm-6 col-12">
                           <div className="footer-widget">
                               <div className="logo">
                                   <Link href="/">
@@ -46,39 +46,39 @@ const FooterOne = ({ bgColor }) => {
                                   ))}
                               </ul>
 
-                              {/*<div className="contact-btn mt--30">*/}
-                              {/*  <Link*/}
-                              {/*    className="rbt-btn hover-icon-reverse btn-border-gradient radius-round"*/}
-                              {/*    href="#"*/}
-                              {/*  >*/}
-                              {/*    <div className="icon-reverse-wrapper">*/}
-                              {/*      <span className="btn-text">Contact With Us</span>*/}
-                              {/*      <span className="btn-icon">*/}
-                              {/*        <i className="feather-arrow-right"></i>*/}
-                              {/*      </span>*/}
-                              {/*      <span className="btn-icon">*/}
-                              {/*        <i className="feather-arrow-right"></i>*/}
-                              {/*      </span>*/}
-                              {/*    </div>*/}
-                              {/*  </Link>*/}
-                              {/*</div>*/}
+                              <div className="contact-btn mt--30">
+                                <Link
+                                  className="rbt-btn hover-icon-reverse btn-border-gradient radius-round"
+                                  href="/contact"
+                                >
+                                  <div className="icon-reverse-wrapper">
+                                    <span className="btn-text">Contact With Us</span>
+                                    <span className="btn-icon">
+                                      <i className="feather-arrow-right"></i>
+                                    </span>
+                                    <span className="btn-icon">
+                                      <i className="feather-arrow-right"></i>
+                                    </span>
+                                  </div>
+                                </Link>
+                              </div>
                           </div>
                       </div>
 
                       <SingleFooter
                         classOne="col-lg-2 col-md-6 col-sm-6 col-12 mt--30"
-                        // title="Useful Links"
+                        title="Useful Links"
                         footerType={footer.usefulLinks}
                       />
-                      {/*<SingleFooter*/}
-                      {/*    classOne="col-lg-3 col-md-6 col-sm-6 col-12"*/}
-                      {/*    title="Our Company"*/}
-                      {/*    footerType={footer.ourCompany}*/}
-                      {/*/>*/}
+                      <SingleFooter
+                          classOne="col-lg-3 col-md-6 col-sm-6 col-12"
+                          title="Our Company"
+                          footerType={footer.ourCompany}
+                      />
 
-                      <div className="col-lg-4 col-md-6 col-sm-6 col-12 mt--30">
+                      <div className="col-lg-3 col-md-6 col-sm-6 col-12 mt--30">
                           <div className="footer-widget mt--20">
-                              {/*<h5 className="ft-title">Get Contact</h5>*/}
+                              <h5 className="ft-title">Get Contact</h5>
                               <ul className="ft-link">
                                   <li>
                                       <span>Phone:</span>{" "}
@@ -86,7 +86,7 @@ const FooterOne = ({ bgColor }) => {
                                   </li>
                                   <li>
                                       <span>E-mail:</span>{" "}
-                                      <Link href="info@eet.english.com">
+                                      <Link href="info@eetenglish.com">
                                           info@eet.english.com
                                       </Link>
                                   </li>

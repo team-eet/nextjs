@@ -30,7 +30,7 @@ const ContactPage = () => {
                       Contact Us
                     </span>
                     <h2 className="title">
-                      Histudy Course Contact <br /> can join with us.
+                      You can contact us
                     </h2>
                   </div>
                 </div>
@@ -42,15 +42,19 @@ const ContactPage = () => {
           <ContactForm />
 
           <div className="rbt-google-map bg-color-white rbt-section-gapTop">
+            {/*<iframe*/}
+            {/*    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3667.5971381704053!2d72.631637!3d23.184899200000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395c2b9940c4e883%3A0xa9cbf9b99eb71cdf!2sGNYANAM%20ENGLISH%20INSTITUTE!5e0!3m2!1sen!2sin!4v1724331710206!5m2!1sen!2sin"*/}
+            {/*    width="600" height="450" style="border:0;" allowFullScreen="" loading="lazy"*/}
+            {/*    referrerPolicy="no-referrer-when-downgrade"></iframe>*/}
             <iframe
-              className="w-100"
-              src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d2965.0824050173574!2d-93.63905729999999!3d41.998507000000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sWebFilings%2C+University+Boulevard%2C+Ames%2C+IA!5e0!3m2!1sen!2sus!4v1390839289319"
-              height="600"
-              style={{ border: "0" }}
+                className="w-100"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3667.5971381704053!2d72.631637!3d23.184899200000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395c2b9940c4e883%3A0xa9cbf9b99eb71cdf!2sGNYANAM%20ENGLISH%20INSTITUTE!5e0!3m2!1sen!2sin!4v1724331710206!5m2!1sen!2sin"
+                height="600"
+                style={{border: "0"}}
             ></iframe>
           </div>
 
-          <FooterOne />
+          <FooterOne/>
         </Context>
       </Provider>
     </>
