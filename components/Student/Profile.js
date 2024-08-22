@@ -1,6 +1,41 @@
 "use client"
 
+import {useEffect, useState} from "react";
+import Axios from 'axios'
+import {API_URL, API_KEY} from '../../constants/constant'
+import { EncryptData, DecryptData } from "@/components/Services/encrypt-decrypt";
+
+
 const Profile = () => {
+  const REACT_APP = API_URL
+
+  const formatDate = (value, formatting = { month: 'short', day: 'numeric', year: 'numeric' }) => {
+    if (!value) return value
+    return new Intl.DateTimeFormat('en-US', formatting).format(new Date(value))
+  }
+
+
+  const [userdata, setuserdata] = useState('')
+  useEffect(() => {
+    if(localStorage.getItem('userData')){
+      const udata = JSON.parse(localStorage.getItem('userData'))
+      Axios.get(`${API_URL}/api/registration/FillUserProfile/${udata['regid']}`, {
+        headers: {
+          ApiKey: `${API_KEY}`
+        }
+      })
+          .then(res => {
+            if (res.data.length !== 0) {
+              // console.log(res.data[0])
+              setuserdata(res.data[0])
+            }
+          })
+          .catch(err => {
+            { ErrorDefaultAlert(err) }
+          })
+    }
+  }, []);
+
   return (
     <>
       <div className="rbt-dashboard-content bg-color-white rbt-shadow-box">
@@ -14,7 +49,7 @@ const Profile = () => {
             </div>
             <div className="col-lg-8 col-md-8">
               <div className="rbt-profile-content b2">
-                February 25, 2025 6:01 am
+                {formatDate(userdata.dCreatedDate)}
               </div>
             </div>
           </div>
@@ -23,7 +58,7 @@ const Profile = () => {
               <div className="rbt-profile-content b2">First Name</div>
             </div>
             <div className="col-lg-8 col-md-8">
-              <div className="rbt-profile-content b2">John</div>
+              <div className="rbt-profile-content b2">{userdata.sFName}</div>
             </div>
           </div>
           <div className="rbt-profile-row row row--15 mt--15">
@@ -31,15 +66,7 @@ const Profile = () => {
               <div className="rbt-profile-content b2">Last Name</div>
             </div>
             <div className="col-lg-8 col-md-8">
-              <div className="rbt-profile-content b2">Doe</div>
-            </div>
-          </div>
-          <div className="rbt-profile-row row row--15 mt--15">
-            <div className="col-lg-4 col-md-4">
-              <div className="rbt-profile-content b2">Username</div>
-            </div>
-            <div className="col-lg-8 col-md-8">
-              <div className="rbt-profile-content b2">instructor</div>
+              <div className="rbt-profile-content b2">{userdata.sLName}</div>
             </div>
           </div>
           <div className="rbt-profile-row row row--15 mt--15">
@@ -47,7 +74,7 @@ const Profile = () => {
               <div className="rbt-profile-content b2">Email</div>
             </div>
             <div className="col-lg-8 col-md-8">
-              <div className="rbt-profile-content b2">example@gmail.com</div>
+              <div className="rbt-profile-content b2">{userdata.sEmail !== "" ? userdata.sEmail : '-'}</div>
             </div>
           </div>
           <div className="rbt-profile-row row row--15 mt--15">
@@ -55,29 +82,7 @@ const Profile = () => {
               <div className="rbt-profile-content b2">Phone Number</div>
             </div>
             <div className="col-lg-8 col-md-8">
-              <div className="rbt-profile-content b2">+1-202-555-0174</div>
-            </div>
-          </div>
-          <div className="rbt-profile-row row row--15 mt--15">
-            <div className="col-lg-4 col-md-4">
-              <div className="rbt-profile-content b2">Skill/Occupation</div>
-            </div>
-            <div className="col-lg-8 col-md-8">
-              <div className="rbt-profile-content b2">
-                Application Developer
-              </div>
-            </div>
-          </div>
-          <div className="rbt-profile-row row row--15 mt--15">
-            <div className="col-lg-4 col-md-4">
-              <div className="rbt-profile-content b2">Biography</div>
-            </div>
-            <div className="col-lg-8 col-md-8">
-              <div className="rbt-profile-content b2">
-                I&apos;m the Front-End Developer for #Rainbow IT in Bangladesh,
-                OR. I have serious passion for UI effects, animations and
-                creating intuitive, dynamic user experiences.
-              </div>
+              <div className="rbt-profile-content b2">{userdata.sMobile !== "" ? userdata.sMobile : '-'}</div>
             </div>
           </div>
         </div>

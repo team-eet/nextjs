@@ -4,7 +4,7 @@ const Profile = () => {
       <div className="rbt-dashboard-content bg-color-white rbt-shadow-box">
         <div className="content">
           <div className="section-title">
-            <h4 className="rbt-title-style-3">My Profile</h4>
+            <h4 className="rbt-title-style-3">Profile Photo</h4>
           </div>
           <div className="rbt-profile-row row row--15">
             <div className="col-lg-4 col-md-4">

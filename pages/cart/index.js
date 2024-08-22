@@ -10,6 +10,7 @@ import BreadCrumb from "@/components/Common/BreadCrumb";
 import CartPage from "@/components/Cart/CartPage";
 import Separator from "@/components/Common/Separator";
 import FooterOne from "@/components/Footer/Footer-One";
+import CartBreadCrumb from "@/components/Common/Cart-BreadCrumb";
 
 const CartPageLayout = () => {
   return (
@@ -21,7 +22,7 @@ const CartPageLayout = () => {
           <HeaderStyleTen headerSticky="rbt-sticky" headerType="" />
           <MobileMenu />
           <Cart />
-          <BreadCrumb title="Cart" text="Cart" />
+          <CartBreadCrumb title="Cart" text="Cart" />
           <div className="rbt-cart-area bg-color-white rbt-section-gap">
             <CartPage />
           </div>

@@ -1,10 +1,13 @@
 import { useRouter } from "next/router";
 import SidebarData from "../../data/dashboard/instructor/siderbar.json";
 import Link from "next/link";
+import {useEffect} from "react";
+
 
 const InstructorDashboardSidebar = () => {
   const router = useRouter();
   const path = router.pathname;
+
 
   return (
     <>
@@ -13,7 +16,7 @@ const InstructorDashboardSidebar = () => {
           <div className="content-item-content">
             <div className="rbt-default-sidebar-wrapper">
               <div className="section-title mb--20">
-                <h6 className="rbt-title-style-2">Welcome, Jone Due</h6>
+                <h6 className="rbt-title-style-2">Welcome,</h6>
               </div>
               <nav className="mainmenu-nav">
                 <ul className="dashboard-mainmenu rbt-default-sidebar-list nav-tabs">

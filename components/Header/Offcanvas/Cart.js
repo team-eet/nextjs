@@ -89,7 +89,7 @@ const Cart = () => {
       })
           .then(res => {
             if (res.data) {
-              // console.log(res.data)
+              console.log(res.data)
               if (res.data.length !== 0) {
                 const newcartlist = res.data.filter((v, i, a) => a.findIndex(t => ((t.cid === v.cid) && (t.pkgId === v.pkgId))) === i)
                 // console.log(newcartlist)
