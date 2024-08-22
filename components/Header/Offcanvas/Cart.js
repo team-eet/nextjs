@@ -6,7 +6,6 @@ import dynamic from "next/dynamic";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useAppContext } from "@/context/Context";
-import { deleteProduct } from "@/redux/action/CartAction";
 import Axios from 'axios'
 import {API_URL, API_KEY} from "../../../constants/constant";
 import { EncryptData } from "@/components/Services/encrypt-decrypt";
