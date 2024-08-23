@@ -115,7 +115,7 @@ const  Nav = () => {
         </li>
         <li className="">
           <Link
-              href="#"
+              href="/pages/about-us-02"
               className={`${activeMenuItem === "about" ? "open" : ""}`}
           >
             About

@@ -197,6 +197,7 @@ const Viedo = ({ checkMatchCourses }) => {
                               }
                             }).then(res => {
                               const retData = JSON.parse(res.data)
+                              localStorage.setItem('cart', insert_arr)
                               if (retData.success === "1") {
                                 //console.log('done')
 

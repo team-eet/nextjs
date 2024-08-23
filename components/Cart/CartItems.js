@@ -5,7 +5,7 @@ import Axios from 'axios'
 import { EncryptData, DecryptData } from "@/components/Services/encrypt-decrypt";
 import { ErrorDefaultAlert, ErrorAlert} from "@/components/Services/SweetAlert";
 import { deleteProduct, toggleAmount } from "@/redux/action/CartAction";
-import {API_URL} from "../../constants/constant";
+import {API_URL, API_KEY} from "../../constants/constant";
 import { useState } from "react";
 import { toast } from 'react-toastify'
 import { ErrorMessageToast } from "@/components/Services/Toast";
@@ -18,19 +18,21 @@ const CartItems = ({ id, product, amount, checkoutAmount, index, cartitem }) => 
     const [wishlist, setwishlist] = useState([])
   const handleRemoveItem = (cartId, cid, pkgid) => {
       if(localStorage.getItem('userData')){
+          // alert('Hello')
           const udata = JSON.parse(localStorage.getItem('userData'))
-          Axios.delete(`${REACT_APP.API_URL}/api/cart/DeleteCart/${EncryptData(cartId)}/${udata['regid']}`, {
+          Axios.delete(`${API_URL}/api/cart/DeleteCart/${EncryptData(cartId)}/${udata['regid']}`, {
               headers: {
-                  ApiKey: `${REACT_APP.API_KEY}`
+                  ApiKey: `${API_KEY}`
               }
           })
               .then(res => {
+                  console.log(res.data)
                   const retData = JSON.parse(res.data)
 
                   if (retData.success === "1") {
-                      Axios.get(`${REACT_APP.API_URL}/api/cart/GetCartItem/${udata['regid']}`, {
+                      Axios.get(`${API_URL}/api/cart/GetCartItem/${udata['regid']}`, {
                           headers: {
-                              ApiKey: `${REACT_APP.API_KEY}`
+                              ApiKey: `${API_KEY}`
                           }
                       })
                           .then(res => {
@@ -87,9 +89,9 @@ const CartItems = ({ id, product, amount, checkoutAmount, index, cartitem }) => 
 
             //get maximum wishlist item count
             let maximumItemWishlist = 0
-            Axios.get(`${REACT_APP.API_URL}/api/companySettings/FillCompanySettings`, {
+            Axios.get(`${API_URL}/api/companySettings/FillCompanySettings`, {
                 headers: {
-                    ApiKey: `${REACT_APP.API_KEY}`
+                    ApiKey: `${API_KEY}`
                 }
             })
                 .then(res => {
@@ -163,9 +165,9 @@ const CartItems = ({ id, product, amount, checkoutAmount, index, cartitem }) => 
                                     //const insdata = newwishlist.findIndex(obj => obj.cid === newarr.cid)
                                     console.log(newarr)
                                     if (cnt <= 1) {
-                                        Axios.post(`${REACT_APP.API_URL}/api/wishList/InsertWishlist/${udata['regid']}`, newarr, {
+                                        Axios.post(`${API_URL}/api/wishList/InsertWishlist/${udata['regid']}`, newarr, {
                                             headers: {
-                                                ApiKey: `${REACT_APP.API_KEY}`
+                                                ApiKey: `${API_KEY}`
                                             }
                                         }).then(res => {
                                             console.log(res.data)
@@ -180,9 +182,9 @@ const CartItems = ({ id, product, amount, checkoutAmount, index, cartitem }) => 
                                             })
                                     } else {
                                         //delete course from cart
-                                        Axios.delete(`${REACT_APP.API_URL}/api/cart/DeleteCart/${EncryptData(newarr.cid)}/${EncryptData(newarr.pkgId)}/${udata['regid']}`, {
+                                        Axios.delete(`${API_URL}/api/cart/DeleteCart/${EncryptData(newarr.cid)}/${EncryptData(newarr.pkgId)}/${udata['regid']}`, {
                                             headers: {
-                                                ApiKey: `${REACT_APP.API_KEY}`
+                                                ApiKey: `${API_KEY}`
                                             }
                                         })
                                             .then(res => {

@@ -1,3 +1,8 @@
+[data-sal|=slide] {
+    opacity: 1 !important;
+    transition-property: opacity, transform;
+}
+
 .pkgName{
     --f: 10px;
     --r: 15px;

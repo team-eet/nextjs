@@ -676,23 +676,23 @@
       "sectionTitle": "Style Twelve.",
       "body": [
         {
-          "title": "Your Apply",
-          "desc": "English Learning looking for random paragraphs, you've come to the right place. When a random.",
+          "title": "Learn at any time, or any place",
+          "desc": "You may easily access learning English as a language using EET English. Starting your course from a computer or mobile device at your convenience from any place",
           "img": "/images/icons/001-bulb.png"
         },
         {
-          "title": "We Connect",
-          "desc": "Javascript Learning looking for random paragraphs, you've come to the right place. When a random.",
+          "title": "Easy to understand content",
+          "desc": "You can get access to any course you wish to take, and you can find activities and tutorials that will help you comprehend the material better",
           "img": "/images/icons/002-hat.png"
         },
         {
-          "title": "You Get Ready",
-          "desc": "Angular Learning looking for random paragraphs, you've come to the right place. When a random.",
+          "title": "TAT (Tutorial + Activities + Test)",
+          "desc": "You can watch instructive videos that EET English offers at your convenience. Additionally, you can complete the exercises and you can assess your abilities with the test.",
           "img": "/images/icons/003-id-card.png"
         },
         {
-          "title": "Completed",
-          "desc": "Php Learning looking for random paragraphs, you've come to the right place. When a random.",
+          "title": "Be a Certified Learner",
+          "desc": "After successful completion of the course, you will be certified so you can establish your credibility as a certified learner among your peers by using EET English",
           "img": "/images/icons/004-pass.png"
         }
       ]
