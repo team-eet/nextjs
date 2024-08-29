@@ -275,8 +275,7 @@ const MainDemo = () => {
                 <div className="col-lg-6 col-xl-7">
                   <div className="section-title ms-3">
                     <h2 className="title">What you will learn</h2>
-                    <p className="b1 mt--15">Far far away, behind the word mountains, far from the
-                      countries Vokalia and Consonantia.</p>
+                    <p className="b1 mt--15">Unlock Key Insights and Master New Skills with Our Comprehensive Guide</p>
                   </div>
 
 

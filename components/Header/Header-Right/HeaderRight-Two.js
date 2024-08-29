@@ -33,8 +33,8 @@ const HeaderRightTwo = ({ btnClass, btnText, userType }) => {
       setShowLogin(true)
     }
 
-    const total_items  = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')).length : 0;
-    setcartcnt(total_items)
+    // const total_items  = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')).length : 0;
+    // setcartcnt(total_items)
   },[])
 
 

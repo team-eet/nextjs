@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
 import "venobox/dist/venobox.min.css";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +11,13 @@ import {useRouter} from "next/router";
 import Axios from "axios";
 import {EncryptData, DecryptData} from "@/components/Services/encrypt-decrypt";
 import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+
+import Razorpay from 'razorpay';
+
+
+const MySwal = withReactContent(Swal);
 
 const Viedo = ({ checkMatchCourses }) => {
   const REACT_APP = API_URL
@@ -26,7 +32,8 @@ const Viedo = ({ checkMatchCourses }) => {
   const [isCartItem, setisCartItem] = useState(false)
   const [cid, setcid] = useState('')
 
-   const getFeatureCount = (crsid) => {
+
+  const getFeatureCount = (crsid) => {
     // console.log(checkMatchCourses.nCId)
      const url = window.location.href
      const parts = url.split("/");
@@ -122,8 +129,20 @@ const Viedo = ({ checkMatchCourses }) => {
 
   let cart_arr = []
   let genCart_arr = []
+
+
+
+  const handlePayment = useCallback(() => {
+
+  }, [Razorpay]);
   const addToCartFun = (id, amount, product) => {
+    // alert(amount)
+    console.log(product, amount)
     // alert('hellooooooooo')
+    if(localStorage.getItem('userData')) {
+      // const order = createOrder(params);
+
+
     dispatch(addToCartAction(id, amount, product));
     setCart(!cartToggle);
 
@@ -136,114 +155,138 @@ const Viedo = ({ checkMatchCourses }) => {
     }
 
     let maximumItemCart = 0
-    Axios.get(`${API_URL}/api/companySettings/FillCompanySettings`, {
-      headers: {
-        ApiKey: `${API_KEY}`
-      }
-    })
-        .then(res => {
-          if (res.data.length !== 0) {
-            //console.log(res.data)
 
-            maximumItemCart = res.data[0]['nMaximumItemCart']
+      Axios.get(`${API_URL}/api/companySettings/FillCompanySettings`, {
+        headers: {
+          ApiKey: `${API_KEY}`
+        }
+      })
+          .then(res => {
+            if (res.data.length !== 0) {
+              //console.log(res.data)
 
-            if (maximumItemCart >= (cartitemcnt + 1)) {
+              maximumItemCart = res.data[0]['nMaximumItemCart']
 
-              const url = window.location.href
-              const parts = url.split("/");
-              const courseId = parts[parts.length - 1];
-              setcid(courseId)
-              setisCartItem((true))
+              if (maximumItemCart >= (cartitemcnt + 1)) {
 
-              const getamt = (checkMatchCourses.bIsAccosiateCourse === 'yes') ? parseInt(checkMatchCourses.dAmount) : parseInt(checkMatchCourses.pkg_price)
+                const url = window.location.href
+                const parts = url.split("/");
+                const courseId = parts[parts.length - 1];
+                setcid(courseId)
+                setisCartItem((true))
 
-              //check user is login or not
-              if(localStorage.getItem('userData')) {
-                const udata = JSON.parse(localStorage.getItem('userData'))
+                const getamt = (checkMatchCourses.bIsAccosiateCourse === 'yes') ? parseInt(checkMatchCourses.dAmount) : parseInt(checkMatchCourses.pkg_price)
 
-                Axios.get(`${API_URL}/api/promocode/Get_promocode_detail/${courseId}/${udata['regid']}/${EncryptData(getamt)}`, {
-                  headers: {
-                    ApiKey: `${API_KEY}`
-                  }
-                })
-                    .then(res => {
-                      if (res.data) {
-                        if (res.data.length !== 0) {
-                          console.log(res.data)
-                          const resData = JSON.parse(res.data)
+                //check user is login or not
+                if(localStorage.getItem('userData')) {
+                  const udata = JSON.parse(localStorage.getItem('userData'))
 
-                          const insert_arr = {
-                            nRegId: udata['regid'],
-                            cid: courseId,
-                            cname: checkMatchCourses.sCourseTitle,
-                            fname: checkMatchCourses.sFName,
-                            lname: checkMatchCourses.sLName,
-                            camt: (checkMatchCourses.nCourseAmount) ? checkMatchCourses.nCourseAmount : 0,
-                            cnewamt: (checkMatchCourses.dAmount) ? checkMatchCourses.dAmount : 0,
-                            pkgprice: checkMatchCourses.pkg_price,
-                            isaccosiatecourse: checkMatchCourses.bIsAccosiateCourse,
-                            cimg: checkMatchCourses.sImagePath,
-                            pkgId: EncryptData(0),
-                            pkgname: '',
-                            PCId: resData.pcid,
-                            promocode: resData.promocode,
-                            Discount: resData.discAmt
-                          }
+                  Axios.get(`${API_URL}/api/promocode/Get_promocode_detail/${courseId}/${udata['regid']}/${EncryptData(getamt)}`, {
+                    headers: {
+                      ApiKey: `${API_KEY}`
+                    }
+                  })
+                      .then(res => {
+                        if (res.data) {
+                          if (res.data.length !== 0) {
+                            console.log(res.data)
+                            const resData = JSON.parse(res.data)
 
-                          if (insert_arr) {
-                            Axios.post(`${API_URL}/api/cart/InsertCart`, insert_arr, {
-                              headers: {
-                                ApiKey: `${API_KEY}`
-                              }
-                            }).then(res => {
-                              const retData = JSON.parse(res.data)
-                              localStorage.setItem('cart', insert_arr)
-                              if (retData.success === "1") {
-                                //console.log('done')
+                            const insert_arr = {
+                              nRegId: udata['regid'],
+                              cid: courseId,
+                              cname: checkMatchCourses.sCourseTitle,
+                              fname: checkMatchCourses.sFName,
+                              lname: checkMatchCourses.sLName,
+                              camt: (checkMatchCourses.nCourseAmount) ? checkMatchCourses.nCourseAmount : 0,
+                              cnewamt: (checkMatchCourses.dAmount) ? checkMatchCourses.dAmount : 0,
+                              pkgprice: checkMatchCourses.pkg_price,
+                              isaccosiatecourse: checkMatchCourses.bIsAccosiateCourse,
+                              cimg: checkMatchCourses.sImagePath,
+                              pkgId: EncryptData(0),
+                              pkgname: '',
+                              PCId: resData.pcid,
+                              promocode: resData.promocode,
+                              Discount: resData.discAmt
+                            }
 
-                                if (!localStorage.getItem('cart')) {
-                                  const str_arr = JSON.stringify([insert_arr])
-                                  localStorage.setItem('cart', str_arr)
+                            if (insert_arr) {
+                              Axios.post(`${API_URL}/api/cart/InsertCart`, insert_arr, {
+                                headers: {
+                                  ApiKey: `${API_KEY}`
+                                }
+                              }).then(res => {
+                                const retData = JSON.parse(res.data)
+                                localStorage.setItem('cart', insert_arr)
+                                if (retData.success === "1") {
+                                  //console.log('done')
 
-                                } else {
-                                  const gitem = JSON.parse(localStorage.getItem('cart'))
-                                  genCart_arr = []
-                                  if (gitem.length !== 0) {
-                                    for (let i = 0; i < gitem.length; i++) {
-                                      genCart_arr.push(gitem[i])
+                                  if (!localStorage.getItem('cart')) {
+                                    const str_arr = JSON.stringify([insert_arr])
+                                    localStorage.setItem('cart', str_arr)
+
+                                  } else {
+                                    const gitem = JSON.parse(localStorage.getItem('cart'))
+                                    genCart_arr = []
+                                    if (gitem.length !== 0) {
+                                      for (let i = 0; i < gitem.length; i++) {
+                                        genCart_arr.push(gitem[i])
+                                      }
                                     }
+
+                                    genCart_arr.push(insert_arr)
+
+                                    const str_arr = JSON.stringify(genCart_arr)
+                                    localStorage.setItem('cart', str_arr)
                                   }
 
-                                  genCart_arr.push(insert_arr)
-
-                                  const str_arr = JSON.stringify(genCart_arr)
-                                  localStorage.setItem('cart', str_arr)
+                                } else if (retData.success === "0") {
+                                  { ErrorAlert(retData) }
                                 }
+                              })
+                                  .catch(err => {
+                                    { ErrorDefaultAlert(JSON.stringify(err.response)) }
+                                  })
+                            }
 
-                              } else if (retData.success === "0") {
-                                { ErrorAlert(retData) }
-                              }
-                            })
-                                .catch(err => {
-                                  { ErrorDefaultAlert(JSON.stringify(err.response)) }
-                                })
                           }
-
                         }
-                      }
-                    })
-                    .catch(err => {
-                      { ErrorDefaultAlert(err) }
-                    })
+                      })
+                      .catch(err => {
+                        { ErrorDefaultAlert(err) }
+                      })
+
+                }
 
               }
-
             }
-          }
-        })
-        .catch(err => {
-          { ErrorDefaultAlert(err) }
-        })
+          })
+          .catch(err => {
+            { ErrorDefaultAlert(err) }
+          })
+    } else {
+      // alert('Please login first')
+      return MySwal.fire({
+        title: 'Login',
+        text: "Login to add course to cart",
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Login',
+        cancelButtonText: "Cancel",
+        closeOnConfirm: false,
+        closeOnCancel: false,
+        customClass: {
+          confirmButton: 'btn btn-success',
+          cancelButton: 'btn btn-primary ms-1'
+        },
+        buttonsStyling: false
+      }).then(function (result) {
+          // window.location.href = retData.rlink
+        if (result.value) {
+          router.push('/login')
+        }
+      })
+    }
   };
 
   useEffect(() => {
@@ -367,7 +410,7 @@ const Viedo = ({ checkMatchCourses }) => {
             </button>
           </> : <>
             {(!isCartItem) ? ((checkMatchCourses.bIsAccosiateCourse === 'no') && (checkMatchCourses.bIsAccosiateModule === 'yes')) ? <>
-              <Link href={`/`}  className="rbt-btn btn-gradient icon-hover w-100 d-block text-center">
+              <Link href={`/`} className="rbt-btn btn-gradient icon-hover w-100 d-block text-center">
                 <span className="btn-text">Add to Cart</span>
                 <span className="btn-icon">
                   <i className="feather-arrow-right"></i>
@@ -398,10 +441,12 @@ const Viedo = ({ checkMatchCourses }) => {
 
           </>}
 
+          {/*<button onClick={handlePayment}>Pay Now</button>*/}
+
         </div>
 
         <div className="buy-now-btn mt--15">
-          <button
+        <button
               className="rbt-btn btn-border icon-hover w-100 d-block text-center"
           >
             <span className="btn-text">Buy Now</span>

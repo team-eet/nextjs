@@ -1,9 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import {API_URL, API_KEY} from "../../constants/constant";
-// import img from "../../public/images/blog/blog-card-01.jpg";
-// import bgImg from "../../public/images/bg/bg-image-10.jpg";
-
 import {useEffect, useState} from "react";
 import Axios from "axios";
 import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
@@ -65,7 +62,7 @@ const RefundPolicy = () => {
             <div className="rbt-overlay-page-wrapper">
                 <div className="breadcrumb-image-container breadcrumb-style-max-width">
                     <div className="breadcrumb-image-wrapper">
-                        <img src={''} alt="Education Images" />
+                        <Image src={bgImg} alt="Education Images" />
                     </div>
                     <div className="breadcrumb-content-top text-center">
                         <h1 className="title">Refund Policy</h1>

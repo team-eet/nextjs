@@ -9,7 +9,7 @@ import Pagination from "@/components/Common/Pagination";
 import {EncryptData} from "@/components/Services/encrypt-decrypt";
 import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import bgImg from "@/public/images/bg/bg-image-10.jpg";
+import bgImg from "../../public/images/bg/bg-image-10.jpg";
 import img from "@/public/images/blog/blog-card-01.jpg";
 import service from '@/public/images/service/istockphoto-1272954248-612x612.jpg'
 import parse from 'html-react-parser'
@@ -63,7 +63,7 @@ const TermsOfService = () => {
             <div className="rbt-overlay-page-wrapper">
                 <div className="breadcrumb-image-container breadcrumb-style-max-width">
                     <div className="breadcrumb-image-wrapper">
-                        <img src={''} alt="Education Images" />
+                        <Image src={bgImg} alt="Education Images" />
                     </div>
                     <div className="breadcrumb-content-top text-center">
                         <h1 className="title">Terms Of Service</h1>

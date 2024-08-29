@@ -81,16 +81,22 @@
       ],
       "children": [
         {
-          "title": "Flexible Classes",
-          "icon": "feather-heart",
+          "title": "Comprehensive Curriculum",
+          "icon": "feather-list",
           "isPrimary": false,
-          "info": "It is a long established fact that a reader will be distracted by this on readable content of when looking at its layout."
+          "info": "Our platform offers a well-structured and comprehensive curriculum designed by language experts, covering everything from basic grammar to advanced vocabulary and conversation skills. Whether you're a beginner or looking to refine your English proficiency, our courses cater to all levels."
         },
         {
-          "title": "Learn From Anywhere",
+          "title": "Interactive Learning Experience",
           "icon": "feather-book",
           "isPrimary": true,
-          "info": "Sed distinctio repudiandae eos recusandae laborum eaque non eius iure suscipit laborum eaque non eius iure suscipit."
+          "info": "Engage with our interactive lessons that make learning English fun and effective. We incorporates activity, practice, videos, and interactive exercises to help you retain information better and keep you motivated throughout your learning journey."
+        },
+        {
+          "title": "Personalized Learning Paths",
+          "icon": "feather-book",
+          "isPrimary": false,
+          "info": "Our platform adapts to your individual learning style and pace, providing a personalized learning path that focuses on your strengths and addresses your weaknesses. This approach ensures you make steady progress and achieve your language goals faster."
         }
       ]
     }
