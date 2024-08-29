@@ -40,8 +40,7 @@ const Banner = () => {
                 </span>
               </h1>
               <p className="description has-medium-font-size mt--20">
-                Dive in and learn React.js from scratch! Learn Reactjs, Hooks,
-                Redux, React Routing, Animations, Next.js and way more!
+                EET English offers recorded courses, customizable tutor content, and white-label solutions for institutions, accessible via web and mobile apps.
               </p>
               <div className="slider-btn rbt-button-group justify-content-center">
                 <Link

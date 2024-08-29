@@ -10,9 +10,9 @@ const Faq = () => {
           <div className="row g-5" key={index}>
             <div className="col-lg-6">
               <div className="rbt-accordion-style accordion">
-                <div className="section-title text-start mb--60">
-                  <h4 className="title">Purchases & Refunds</h4>
-                </div>
+                {/*<div className="section-title text-start mb--60">*/}
+                {/*  <h4 className="title">Purchases & Refunds</h4>*/}
+                {/*</div>*/}
                 <div className="rbt-accordion-style rbt-accordion-04 accordion">
                   <div className="accordion" id="accordionExamplec3">
                     {data.faqBody.map((item, innerIndex) => (
@@ -54,9 +54,9 @@ const Faq = () => {
             </div>
             <div className="col-lg-6">
               <div className="rbt-accordion-style accordion">
-                <div className="section-title text-start mb--60">
-                  <h4 className="title">Making Courses</h4>
-                </div>
+                {/*<div className="section-title text-start mb--60">*/}
+                {/*  <h4 className="title">Making Courses</h4>*/}
+                {/*</div>*/}
                 <div className="rbt-accordion-style rbt-accordion-04 accordion">
                   <div className="accordion" id="faqs-accordionExamplec3">
                     {data.faqBody2.map((item, innerIndex) => (
