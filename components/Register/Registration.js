@@ -226,7 +226,7 @@ const Registration = () => {
                                 sendSignInLinkToEmail(auth, input.emailmobile, {
                                     // this is the URL that we will redirect back to after clicking on the link in mailbox
                                     // url: 'https://eet-frontend.azurewebsites.net/userreg',
-                                    url: 'http://localhost:3000/register',
+                                    url: 'https://eetenglish.com/register',
                                     handleCodeInApp: true
                                 }).then(() => {
                                     alert('hello')

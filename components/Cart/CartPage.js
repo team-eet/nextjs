@@ -3,7 +3,6 @@ import Link from "next/link";
 import {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import dynamic from "next/dynamic";
-import useRazorpay from "react-razorpay";
 import CartItems from "./CartItems";
 import Axios from "axios";
 import {API_URL, API_KEY} from "../../constants/constant";
@@ -14,10 +13,10 @@ import { useRouter } from "next/router";
 import Razorpay from "razorpay";
 import {NextResponse} from "next/server";
 
-const razorpay = new Razorpay({
-  key_id: "rzp_test_AfwiwqEnvva0qT",
-  key_secret: "r43esS1R1zZk6oPiMgQui39i"
-})
+// const razorpay = new Razorpay({
+//   key_id: "rzp_test_8zjBFXhPLdvQqc",
+//   key_secret: "l6rWAF3kaA5iPfBYIryO7Ory"
+// })
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -27,7 +26,6 @@ const CartPage = () => {
 
   const router = useRouter()
 
-  const [Razorpay] = useRazorpay();
   const REACT_APP = API_URL
   const [courseitem, setcourseitem] = useState([])
   const [handleGST, sethandleGST] = useState('')
@@ -36,8 +34,11 @@ const CartPage = () => {
 
 
 
-  const CreatePayment = (finalAmount) => {
+  const CreatePayment = async (finalAmount) => {
     console.log('FinalAmount', finalAmount)
+
+    const response = await fetch("/api/create-order", {method: "POST"})
+    const data = await response.json()
     const options = {
       key: "rzp_test_AfwiwqEnvva0qT",
       amount: finalAmount,
@@ -45,9 +46,9 @@ const CartPage = () => {
       name: "EET English",
       description: "Course Transaction",
       image: "https://eetenglish.com/favicon.ico",
-      // order_id: id,
+      order_id: data.orderId,
       handler: (res) => {
-        console.log(res);
+        console.log('Payment successfull', res);
       },
       prefill: {
         name: "username",
@@ -84,6 +85,31 @@ const CartPage = () => {
         // console.log('hello')
         if (totalAmnt > 0) {
 
+
+          // initializing razorpay
+          const razorpay = new Razorpay({
+            key_id: "rzp_test_8zjBFXhPLdvQqc",
+            key_secret: "l6rWAF3kaA5iPfBYIryO7Ory"
+          });
+          // setting up options for razorpay order.
+          const options = {
+            amount: 10000,
+            currency: "INR",
+            receipt:  Math.floor(Math.random() * 10),
+            payment_capture: 1
+          };
+          try {
+            const response = razorpay.orders.create(options)
+            console.log(response)
+            // res.json({
+            //   order_id: response.id,
+            //   currency: response.currency,
+            //   amount: response.amount,
+            // })
+          } catch (err) {
+            res.status(400).send('Not able to create order. Please try again!');
+          }
+
           // --------
           //step : 1 --create order api
           // const number = Math.floor(Math.random() * 10)
@@ -94,24 +120,26 @@ const CartPage = () => {
           // }
           // console.log(data)
 
+
           // try{
           //   const order = razorpay.orders.create({
           //     amount : 100 * 100,
           //     currency: "INR",
           //     receipt: "receipt_ " + Math.random().toString(36).substring(7)
           //   })
-          //   console.log(NextResponse.json({ orderId: order.id }, {staus: 200}))
-          //   return NextResponse.json({ orderId: order.id }, {staus: 200})
+          //   console.log(NextResponse.json({ orderId: order.id }))
+          //   return NextResponse.json({ orderId: order.id })
           // } catch (error){
           //   console.log('error creating order id', error)
-          //   return NextResponse.json({ error: "error creating order id" }, {staus: 500})
+          //   return NextResponse.json({ error: "error creating order id" })
           // }
 
-          CreatePayment(totalAmnt)
+          // CreatePayment(totalAmnt)
           //
           // Axios.post(`https://api.razorpay.com/v1/orders`, data,{
           //   headers: {
-          //     "Content-Type": "application/json"
+          //     "Content-Type": "application/json",
+          //     'Authorization': 'Basic cnpwX3Rlc3RfQWZ3aXdxRW52dmEwcVQ6cjQzZXNTMVIxelprNm9QaU1nUXVpMzlp'
           //   }
           // })
           //     .then(res => {
@@ -121,7 +149,7 @@ const CartPage = () => {
           //     .catch(err => {
           //       { ErrorDefaultAlert(err) }
           //     })
-          //
+
 
           //   in res(if success then continue to payment)
           //         step 2: CreatePayment(totalAmnt)
