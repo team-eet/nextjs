@@ -42,6 +42,7 @@ const Certification = () => {
 
 
   const handleChangeTitle = (e, index) => {
+    console.log(certificationFields.length)
     const { value } = e.target;
     if(certificationFields.length >= 1){
       const updatedFields = [...certificationFields];
@@ -445,7 +446,7 @@ const Certification = () => {
 
 
                                       console.log('stringForUrl', stringForUrl, result)
-                                      router.push(`/become-a-tutor/${stringForUrl}`)
+                                      router.push(`/become-a-tutor/teaching-experience`)
                                     } else {
                                       router.push('/become-a-tutor/teaching-experience')
                                     }
@@ -679,108 +680,108 @@ const Certification = () => {
                               </>}
                             </> : ''}
                             </> : <>
-                              <div key={certificationFields.nTCId}>
-                                <div className={'row'}>
-                                  <div className="col-lg-6">
-                                    <label>
-                                      Certification Title
-                                    </label>
-                                    <div className="form-group">
-                                      <input
-                                          readOnly={verifySts === 2}
-                                          onChange={(e) => handleChangeTitle(e)}
-                                          value={certificationFields.sCerti_title}
-                                          type="text"
-                                          placeholder="Certification Title"/>
-                                      <span className="focus-border"></span>
-                                    </div>
-                                  </div>
-                                  <div className="col-lg-6">
-                                    <label>
-                                      Issued By
-                                    </label>
-                                    <div className="form-group">
-                                      <input
-                                          readOnly={verifySts === 2}
-                                          onChange={(e) => handleChangeIssuedBy(e)}
-                                          value={certificationFields.sIssued_by}
-                                          type="text"
-                                          placeholder="Issued By"/>
-                                      <span className="focus-border"></span>
-                                    </div>
-                                  </div>
-                                  <div className={'col-lg-6 mt-3'}>
-                                    <label>
-                                      Year of study from
-                                    </label>
-                                    <select disabled={verifySts === 2} value={certificationFields.sFrom_year}
-                                            onChange={(e) => handleYearFromChange(e)}>
-                                      {options}
-                                    </select>
+                              {/*<div key={certificationFields.nTCId}>*/}
+                              {/*  <div className={'row'}>*/}
+                              {/*    <div className="col-lg-6">*/}
+                              {/*      <label>*/}
+                              {/*        Certification Title*/}
+                              {/*      </label>*/}
+                              {/*      <div className="form-group">*/}
+                              {/*        <input*/}
+                              {/*            readOnly={verifySts === 2}*/}
+                              {/*            onChange={(e) => handleChangeTitle(e)}*/}
+                              {/*            value={certificationFields.sCerti_title}*/}
+                              {/*            type="text"*/}
+                              {/*            placeholder="Certification Title"/>*/}
+                              {/*        <span className="focus-border"></span>*/}
+                              {/*      </div>*/}
+                              {/*    </div>*/}
+                              {/*    <div className="col-lg-6">*/}
+                              {/*      <label>*/}
+                              {/*        Issued By*/}
+                              {/*      </label>*/}
+                              {/*      <div className="form-group">*/}
+                              {/*        <input*/}
+                              {/*            readOnly={verifySts === 2}*/}
+                              {/*            onChange={(e) => handleChangeIssuedBy(e)}*/}
+                              {/*            value={certificationFields.sIssued_by}*/}
+                              {/*            type="text"*/}
+                              {/*            placeholder="Issued By"/>*/}
+                              {/*        <span className="focus-border"></span>*/}
+                              {/*      </div>*/}
+                              {/*    </div>*/}
+                              {/*    <div className={'col-lg-6 mt-3'}>*/}
+                              {/*      <label>*/}
+                              {/*        Year of study from*/}
+                              {/*      </label>*/}
+                              {/*      <select disabled={verifySts === 2} value={certificationFields.sFrom_year}*/}
+                              {/*              onChange={(e) => handleYearFromChange(e)}>*/}
+                              {/*        {options}*/}
+                              {/*      </select>*/}
 
-                                  </div>
-                                  <div className={'col-lg-6 mt-3'}>
-                                    <label>
-                                      Year of study to
-                                    </label>
-                                    <select disabled={verifySts === 2} value={certificationFields.sTo_year}
-                                            onChange={(e) => handleYearToChange(e)}>
-                                      <option value="Present">Present</option>
-                                      {options}
-                                    </select>
-                                  </div>
-                                  <div className={'col-lg-12 mt-5 mb-3'}>
-                                    <div className={'rounded-2 p-3'} style={{background: "#f4f4f8"}}>
-                                      <h5>Get a certification verified badge</h5>
-                                      <small>Upload your diploma to boost your credibility! Our team will review
-                                        it and add
-                                        the badge to your profile.
-                                        Once reviewed, your files will be deleted.
-                                        JPG or PNG format; maximum size of 7MB</small>
-
-
-                                      <div>
-                                        <label id='label'
-                                               className='rbt-btn btn-md btn-gradient hover-icon-reverse'>Upload
-                                          image
-                                          <input type="file" id="file" name="file"
-                                                 onChange={(e) => handleChangeImage(e, index)}
-                                                 accept="image/*"/>
-                                        </label>
-                                        <div>
-                                          {certificationFields.sCerti_imagePath && (
-                                              <img src={certificationFields.sCerti_imagePath} alt="Uploaded"
-                                                   style={{width: 100}}/>
-                                          )}
-                                        </div>
-
-                                      </div>
+                              {/*    </div>*/}
+                              {/*    <div className={'col-lg-6 mt-3'}>*/}
+                              {/*      <label>*/}
+                              {/*        Year of study to*/}
+                              {/*      </label>*/}
+                              {/*      <select disabled={verifySts === 2} value={certificationFields.sTo_year}*/}
+                              {/*              onChange={(e) => handleYearToChange(e)}>*/}
+                              {/*        <option value="Present">Present</option>*/}
+                              {/*        {options}*/}
+                              {/*      </select>*/}
+                              {/*    </div>*/}
+                              {/*    <div className={'col-lg-12 mt-5 mb-3'}>*/}
+                              {/*      <div className={'rounded-2 p-3'} style={{background: "#f4f4f8"}}>*/}
+                              {/*        <h5>Get a certification verified badge</h5>*/}
+                              {/*        <small>Upload your diploma to boost your credibility! Our team will review*/}
+                              {/*          it and add*/}
+                              {/*          the badge to your profile.*/}
+                              {/*          Once reviewed, your files will be deleted.*/}
+                              {/*          JPG or PNG format; maximum size of 7MB</small>*/}
 
 
-                                    </div>
-                                  </div>
-                                  {verifySts === 2 ? <></> : <>
-                                    <div className="col-lg-12 text-end mt-2">
-                                      <button type={'button'} className="btn btn-danger"
-                                              onClick={() => handleRemoveCertification(certificationFields.nTCId)}>Remove
-                                      </button>
-                                    </div>
-                                  </>}
+                              {/*        <div>*/}
+                              {/*          <label id='label'*/}
+                              {/*                 className='rbt-btn btn-md btn-gradient hover-icon-reverse'>Upload*/}
+                              {/*            image*/}
+                              {/*            <input type="file" id="file" name="file"*/}
+                              {/*                   onChange={(e) => handleChangeImage(e, index)}*/}
+                              {/*                   accept="image/*"/>*/}
+                              {/*          </label>*/}
+                              {/*          <div>*/}
+                              {/*            {certificationFields.sCerti_imagePath && (*/}
+                              {/*                <img src={certificationFields.sCerti_imagePath} alt="Uploaded"*/}
+                              {/*                     style={{width: 100}}/>*/}
+                              {/*            )}*/}
+                              {/*          </div>*/}
 
-                                </div>
-                                {verifySts === 2 ? <></> : <>
-                                  <div className={'col-lg-5 mt-5 mb-5'}>
-                                    <button
-                                        type={'button'}
-                                        className="rbt-btn-link left-icon border-0 bg-white"
-                                        onClick={handleAddCertification}
-                                    >
-                                      <i className="feather-plus"></i>Add Certification
-                                    </button>
-                                  </div>
-                                </>}
+                              {/*        </div>*/}
 
-                              </div>
+
+                              {/*      </div>*/}
+                              {/*    </div>*/}
+                              {/*    {verifySts === 2 ? <></> : <>*/}
+                              {/*      <div className="col-lg-12 text-end mt-2">*/}
+                              {/*        <button type={'button'} className="btn btn-danger"*/}
+                              {/*                onClick={() => handleRemoveCertification(certificationFields.nTCId)}>Remove*/}
+                              {/*        </button>*/}
+                              {/*      </div>*/}
+                              {/*    </>}*/}
+
+                              {/*  </div>*/}
+                              {/*  {verifySts === 2 ? <></> : <>*/}
+                              {/*    <div className={'col-lg-5 mt-5 mb-5'}>*/}
+                              {/*      <button*/}
+                              {/*          type={'button'}*/}
+                              {/*          className="rbt-btn-link left-icon border-0 bg-white"*/}
+                              {/*          onClick={handleAddCertification}*/}
+                              {/*      >*/}
+                              {/*        <i className="feather-plus"></i>Add Certification*/}
+                              {/*      </button>*/}
+                              {/*    </div>*/}
+                              {/*  </>}*/}
+
+                              {/*</div>*/}
 
 
                             </>}

@@ -11,7 +11,7 @@ import PageHead from "@/pages/Head";
 import BackToTop from "@/pages/backToTop";
 import Store from "@/redux/store";
 import { Provider } from "react-redux";
-import Education from "@/components/Become-a-Tutor/Education";
+import Education from "@/components/Become-a-Tutor/Education2";
 
 const EnrolledCoursePage = () => {
   return (

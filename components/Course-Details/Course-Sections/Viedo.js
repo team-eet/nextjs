@@ -374,16 +374,22 @@ const Viedo = ({ checkMatchCourses }) => {
         data-vbtype="video"
         href={`${checkMatchCourses.sVideoURL !== "" ? checkMatchCourses.sVideoURL : ""}`}
       >
+        {/*{console.log(checkMatchCourses)}*/}
         <div className="video-content">
           <Image className={'position-relative'} src={checkMatchCourses.sImagePath} height={255} width={355}></Image>
-        <div className="position-to-top">
+
+          {checkMatchCourses.sVideoURL !== "" || checkMatchCourses.sVideoPath !== null ? <>
+            <div className="position-to-top">
             <span className="rbt-btn rounded-player-2 with-animation">
               <span className="play-icon"></span>
             </span>
-        </div>
-        <span className="play-view-text d-block color-white">
+            </div>
+            <span className="play-view-text d-block color-white">
             <i className="feather-eye"></i> Preview this course
           </span>
+          </> : <></>}
+
+
         </div>
       </Link>
       <div className="content-item-content">

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import 'react-loading-skeleton/dist/skeleton.css'
+import Skeleton from "react-loading-skeleton";
 
 
 const CourseBreadcrumb = ({ getMatchCourse, CourseTag, Tag }) => {
@@ -15,9 +16,9 @@ const CourseBreadcrumb = ({ getMatchCourse, CourseTag, Tag }) => {
   }
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   setisLoading(false)
-    // }, 3000)
+    setTimeout(() => {
+      setisLoading(false)
+    }, 5000)
   }, [])
 
 
@@ -25,7 +26,10 @@ const CourseBreadcrumb = ({ getMatchCourse, CourseTag, Tag }) => {
     <>
       <div className="col-lg-8">
         <div className="content text-start">
-          <ul className="page-list">
+          {isLoading ? <>
+            <Skeleton width={150} />
+          </> : <>
+            <ul className="page-list">
             <li className="rbt-breadcrumb-item">
               <Link href="/">Home</Link>
             </li>
@@ -38,11 +42,22 @@ const CourseBreadcrumb = ({ getMatchCourse, CourseTag, Tag }) => {
                 {getMatchCourse.sCategory}
             </li>
           </ul>
+          </>}
           <h2 className="title">
+            {isLoading ? <>
+              <Skeleton width={600} />
+            </> : <>
               {getMatchCourse.sCourseTitle}
+            </>}
+
           </h2>
           <p className="description">
+            {isLoading ? <>
+              <Skeleton height={180}  />
+            </> : <>
               {getMatchCourse.sShortDesc}
+            </>}
+
           </p>
 
           <div className="d-flex align-items-center mb--20 flex-wrap rbt-course-details-feature">
@@ -51,72 +66,112 @@ const CourseBreadcrumb = ({ getMatchCourse, CourseTag, Tag }) => {
                 <span className="rbt-badge-2">
                   <span className="image">
                   </span>
-                  {Tag[0]['sTagName']}
+
+                  {isLoading ? <>
+                    <Skeleton height={100}  />
+                  </> : <>
+                    {Tag[0]['sTagName']}
+                  </>}
                 </span>
               </div>
             </> : <></>}
 
             <div className="feature-sin rating">
-              <Link href="#">{getMatchCourse.star}</Link>
-              <Link href="#">
-                <i className="fa fa-star"></i>
-              </Link>
-              <Link href="#">
-                <i className="fa fa-star"></i>
-              </Link>
-              <Link href="#">
-                <i className="fa fa-star"></i>
-              </Link>
-              <Link href="#">
-                <i className="fa fa-star"></i>
-              </Link>
-              <Link href="#">
-                <i className="fa fa-star"></i>
-              </Link>
+              {isLoading ? <>
+                <Skeleton width={200}  />
+              </> : <>
+                <Link href="#">{getMatchCourse.star}</Link>
+                <Link href="#">
+                  <i className="fa fa-star"></i>
+                </Link>
+                <Link href="#">
+                  <i className="fa fa-star"></i>
+                </Link>
+                <Link href="#">
+                  <i className="fa fa-star"></i>
+                </Link>
+                <Link href="#">
+                  <i className="fa fa-star"></i>
+                </Link>
+                <Link href="#">
+                  <i className="fa fa-star"></i>
+                </Link>
+              </>}
+
+
             </div>
 
             <div className="feature-sin total-rating">
-              <Link className="rbt-badge-4" href="#">
-                {getMatchCourse.user_rate_cnt} rating
-              </Link>
+              {isLoading ? <>
+                <Skeleton width={100}  />
+              </> : <>
+                <Link className="rbt-badge-4" href="#">
+                  {getMatchCourse.user_rate_cnt} rating
+                </Link>
+              </>}
+
             </div>
 
             <div className="feature-sin total-student">
-              <span> {getMatchCourse.enroll_cnt} students</span>
+              {isLoading ? <>
+                <Skeleton width={100}  />
+              </> : <>
+                <Link className="rbt-badge-4" href="#">
+                  <span> {getMatchCourse.enroll_cnt} students</span>
+                </Link>
+              </>}
+
             </div>
           </div>
 
           <div className="rbt-author-meta mb--20">
             <div className="rbt-avater">
               {/*<Link href={`/profile/${getMatchCourse.id}`}>*/}
-              <Link href={``}>
-                {getMatchCourse.tutor_image && (
-                    <Image className={'position-relative'} src={getMatchCourse.tutor_image}  width={40} height={40}></Image>
-                )}
-              </Link>
+              {isLoading ? <>
+                <Skeleton width={200}  />
+              </> : <>
+                <Link href={``}>
+                  {getMatchCourse.tutor_image && (
+                      <Image className={'position-relative'} src={getMatchCourse.tutor_image}  width={40} height={40}></Image>
+                  )}
+                </Link>
+              </>}
+
             </div>
             <div className="rbt-author-info">
-              By{" "}
-              <Link href={`/profile/${getMatchCourse.id}`}>
-                {getMatchCourse.sFName} {getMatchCourse.sLName}
-              </Link>{" "}
-              In <Link href="#">{getMatchCourse.sCategory}</Link>
+
+              {isLoading ? <>
+                <Skeleton width={500}  />
+              </> : <>
+                By{" "}
+                <Link href={`/profile/${getMatchCourse.id}`}>
+                  {getMatchCourse.sFName} {getMatchCourse.sLName}
+                </Link>{" "}
+                In <Link href="#">{getMatchCourse.sCategory}</Link>
+              </>}
+
             </div>
           </div>
 
-          <ul className="rbt-meta">
-            <li>
-              <i className="feather-calendar"></i>Last updated{" "}
-              {formatDate(getMatchCourse.dUpdatedDate)}
-            </li>
-            <li>
-              <i className="feather-globe"></i>
-              Top rated
-            </li>
-            <li>
-              <i className="feather-award"></i>Verified
-            </li>
-          </ul>
+
+          {isLoading ? <>
+            <Skeleton width={500} />
+          </> : <>
+            <ul className="rbt-meta">
+              <li>
+                <i className="feather-calendar"></i>Last updated{" "}
+                {formatDate(getMatchCourse.dUpdatedDate)}
+              </li>
+              <li>
+                <i className="feather-globe"></i>
+                Top rated
+              </li>
+              <li>
+                <i className="feather-award"></i>Verified
+              </li>
+            </ul>
+          </>}
+
         </div>
       </div>
     </>

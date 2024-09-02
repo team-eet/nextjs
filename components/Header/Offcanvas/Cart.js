@@ -10,6 +10,7 @@ import Axios from 'axios'
 import {API_URL, API_KEY} from "../../../constants/constant";
 import { EncryptData } from "@/components/Services/encrypt-decrypt";
 import { ErrorDefaultAlert, ErrorAlert } from "@/components/Services/SweetAlert";
+import Skeleton from "react-loading-skeleton";
 
 const Cart = () => {
   const REACT_APP = API_URL
@@ -22,6 +23,8 @@ const Cart = () => {
   const { cart, total_amount } = useSelector((state) => state.CartReducer);
 
   const { cartToggle, setCart } = useAppContext();
+
+  const [isLoading, setisLoading] = useState(false)
 
   const handleRemoveItem = (cartId, cid, pkgid) => {
     if(localStorage.getItem('userData')){
@@ -76,6 +79,9 @@ const Cart = () => {
   }
 
   useEffect(() => {
+    setTimeout(() => {
+      setisLoading(true)
+    }, 5000)
     dispatch({ type: "COUNT_CART_TOTALS" });
     localStorage.setItem("hiStudy", JSON.stringify(cart));
     if(localStorage.getItem('userData')) {
@@ -88,7 +94,7 @@ const Cart = () => {
       })
           .then(res => {
             if (res.data) {
-              console.log(res.data)
+              // console.log(res.data)
               if (res.data.length !== 0) {
                 const newcartlist = res.data.filter((v, i, a) => a.findIndex(t => ((t.cid === v.cid) && (t.pkgId === v.pkgId))) === i)
                 // console.log(newcartlist)
@@ -136,73 +142,80 @@ const Cart = () => {
               </div>
             </div>
             <nav className="side-nav w-100">
-              {courseitem.length !== 0 ? <>
-                <div className="rbt-minicart-wrapper">
-                  {courseitem &&
-                      courseitem.map((data, index) => {
-                            const userPay = (parseInt(data.pay_price) - (parseInt(data.pay_price) * parseInt(data.discount) / 100))
-                            // console.log(userPay, pay_amnt)
-                            const pay_amnt = parseInt(data.pay_price) - parseInt(data.user_pay)
-                            // console.log(pay_amnt)
-                            checkoutAmount += userPay
-                            return (
-                                <>
-                                  <li className="minicart-item" key={index}>
-                                    <div className="thumbnail">
-                                      <img src={data.cimg}
-                                           width={80}
-                                           height={64}
-                                           alt="Product Images"
-                                      />
 
-                                    </div>
-                                    <div className="product-content">
-                                      <h6 className="title">
-                                        {/*<Link*/}
-                                        {/*  href={*/}
-                                        {/*    data.product.title*/}
-                                        {/*      ? `/event-details/${data.id}`*/}
-                                        {/*      : `/course-details/${data.id}`*/}
-                                        {/*  }*/}
-                                        {/*>*/}
-                                        {data.cname}
-                                        {/*</Link>*/}
-                                      </h6>
+                {courseitem.length !== 0  ? <>
+                  <div className="rbt-minicart-wrapper">
+                    {courseitem &&
+                        courseitem.map((data, index) => {
+                              const userPay = (parseInt(data.pay_price) - (parseInt(data.pay_price) * parseInt(data.discount) / 100))
+                              // console.log(userPay, pay_amnt)
+                              const pay_amnt = parseInt(data.pay_price) - parseInt(data.user_pay)
+                              // console.log(pay_amnt)
+                              checkoutAmount += userPay
+                              return (
+                                  <>
+                                    <li className="minicart-item" key={index}>
+                                      <div className="thumbnail">
+                                        <img src={data.cimg}
+                                             width={80}
+                                             height={64}
+                                             alt="Product Images"
+                                        />
 
-                                      <span className="quantity">
+                                      </div>
+                                      <div className="product-content">
+                                        <h6 className="title">
+                                          {/*<Link*/}
+                                          {/*  href={*/}
+                                          {/*    data.product.title*/}
+                                          {/*      ? `/event-details/${data.id}`*/}
+                                          {/*      : `/course-details/${data.id}`*/}
+                                          {/*  }*/}
+                                          {/*>*/}
+                                          {data.cname}
+                                          {/*</Link>*/}
+                                        </h6>
+
+                                        <span className="quantity">
                                       <span className={'me-2'}>₹{data.pay_price}</span>
-                                            {data.sDiscountType === "amount" ? <>
-                                              {data.discount !== 0 ? <>
+                                          {data.sDiscountType === "amount" ? <>
+                                            {data.discount !== 0 ? <>
                                               <span className={'font-13 text-success m-0'}>
                                                  - ₹ {data.discount} discount applied
                                               </span>
-                                              </> : <></>}
-                                            </> : <>
-                                              {data.discount !== 0 ? <>
+                                            </> : <></>}
+                                          </> : <>
+                                            {data.discount !== 0 ? <>
                                               <span className={'font-13 text-success m-0'}>
                                                    - {data.discount}% discount applied
                                               </span>
-                                              </> : <></>}
-                                            </>}
+                                            </> : <></>}
+                                          </>}
                                       </span>
-                                    </div>
-                                    <div className="close-btn">
-                                      <button
-                                          className="rbt-round-btn"
-                                          onClick={() => handleRemoveItem(data.nCartId, data.cid, data.pkgId)}
-                                      >
-                                        <i className="feather-x"></i>
-                                      </button>
-                                    </div>
-                                  </li>
-                                </>
-                            )
-                          }
-                      )}
-                </div>
-              </> : <>
-                <h6 className={'text-center'}>Your cart is empty!</h6>
-              </>}
+                                      </div>
+                                      <div className="close-btn">
+                                        <button
+                                            className="rbt-round-btn"
+                                            onClick={() => handleRemoveItem(data.nCartId, data.cid, data.pkgId)}
+                                        >
+                                          <i className="feather-x"></i>
+                                        </button>
+                                      </div>
+                                    </li>
+                                  </>
+                              )
+                            }
+                        )}
+                  </div>
+                </> : <>
+                  {isLoading ? <>
+                    <Skeleton height={500} />
+                  </> : <>
+                  <h6 className={'text-center'}>Your cart is empty!</h6>
+                  </>}
+                </>}
+
+
 
             </nav>
 

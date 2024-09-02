@@ -48,26 +48,46 @@ const Education = () => {
             updatedFields[index].nCountryId = parseInt(value);
             setEducationFields(updatedFields);
         } else {
-            const updatedFields = educationFields;
+            const updatedFields = educationFields
+
             updatedFields.nCountryId = parseInt(e.target.value);
-            // console.log(updatedFields)
+            console.log(updatedFields, parseInt(e.target.value))
             setEducationFields(updatedFields);
         }
+        // if(educationFields.length >= 1){
+        //     const updatedFields = [...educationFields];
+        //     updatedFields[index].nCountryId = parseInt(value);
+        //     setEducationFields(updatedFields);
+        // } else {
+        //     const updatedFields = educationFields;
+        //     updatedFields.nCountryId = parseInt(e.target.value);
+        //     // console.log(updatedFields)
+        //     setEducationFields(updatedFields);
+        // }
 
     };
 
     const handleChangeUniversity = (e, index) => {
         const { value } = e.target;
-       if(educationFields.length >= 1){
-           const updatedFields = [...educationFields];
-           updatedFields[index].sUniversity = value;
-           setEducationFields(updatedFields);
-       } else {
-           const updatedFields = educationFields;
-           updatedFields.sUniversity = e.target.value;
-           console.log(updatedFields)
-           setEducationFields(updatedFields);
-       }
+       // if(educationFields.length >= 1){
+       //     const updatedFields = [...educationFields];
+       //     updatedFields[index].sUniversity = value;
+       //     setEducationFields(updatedFields);
+       // } else {
+       //     const updatedFields = educationFields;
+       //     updatedFields.sUniversity = e.target.value;
+       //     console.log(updatedFields)
+       //     setEducationFields(updatedFields);
+       // }
+        if(educationFields.length >= 1){
+            const updatedFields = [...educationFields];
+            updatedFields[index].sUniversity = value;
+            setEducationFields(updatedFields);
+        } else {
+            const updatedFields = educationFields;
+            updatedFields.sUniversity = value;
+            setEducationFields(updatedFields);
+        }
     };
 
     const handleChangeDegree = (e, index) => {
@@ -453,7 +473,7 @@ const Education = () => {
                                                                 let stringForUrl = url[positionOfThree];
 
                                                                 console.log('stringForUrl', stringForUrl)
-                                                                router.push(`/become-a-tutor/${stringForUrl}`)
+                                                                router.push(`/become-a-tutor/certification`)
                                                             } else {
                                                                 router.push('/become-a-tutor/certification')
                                                             }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import {useEffect, useState} from "react";
+import {useEffect, useState, useCallback} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import dynamic from "next/dynamic";
 import CartItems from "./CartItems";
@@ -8,9 +8,10 @@ import Axios from "axios";
 import {API_URL, API_KEY} from "../../constants/constant";
 import { Row, Col, Input, CustomInput, Form } from 'reactstrap'
 import { ErrorDefaultAlert } from "@/components/Services/SweetAlert";
-import { EncryptData } from "@/components/Services/encrypt-decrypt";
+import {DecryptData, EncryptData} from "@/components/Services/encrypt-decrypt";
 import { useRouter } from "next/router";
-import Razorpay from "razorpay";
+import useRazorpay from "react-razorpay";
+
 import {NextResponse} from "next/server";
 
 // const razorpay = new Razorpay({
@@ -30,25 +31,49 @@ const CartPage = () => {
   const [courseitem, setcourseitem] = useState([])
   const [handleGST, sethandleGST] = useState('')
   const [showTax, setshowTax] = useState(false)
+  const [Razorpay] = useRazorpay();
 
 
-
-
-  const CreatePayment = async (finalAmount) => {
-    console.log('FinalAmount', finalAmount)
-
-    const response = await fetch("/api/create-order", {method: "POST"})
-    const data = await response.json()
+  const CreatePayment = (orderDetails) => {
+    console.log(orderDetails)
     const options = {
-      key: "rzp_test_AfwiwqEnvva0qT",
-      amount: finalAmount,
+      key: "rzp_test_8zjBFXhPLdvQqc",
+      amount: orderDetails.txnAmount,
       currency: "INR",
       name: "EET English",
       description: "Course Transaction",
       image: "https://eetenglish.com/favicon.ico",
-      order_id: data.orderId,
-      handler: (res) => {
-        console.log('Payment successfull', res);
+      order_id: orderDetails.razorpayOrderId,
+      handler: function (response){
+        console.log(response)
+        console.log(EncryptData(response))
+         // router.push(`/payment-detail/${EncryptData(response.razorpay_order_id)}/${EncryptData(response.razorpay_payment_id)}/${EncryptData(orderDetails.txnAmount)}`)
+
+        //api call backend
+        if(localStorage.getItem('userData')){
+          const udata = JSON.parse(localStorage.getItem('userData'))
+          Axios.post(`${API_URL}/api/cart/PaymentOrderVerify/${udata['regid']}/${EncryptData(orderDetails.orderId)}/${EncryptData(response)}`, '1', {
+            headers: {
+              ApiKey: `${API_KEY}`
+            }
+          }).then(res => {
+                if (res.data) {
+                  console.log(res.data)
+                  const retData = JSON.parse(res.data)
+                  if(retData.success === "1"){
+
+                  } else {
+                    //payment not verified error
+                  }
+                }
+              })
+              .catch(err => {
+                console.log(err)
+                { ErrorDefaultAlert(err) }
+              })
+        }
+
+        //call parameter
       },
       prefill: {
         name: "username",
@@ -64,136 +89,103 @@ const CartPage = () => {
     };
 
     const rzpay = new Razorpay(options);
+    rzpay.on('payment.failed', function (response){
+      if(response.error.code !== 'undefined'){
+        router.push('redirect to failure page')
+      }
+      alert(response.error.code);
+      alert(response.error.description);
+      alert(response.error.source);
+      alert(response.error.step);
+      alert(response.error.reason);
+      alert(response.error.metadata.order_id);
+      alert(response.error.metadata.payment_id);
+    })
     rzpay.open();
-  }
+  };
+
+  // const [cidarr, setcidarr] = useState([])
   const handlePayment = () => {
     if(localStorage.getItem('userData')) {
     const regID = JSON.parse(localStorage.getItem('userData'))
       // alert(checkoutAmount * 100)
 
-      // const totalAmnt = parseInt(checkoutAmount) * 100
-      const totalAmnt = 1000 * 100
 
-    Axios.post(`${API_URL}/api/cart/PaymentOrderInsert/${regID['regid']}/${EncryptData(totalAmnt)}`, '1', {
-      headers: {
-        ApiKey: `${API_KEY}`
-      }
-    }).then(res => {
-      const retData = JSON.parse(res.data)
-      console.log('Response', res.data)
-      if (retData.success === "1") {
-        // console.log('hello')
-        if (totalAmnt > 0) {
+      Axios.get(`${API_URL}/api/cart/GetCartItem/${regID['regid']}`, {
+        headers: {
+          ApiKey: `${API_KEY}`
+        }
+      })
+          .then(res => {
+            if (res.data) {
+              console.log(res.data)
+              if (res.data.length !== 0) {
 
+                // setcidarr(res.data)
+                const cidarr = res.data.map((obj) => {
+                  // console.log(obj)
+                  return obj.cid
+                })
+                console.log(EncryptData(cidarr))
+                const totalAmnt = 50
 
-          // initializing razorpay
-          const razorpay = new Razorpay({
-            key_id: "rzp_test_8zjBFXhPLdvQqc",
-            key_secret: "l6rWAF3kaA5iPfBYIryO7Ory"
-          });
-          // setting up options for razorpay order.
-          const options = {
-            amount: 10000,
-            currency: "INR",
-            receipt:  Math.floor(Math.random() * 10),
-            payment_capture: 1
-          };
-          try {
-            const response = razorpay.orders.create(options)
-            console.log(response)
-            // res.json({
-            //   order_id: response.id,
-            //   currency: response.currency,
-            //   amount: response.amount,
-            // })
-          } catch (err) {
-            res.status(400).send('Not able to create order. Please try again!');
-          }
+                Axios.post(`${API_URL}/api/cart/PaymentOrderInsert/${regID['regid']}/${EncryptData(totalAmnt)}/${EncryptData(cidarr)}`, '1', {
+                  headers: {
+                    ApiKey: `${API_KEY}`
+                  }
+                }).then(res => {
+                  const retData = JSON.parse(res.data)
+                  // console.log('Response', res.data)
+                  console.log('paydata', DecryptData(retData.pay_data))
 
-          // --------
-          //step : 1 --create order api
-          // const number = Math.floor(Math.random() * 10)
-          // const data = {
-          //   "amount" : checkoutAmount,
-          //   "currency": "INR",
-          //   "receipt" : `Receipt no. ${number}`
-          // }
-          // console.log(data)
+                  const OrderDetails = DecryptData(retData.pay_data)
 
+                  if (retData.success === "1") {
+                    if (totalAmnt > 0) {
+                      CreatePayment(OrderDetails)
+                      // initializing razorpay
+                    } else if (parseInt(checkoutAmount) === 0) {
+                      //if amount id '0' then do not open payment gateway
 
-          // try{
-          //   const order = razorpay.orders.create({
-          //     amount : 100 * 100,
-          //     currency: "INR",
-          //     receipt: "receipt_ " + Math.random().toString(36).substring(7)
-          //   })
-          //   console.log(NextResponse.json({ orderId: order.id }))
-          //   return NextResponse.json({ orderId: order.id })
-          // } catch (error){
-          //   console.log('error creating order id', error)
-          //   return NextResponse.json({ error: "error creating order id" })
-          // }
+                      Axios.get(`${API_URL}/api/cart/GetUserCartFree/${regID['regid']}`, {
+                        headers: {
+                          ApiKey: `${API_KEY}`
+                        }
+                      })
+                          .then(res => {
+                            if (res.data.length !== 0) {
+                              console.log(res.data)
+                              const retData = JSON.parse(res.data)
+                              if (retData.success === '1') {
+                                const ordid = retData.orderId
+                                const pid = retData.payid
+                                router.push(`/payment-detail/${EncryptData(ordid)}/${pid}/${EncryptData(parseInt(checkoutAmount))}`)
+                              }
 
-          // CreatePayment(totalAmnt)
-          //
-          // Axios.post(`https://api.razorpay.com/v1/orders`, data,{
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //     'Authorization': 'Basic cnpwX3Rlc3RfQWZ3aXdxRW52dmEwcVQ6cjQzZXNTMVIxelprNm9QaU1nUXVpMzlp'
-          //   }
-          // })
-          //     .then(res => {
-          //       console.log('Order Genereated', res)
-          //       // CreatePayment(totalAmnt)
-          //     })
-          //     .catch(err => {
-          //       { ErrorDefaultAlert(err) }
-          //     })
+                            }
+                          })
+                          .catch(err => {
+                            console.log(err)
+                            { ErrorDefaultAlert(err) }
+                          })
 
+                    }
+                    //this.NewPayment(EncryptData(finalAmt))
+                  } else if (retData.success === "0") {
+                    // console.log(retData)
+                    { ErrorAlert(retData) }
+                  }
+                })
+                    .catch(err => {
+                      { ErrorDefaultAlert(JSON.stringify(err.response)) }
+                    })
 
-          //   in res(if success then continue to payment)
-          //         step 2: CreatePayment(totalAmnt)
-          //
-          // else payment failpage
-
-
-          //
-          // localStorage.removeItem('cart')
-        } else if (parseInt(checkoutAmount) === 0) {
-          //if amount id '0' then do not open payment gateway
-
-          Axios.get(`${API_URL}/api/cart/GetUserCartFree/${regID['regid']}`, {
-            headers: {
-              ApiKey: `${API_KEY}`
+              }
             }
           })
-              .then(res => {
-                if (res.data.length !== 0) {
-                  console.log(res.data)
-                  const retData = JSON.parse(res.data)
-                  if (retData.success === '1') {
-                    const ordid = retData.orderId
-                    const pid = retData.payid
-                    router.push(`/payment-detail/${EncryptData(ordid)}/${pid}`)
-                  }
-
-                }
-              })
-              .catch(err => {
-                { ErrorDefaultAlert(err) }
-              })
-
-        }
-        //this.NewPayment(EncryptData(finalAmt))
-      } else if (retData.success === "0") {
-        // console.log(retData)
-        { ErrorAlert(retData) }
-      }
-    })
-        .catch(err => {
-          { ErrorDefaultAlert(JSON.stringify(err.response)) }
-        })
-
+          .catch(err => {
+            { ErrorDefaultAlert(err) }
+          })
 
     }
   }
@@ -225,9 +217,13 @@ const CartPage = () => {
       })
           .then(res => {
             if (res.data) {
-              // console.log(res.data)
+              console.log(res.data)
               if (res.data.length !== 0) {
-
+                  const a = res.data.map((obj) => {
+                    // console.log(obj)
+                    return obj.cid
+                  })
+                console.log(EncryptData(a))
                 const newcartlist = res.data.filter((v, i, a) => a.findIndex(t => ((t.cid === v.cid) && (t.pkgId === v.pkgId))) === i)
                 // console.log(newcartlist)
                 setcourseitem(newcartlist)
