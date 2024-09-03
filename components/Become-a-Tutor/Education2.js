@@ -157,7 +157,7 @@ const Education = () => {
             sFrom_year:'',
             sTo_year:''
         };
-        setEducationFields([...educationFields, newEducation]);
+        seteducationFields([...educationFields, newEducation]);
     };
 
     const handleRemoveEducation = (id) => {
