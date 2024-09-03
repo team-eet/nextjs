@@ -259,7 +259,7 @@ const Profile = () => {
                                         <div className={'d-flex'}>
                                             <Image className={'w-25'} src={client1} alt={'client1'}></Image>
                                             <Image className={'w-25'} src={client2} alt={'client2'}></Image>
-                                            <Image className={'w-25'} src={client3} alt={'client3}></Image>
+                                            <Image className={'w-25'} src={client3} alt={'client3'}></Image>
                                         </div>
 
                                         <ul className="rbt-list-style-1 mt-5">
