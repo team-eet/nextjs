@@ -9,6 +9,9 @@ import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
 import {useRouter} from "next/router";
 import {Alert, FormGroup} from "reactstrap";
 import {API_URL, API_KEY} from "../../constants/constant";
+import client1 from '../../public/images/client/img1.PNG'
+import client2 from '../../public/images/client/img2.PNG'
+import client3 from '../../public/images/client/img3.PNG'
 
 const UserValidationSchema = Yup.object().shape({
   sProfilePhotoPath: Yup.string()
@@ -40,7 +43,7 @@ const Profile = () => {
     const onChangeImage = (event) => {
         const fileext = ['image/jpeg', 'image/jpg', 'image/png'];
         // console.log(event)
-        if (event.target.files[0].size < 5000000) {
+        if (event.target.files[0].size < 2000000) {
             if (fileext.includes(event.target.files[0].type)) {
                 // console.log(event.target.files[0])
                 getBase64(event.target.files[0])
@@ -56,10 +59,13 @@ const Profile = () => {
 
                 setProfileimg(URL.createObjectURL(event.target.files[0]));
             } else {
+                setProfileimg('');
+                setSImagePath('');
                 alert('Please select only image file types (jpeg/jpg/png)');
             }
         } else {
-            alert('Please upload a file less than 5MB');
+            alert('Please upload a file less than 2MB');
+            setSImagePath('');
         }
     };
 
@@ -78,7 +84,7 @@ const Profile = () => {
                 }
             })
                 .then(res => {
-                    // console.log(res.data)
+                    console.log(res.data)
                     if(res.data.length !== 0) {
                         setverifySts(res.data[0])
                     }
@@ -96,7 +102,10 @@ const Profile = () => {
         })
             .then(res => {
                 // console.log(res.data)
-                setSImagePath(res.data[0]['sProfilePhotoPath'])
+                if (res.data.length !== 0) {
+                    setSImagePath(res.data[0]['sProfilePhotoPath'])
+                }
+
                 // setTutorDetail(res.data[0])
 
             })
@@ -247,9 +256,12 @@ const Profile = () => {
                                     </div>
                                     <div className={'col-lg-6 profile-sample-photo'}>
                                         <h6>Guidelines for capturing an exceptional photograph</h6>
-                                        <img src={'/images/client/img1.png'}></img>
-                                        <img src={'/images/client/img2.png'}></img>
-                                        <img src={'/images/client/img3.png'}></img>
+                                        <div className={'d-flex'}>
+                                            <Image className={'w-25'} src={client1} alt={'client1'}></Image>
+                                            <Image className={'w-25'} src={client2} alt={'client2'}></Image>
+                                            <Image className={'w-25'} src={client3} alt={'client3}></Image>
+                                        </div>
+
                                         <ul className="rbt-list-style-1 mt-5">
                                             <li>
                                                 <i className="feather-check"></i>

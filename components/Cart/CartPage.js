@@ -45,8 +45,8 @@ const CartPage = () => {
       image: "https://eetenglish.com/favicon.ico",
       order_id: orderDetails.razorpayOrderId,
       handler: function (response){
-        console.log(response)
-        console.log(EncryptData(response))
+        console.log('Decrypted', response)
+        console.log('Encrypted', EncryptData(response))
          // router.push(`/payment-detail/${EncryptData(response.razorpay_order_id)}/${EncryptData(response.razorpay_payment_id)}/${EncryptData(orderDetails.txnAmount)}`)
 
         //api call backend
@@ -126,7 +126,7 @@ const CartPage = () => {
                   // console.log(obj)
                   return obj.cid
                 })
-                console.log(EncryptData(cidarr))
+                console.log(EncryptData(cidarr), cidarr)
                 const totalAmnt = 50
 
                 Axios.post(`${API_URL}/api/cart/PaymentOrderInsert/${regID['regid']}/${EncryptData(totalAmnt)}/${EncryptData(cidarr)}`, '1', {

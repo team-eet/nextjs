@@ -13,6 +13,8 @@ import {DecryptData} from "@/components/Services/encrypt-decrypt";
 import {RecaptchaVerifier, sendSignInLinkToEmail, signInWithPhoneNumber} from "firebase/auth";
 import {auth} from "@/context/firebase";
 import {toast} from "react-toastify";
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const UserValidationSchema = Yup.object().shape({
   sFName: Yup.string()
@@ -48,7 +50,7 @@ const Basics = () => {
     const [state, setState] = useState([]);
     const [city, setCity] = useState([]);
 
-    const [countryId, setcountryId] = useState('101')
+    const [countryId, setcountryId] = useState('')
     const [stateId, setstateId] = useState('')
     const [cityId, setcityId] = useState('')
 
@@ -70,11 +72,11 @@ const Basics = () => {
 
     const [ageErrorMessage, setAgeErrorMessage] = useState(''); // State for age validation message
 
-    const handleDOB = (e) => {
+    const handleDOB = (date) => {
 
-        if (e.target.value) {
+        if (date) {
             const today = new Date();
-            const birthDate = new Date(e.target.value);
+            const birthDate = new Date(date);
             let age = today.getFullYear() - birthDate.getFullYear();
             const monthDiff = today.getMonth() - birthDate.getMonth();
 
@@ -88,7 +90,7 @@ const Basics = () => {
             } else {
                 setAgeErrorMessage(''); // Clear error message if age is 18 or above
                 // Proceed with further actions if needed
-                setdDOB(e.target.value)
+                setdDOB(date)
             }
         }
     }
@@ -105,10 +107,10 @@ const Basics = () => {
           // console.log(res.data)
           if (res.data.length !== 0) {
             setCountry(res.data)
-              const defaultCountry = res.data.find(item => item.sCountryname === 'India')
-              if (defaultCountry) {
-                  setcountryId(defaultCountry.nCountryId); // Set default countryId to India's ID
-              }
+              // const defaultCountry = res.data.find(item => item.sCountryname === 'India')
+              // if (defaultCountry) {
+              //     setcountryId(defaultCountry.nCountryId); // Set default countryId to India's ID
+              // }
           }
         })
         .catch(err => {
@@ -303,7 +305,6 @@ const Basics = () => {
     const [verifysts, setverifySts] = useState([])
     useEffect(() => {
 
-
       if(localStorage.getItem('userData')) {
 
           Axios.get(`${API_URL}/api/TutorBasics/GetTutorDetails/${JSON.parse(localStorage.getItem('userData')).regid}`, {
@@ -350,7 +351,7 @@ const Basics = () => {
               }
           })
               .then(res => {
-                  // console.log(res.data)
+                  console.log(res.data)
                   if(res.data.length !== 0){
                       setverifySts(res.data[0])
                   } else {
@@ -433,7 +434,7 @@ const Basics = () => {
               }
           })
               .then(res => {
-                  // console.log(res.data)
+                  console.log(res.data)
                   if(res.data.length !== 0) {
                       setsFname(res.data[0].sFName)
                       setsLname(res.data[0].sLName)
@@ -443,7 +444,7 @@ const Basics = () => {
                       setcountryId(res.data[0].nCountryId)
                       setcityId(res.data[0].nCityId)
                       setstateId(res.data[0].nStateId)
-                      setdDOB(res.data[0].dDOB)
+                      setdDOB(new Date(res.data[0].dDOB))
 
                       // setTutorDetail(res.data[0])
 
@@ -645,8 +646,8 @@ const Basics = () => {
                                                       readOnly={verifysts.sBasic_verify === 2}
                                                       placeholder="Phone Number"
                                                   />
-                                                      <Button className={'btn-email-verified btn-success p-4'}>
-                                                          <i className={'feather-check'}></i></Button>
+                                                      <div className={'btn-email-verified text-white bg-success p-4'}>
+                                                          <i className={'feather-check'}></i></div>
                                               </> : <>
                                                   <input
                                                       onChange={handleMobile}
@@ -688,8 +689,8 @@ const Basics = () => {
                                                   readOnly={verifysts.sBasic_verify === 2}
                                                   placeholder="Email"
                                               />
-                                              <Button className={'btn-email-verified btn-success p-4'}>
-                                                  <i className={'feather-check'}></i></Button>
+                                              <div className={'btn-email-verified text-white bg-success p-4'}>
+                                                  <i className={'feather-check'}></i></div>
                                           </> : <>
 
                                           {showEmailCheck ? <>
@@ -822,6 +823,7 @@ const Basics = () => {
                                   {/*<DatePicker label="Basic date picker" />*/}
                                   <div className="form-group">
                                       {verifysts.sBasic_verify === 2 ? <>
+
                                           <input
                                               onChange={handleDOB}
                                               value={dDOB}
@@ -832,14 +834,24 @@ const Basics = () => {
                                               placeholder="DOB"
                                           />
                                       </> : <>
-                                          <input
+                                          <DatePicker
+                                              selected={dDOB}
                                               onChange={handleDOB}
                                               value={dDOB}
-                                              className={`form-control ${errors.dDOB && touched.dDOB && 'is-invalid'}`}
                                               name="dDOB"
-                                              type="date"
-                                              placeholder="DOB"
+                                              dateFormat="dd/MM/yyyy"
+                                              className='form-control'
+                                              showYearDropdown
+                                              showMonthDropdown
                                           />
+                                          {/*<input*/}
+                                          {/*    onChange={handleDOB}*/}
+                                          {/*    value={dDOB}*/}
+                                          {/*    className={`form-control ${errors.dDOB && touched.dDOB && 'is-invalid'}`}*/}
+                                          {/*    name="dDOB"*/}
+                                          {/*    type="date"*/}
+                                          {/*    placeholder="DOB"*/}
+                                          {/*/>*/}
                                       </>}
 
                                       <ErrorMessage name='dDOB' component='div' className='field-error text-danger'/>
@@ -958,14 +970,16 @@ const Basics = () => {
 
                               <div className="col-lg-4 mb-5 mt-3">
                                   <label>
-                                      Select Country
+                                      Country
                                   </label>
                                   {/*<div className="rbt-modern-select bg-transparent height-45">*/}
                                   {verifysts.sBasic_verify === 2 ? <>
-                                      <select disabled={true} value={countryId} style={{fontSize: '15px', color: '#6b7385'}}
+                                      <select disabled={true} value={countryId}
+                                              style={{fontSize: '15px', color: '#6b7385'}}
                                               name={"nCountryId"}
                                               className={`form-control bg-secondary-opacity ${errors.nCountryId && touched.nCountryId && 'is-invalid'}`}
                                               onChange={handleChangeCountry}>
+                                          <option>Select</option>
                                           {country.map((item, index) => {
                                               return (
                                                   <>
@@ -980,6 +994,7 @@ const Basics = () => {
                                               name={"nCountryId"}
                                               className={`form-control ${errors.nCountryId && touched.nCountryId && 'is-invalid'}`}
                                               onChange={handleChangeCountry}>
+                                          <option>Select</option>
                                           {country.map((item, index) => {
                                               return (
                                                   <>
@@ -996,14 +1011,16 @@ const Basics = () => {
                               </div>
                               <div className="col-lg-4 mt-3">
                                   <label>
-                                      Select State
+                                      State
                                   </label>
                                   {/*<div className="rbt-modern-select bg-transparent height-45">*/}
                                   {verifysts.sBasic_verify ? <>
-                                      <select disabled={true} value={stateId} style={{fontSize: '15px', color: '#6b7385'}}
+                                      <select disabled={true} value={stateId}
+                                              style={{fontSize: '15px', color: '#6b7385'}}
                                               name={"nStateId"}
                                               className={`form-control bg-secondary-opacity ${errors.nStateId && touched.nStateId && 'is-invalid'}`}
                                               onChange={handleChangeState}>
+                                          <option>Select</option>
                                           {state.map((item, index) => {
                                               return (
                                                   <>
@@ -1018,6 +1035,7 @@ const Basics = () => {
                                               name={"nStateId"}
                                               className={`form-control ${errors.nStateId && touched.nStateId && 'is-invalid'}`}
                                               onChange={handleChangeState}>
+                                          <option>Select</option>
                                           {state.map((item, index) => {
                                               return (
                                                   <>
@@ -1035,7 +1053,7 @@ const Basics = () => {
                               </div>
                               <div className="col-lg-4 mt-3">
                                   <label>
-                                      Select City
+                                      City
                                   </label>
                                   {/*<div className="rbt-modern-select bg-transparent height-45">*/}
                                   {verifysts.sBasic_verify ? <>

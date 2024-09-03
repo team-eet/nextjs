@@ -15,6 +15,11 @@ import useFetch from "@/context/useFetch";
 import CounterData from "@/data/elements/counter.json";
 import {API_URL, API_KEY} from "../../constants/constant";
 import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+
+
+const MySwal = withReactContent(Swal)
 
 const BecomeATeacher = () => {
     const router = useRouter()
@@ -94,6 +99,27 @@ const BecomeATeacher = () => {
         }
         else{
             router.push('/become-a-tutor/basics')
+        }
+    }
+
+    const OnApplyNow = () => {
+        if (localStorage.getItem('userData')){
+            router.push('/become-a-tutor/basics')
+        }
+        else{
+            return MySwal.fire({
+                title: "Info",
+                text: "Login to become a tutor",
+                icon: 'info',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            }).then(function (result) {
+                router.push('/login')
+                // (retData.rlink === '1') ? window.location.reload() : (window.location.href = retData.rlink)
+            })
+
         }
     }
 
@@ -256,10 +282,15 @@ const BecomeATeacher = () => {
                                       </div>
                                   </> : <>
                                       <div className="read-more-btn mt--40">
-                                          <Link className="rbt-moderbt-btn" href="/become-a-tutor/basics">
+                                          <button className="rbt-moderbt-btn bg-transparent border-0"
+                                                  onClick={OnApplyNow}>
                                               <span className="moderbt-btn-text">Apply Now</span>
                                               <i className="feather-arrow-right"></i>
-                                          </Link>
+                                          </button>
+                                          {/*<Link className="rbt-moderbt-btn" href="/become-a-tutor/basics">*/}
+                                          {/*<span className="moderbt-btn-text">Apply Now</span>*/}
+                                          {/*    <i className="feather-arrow-right"></i>*/}
+                                          {/*</Link>*/}
                                       </div>
                                   </>}
                               </div>
@@ -268,7 +299,7 @@ const BecomeATeacher = () => {
                   </div>
               ))}
       </>
-  );
+    );
 };
 
 export default BecomeATeacher;

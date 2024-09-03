@@ -50,7 +50,7 @@ const InstructorDashboardSidebar = ({ url }) => {
         }
       })
           .then(res => {
-            // console.log(res.data)
+            console.log(res.data)
             if(res.data.length !== 0) {
               setverifySts(res.data[0])
               const verify_cover1 = res.data[0].sCoverPhotoLeft_verify
@@ -183,7 +183,7 @@ const InstructorDashboardSidebar = ({ url }) => {
                         const verificationStatus = options.find(
                             (item) => item.sectionName === data.text
                         )
-                        // console.log(verificationStatus)
+                        // console.log('verificationStatus', verificationStatus)
                         if (!verificationStatus) return null; // Handle if no status found
 
                         const { status } = verificationStatus;
@@ -198,7 +198,6 @@ const InstructorDashboardSidebar = ({ url }) => {
                                         <i className={data.icon}/>
                                         <span>{data.text}</span>
                                       </Link>
-                                      {/*<i className={data.icon2}/>*/}
                                     </li>
                                   </> : <>
                                     <li className="nav-item" key={index} role="presentation">
