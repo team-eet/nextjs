@@ -26,7 +26,7 @@ const Experience = () => {
       sIs_fresher:Isfresher,
       nTotal_exper:'',
       nTotal_online_exper:'',
-      nCountryId:'',
+      nCountryId:101,
       sOrganization:'',
       sPosition:'',
       sFrom_years:'',
@@ -67,6 +67,7 @@ const Experience = () => {
   }
 
   const handleChangeTotalExp = (e, index) => {
+    console.log(e.target.value)
     const { value } = e.target;
     if(expFields >= 1){
       const updatedFields = [...expFields];
@@ -74,7 +75,7 @@ const Experience = () => {
       setExpFields(updatedFields);
     } else {
       const updatedFields = expFields;
-      console.log(updatedFields)
+      // console.log(updatedFields)
       updatedFields[0].nTotal_exper = parseInt(value);
       setExpFields(updatedFields);
     }
@@ -149,30 +150,65 @@ const Experience = () => {
   }
   const handleYearFromChange = (e, index) => {
     const { value } = e.target;
-    if(expFields.length >= 1){
-      const updatedFields = [...expFields];
-      updatedFields[index].sFrom_years = value;
-      setExpFields(updatedFields);
-    } else {
-      const updatedFields = expFields;
-      updatedFields.sFrom_years = value;
-      setExpFields(updatedFields);
-    }
-  };
+    const updatedFields = [...expFields];
 
+    updatedFields[index].sFrom_year = value;
+
+    // Validation: Check if "To" year is less than "From" year
+    if (
+        updatedFields[index].sTo_year &&
+        parseInt(updatedFields[index].sTo_year) < parseInt(value)
+
+    ) {
+      alert("Year of study to should not be less than Year of study from.");
+      setExpFields('');
+    }
+
+    setExpFields(updatedFields)
+
+
+  };
   const handleYearToChange = (e, index) => {
     const { value } = e.target;
-    if(expFields.length >= 1){
-      const updatedFields = [...expFields];
-      updatedFields[index].sTo_years = value;
-      setExpFields(updatedFields);
-    } else {
-      const updatedFields = expFields;
-      updatedFields.sTo_years = value;
-      setExpFields(updatedFields);
+    const updatedFields = [...expFields];
+
+    updatedFields[index].sTo_year = value;
+    // Validation: Check if "To" year is less than "From" year
+    if (
+        updatedFields[index].sFrom_year &&
+        parseInt(value) < parseInt(updatedFields[index].sFrom_year)
+    ) {
+      updatedFields[index].sTo_year = '';
+      alert("Year of study to should not be less than Year of study from.");
     }
 
+    setExpFields(updatedFields);
   };
+  // const handleYearFromChange = (e, index) => {
+  //   const { value } = e.target;
+  //   if(expFields.length >= 1){
+  //     const updatedFields = [...expFields];
+  //     updatedFields[index].sFrom_years = value;
+  //     setExpFields(updatedFields);
+  //   } else {
+  //     const updatedFields = expFields;
+  //     updatedFields.sFrom_years = value;
+  //     setExpFields(updatedFields);
+  //   }
+  // };
+  // const handleYearToChange = (e, index) => {
+  //   const { value } = e.target;
+  //   if(expFields.length >= 1){
+  //     const updatedFields = [...expFields];
+  //     updatedFields[index].sTo_years = value;
+  //     setExpFields(updatedFields);
+  //   } else {
+  //     const updatedFields = expFields;
+  //     updatedFields.sTo_years = value;
+  //     setExpFields(updatedFields);
+  //   }
+  //
+  // };
 
   // const [educationFields, setEducationFields] = useState([{ id: 1 }]);
   const [cancelButton, setCancelButton] = useState(false);
@@ -276,7 +312,7 @@ const Experience = () => {
       }
     })
         .then(res => {
-          // console.log(res.data)
+          console.log(res.data)
           if(res.data.length !== 0){
             setIsFresher(res.data[0]['sIs_fresher'])
             if(res.data[0]['sIs_fresher'] === 0){
@@ -292,9 +328,6 @@ const Experience = () => {
             // console.log(array)
             setUpdatearray(array)
           }
-
-
-
 
           // ---------------------
           if(res.data.length !== 0) {
@@ -406,11 +439,10 @@ const Experience = () => {
                                     let stringForUrl = url[positionOfThree];
 
                                     console.log('stringForUrl', stringForUrl)
-                                    router.push(`/become-a-tutor/${stringForUrl}`)
+                                    router.push(`/become-a-tutor/description`)
                                   } else {
                                     router.push('/become-a-tutor/description')
                                   }
-
                                 }
                               })
                               .catch(err => {
@@ -747,23 +779,7 @@ const Experience = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="col-lg-6 mt-3">
-                                  <label style={{fontSize: '16px'}}>
-                                    Country of experience
-                                  </label>
-                                  {/*<div className="rbt-modern-select bg-transparent height-45">*/}
-                                  <select disabled={verifySts === 2} className="w-100" value={expFields.nCountryId}
-                                          onChange={(e) => handleChangeCountry(e)}>
-                                    {country.map((item, index) => {
-                                      return (
-                                          <>
-                                            <option key={index}
-                                                    value={item.nCountryId}>{item.sCountryname}</option>
-                                          </>
-                                      )
-                                    })}
-                                  </select>
-                                </div>
+
                                 <div className={'col-lg-6 mt-3'}>
                                   <label style={{fontSize: '16px'}}>
                                     Organization
@@ -815,11 +831,31 @@ const Experience = () => {
                                     {options}
                                   </select>
                                 </div>
+                                <div className="col-lg-6 mt-3">
+                                  <label style={{fontSize: '16px'}}>
+                                    Country of experience
+                                  </label>
+                                  {/*<div className="rbt-modern-select bg-transparent height-45">*/}
+                                  <select disabled={verifySts === 2} className="w-100" value={expFields.nCountryId}
+                                          onChange={(e) => handleChangeCountry(e)}>
+                                    {country.map((item, index) => {
+                                      return (
+                                          <>
+                                            <option key={index}
+                                                    value={item.nCountryId}>{item.sCountryname}</option>
+                                          </>
+                                      )
+                                    })}
+                                  </select>
+                                </div>
                                 {verifySts !== 2 ? <></> : <>
                                   <div className="col-lg-12 text-end mt-2">
-                                    <button type={'button'} className="btn btn-danger"
-                                            onClick={() => handleRemoveExperience(expFields.nTTEId)}>Remove
-                                    </button>
+                                    {expFields.length > 1 ? <>
+                                      <button type={'button'} className="btn btn-danger"
+                                              onClick={() => handleRemoveExperience(expFields.nTTEId)}>Remove
+                                      </button>
+                                    </> : <></>}
+
                                   </div>
                                 </>}
                               </div>

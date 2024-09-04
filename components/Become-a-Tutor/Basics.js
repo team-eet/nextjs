@@ -6,7 +6,7 @@ import Link from "next/link";
 import * as Yup from 'yup'
 import { Formik, ErrorMessage, Form } from 'formik'
 import Axios from 'axios'
-import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
+import {ErrorDefaultAlert, InfoDefaultAlert} from "@/components/Services/SweetAlert";
 import { useRouter } from "next/router";
 import {Button, CardText, Alert} from 'reactstrap'
 import {DecryptData} from "@/components/Services/encrypt-decrypt";
@@ -121,40 +121,49 @@ const Basics = () => {
     const  handleChangeCountry = (e) => {
     if (e.target.value) {
       setcountryId(e.target.value)
-      Axios.get(`${API_URL}/api/registration/BindState/${e.target.value}`, {
-        headers: {
-          ApiKey: `${API_KEY}`
+        if (e.target.value !== '') {
+            Axios.get(`${API_URL}/api/registration/BindState/${e.target.value}`, {
+                headers: {
+                    ApiKey: `${API_KEY}`
+                }
+            })
+                .then(res => {
+                    // console.log(res.data)
+                    if (res.data.length !== 0) {
+                        setState(res.data)
+                    }
+                })
+                .catch(err => {
+                    { ErrorDefaultAlert(err) }
+                })
+        } else {
+            InfoDefaultAlert('Please Select proper country')
         }
-      })
-          .then(res => {
-            // console.log(res.data)
-            if (res.data.length !== 0) {
-              setState(res.data)
-            }
-          })
-          .catch(err => {
-            { ErrorDefaultAlert(err) }
-          })
+
     }
   }
 
     const  handleChangeState = (e) => {
     if (e.target.value) {
       setstateId(e.target.value)
-      Axios.get(`${API_URL}/api/registration/BindCity/${e.target.value}`, {
-        headers: {
-          ApiKey: `${API_KEY}`
-        }
-      })
-          .then(res => {
-            // console.log(res.data)
-            if (res.data.length !== 0) {
-              setCity(res.data)
+        if (e.target.value !== '') {
+          Axios.get(`${API_URL}/api/registration/BindCity/${e.target.value}`, {
+            headers: {
+              ApiKey: `${API_KEY}`
             }
           })
-          .catch(err => {
-            { ErrorDefaultAlert(err) }
-          })
+              .then(res => {
+                // console.log(res.data)
+                if (res.data.length !== 0) {
+                  setCity(res.data)
+                }
+              })
+              .catch(err => {
+                { ErrorDefaultAlert(err) }
+              })
+            }
+        } else {
+            InfoDefaultAlert('Please select proper state')
     }
   }
 
@@ -883,6 +892,7 @@ const Basics = () => {
                                                       value={sGender}
                                                       id="sMale"
                                                       type="radio"
+                                                      checked
                                                       name="sGender"
                                                       disabled={true}
                                                   />
@@ -904,6 +914,7 @@ const Basics = () => {
                                                       id="sMale"
                                                       type="radio"
                                                       name="sGender"
+                                                      checked
                                                   />
                                               </>}
                                           </>}
@@ -933,6 +944,7 @@ const Basics = () => {
                                                       type="radio"
                                                       name="sGender"
                                                       disabled={true}
+                                                      checked
                                                   />
                                               </>}
                                           </> : <>
@@ -979,7 +991,7 @@ const Basics = () => {
                                               name={"nCountryId"}
                                               className={`form-control bg-secondary-opacity ${errors.nCountryId && touched.nCountryId && 'is-invalid'}`}
                                               onChange={handleChangeCountry}>
-                                          <option>Select</option>
+                                          <option value={''}>Select</option>
                                           {country.map((item, index) => {
                                               return (
                                                   <>
@@ -994,7 +1006,7 @@ const Basics = () => {
                                               name={"nCountryId"}
                                               className={`form-control ${errors.nCountryId && touched.nCountryId && 'is-invalid'}`}
                                               onChange={handleChangeCountry}>
-                                          <option>Select</option>
+                                          <option value={''}>Select</option>
                                           {country.map((item, index) => {
                                               return (
                                                   <>
@@ -1014,13 +1026,13 @@ const Basics = () => {
                                       State
                                   </label>
                                   {/*<div className="rbt-modern-select bg-transparent height-45">*/}
-                                  {verifysts.sBasic_verify ? <>
+                                  {verifysts.sBasic_verify === 2 ? <>
                                       <select disabled={true} value={stateId}
                                               style={{fontSize: '15px', color: '#6b7385'}}
                                               name={"nStateId"}
                                               className={`form-control bg-secondary-opacity ${errors.nStateId && touched.nStateId && 'is-invalid'}`}
                                               onChange={handleChangeState}>
-                                          <option>Select</option>
+                                          <option value={''}>Select</option>
                                           {state.map((item, index) => {
                                               return (
                                                   <>
@@ -1035,7 +1047,7 @@ const Basics = () => {
                                               name={"nStateId"}
                                               className={`form-control ${errors.nStateId && touched.nStateId && 'is-invalid'}`}
                                               onChange={handleChangeState}>
-                                          <option>Select</option>
+                                          <option value={''}>Select</option>
                                           {state.map((item, index) => {
                                               return (
                                                   <>
@@ -1056,11 +1068,12 @@ const Basics = () => {
                                       City
                                   </label>
                                   {/*<div className="rbt-modern-select bg-transparent height-45">*/}
-                                  {verifysts.sBasic_verify ? <>
+                                  {verifysts.sBasic_verify === 2 ? <>
                                       <select disabled={true} value={cityId} style={{fontSize: '15px', color: '#6b7385'}}
                                               name={"nCityId"}
                                               className={`form-control bg-secondary-opacity ${errors.nCityId && touched.nCityId && 'is-invalid'}`}
                                               onChange={handleChangeCity}>
+                                          <option value={''}>Select</option>
                                           {city.map((item, index) => {
                                               return (
                                                   <>

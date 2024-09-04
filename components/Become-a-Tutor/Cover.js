@@ -57,7 +57,7 @@ const Cover = () => {
     const onChangeLeftImage = (event) => {
         const fileext = ['image/jpeg', 'image/jpg', 'image/png'];
         // console.log(event)
-        if (event.target.files[0].size < 5000000) {
+        if (event.target.files[0].size < 2000000) {
             if (fileext.includes(event.target.files[0].type)) {
                 // console.log(event.target.files[0])
                 getBase64(event.target.files[0])
@@ -70,17 +70,21 @@ const Cover = () => {
 
                 setcoverLeftimg(URL.createObjectURL(event.target.files[0]));
             } else {
+                setcoverLeftimg('');
+                setSImagePathLeft('');
                 alert('Please select only image file types (jpeg/jpg/png)');
             }
         } else {
-            alert('Please upload a file less than 5MB');
+            setcoverLeftimg('');
+            setSImagePathLeft('');
+            alert('Please upload a file less than 2MB');
         }
     };
 
     const onChangeCenterImage = (event) => {
         const fileext = ['image/jpeg', 'image/jpg', 'image/png'];
         // console.log(event)
-        if (event.target.files[0].size < 5000000) {
+        if (event.target.files[0].size < 2000000) {
             if (fileext.includes(event.target.files[0].type)) {
                 // console.log(event.target.files[0])
                 getBase64(event.target.files[0])
@@ -96,17 +100,21 @@ const Cover = () => {
 
                 setcoverCenterimg(URL.createObjectURL(event.target.files[0]));
             } else {
+                setcoverCenterimg('');
+                setSImagePathCenter('');
                 alert('Please select only image file types (jpeg/jpg/png)');
             }
         } else {
-            alert('Please upload a file less than 5MB');
+            setcoverCenterimg('');
+            setSImagePathCenter('');
+            alert('Please upload a file less than 2MB');
         }
     };
 
     const onChangeRightImage = (event) => {
         const fileext = ['image/jpeg', 'image/jpg', 'image/png'];
         // console.log(event)
-        if (event.target.files[0].size < 5000000) {
+        if (event.target.files[0].size < 2000000) {
             if (fileext.includes(event.target.files[0].type)) {
                 // console.log(event.target.files[0])
                 getBase64(event.target.files[0])
@@ -119,10 +127,14 @@ const Cover = () => {
 
                 setcoverRightimg(URL.createObjectURL(event.target.files[0]));
             } else {
+                setSImagePathRight('')
+                setcoverRightimg('');
                 alert('Please select only image file types (jpeg/jpg/png)');
             }
         } else {
-            alert('Please upload a file less than 5MB');
+            setSImagePathRight('')
+            setcoverRightimg('');
+            alert('Please upload a file less than 2MB');
         }
     };
     const [regId, setregId] = useState('')

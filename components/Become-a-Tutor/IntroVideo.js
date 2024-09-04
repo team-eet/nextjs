@@ -53,6 +53,7 @@ const IntroVideo = () => {
       if (fileext.includes(event.target.files[0].type)) {
         getBase64(event.target.files[0])
             .then(result => {
+                console.log(result)
               setVideo(result)
             })
             .catch(err => {
@@ -153,7 +154,7 @@ const IntroVideo = () => {
               }}
               enableReinitialize={true}
               onSubmit={async (values, {resetForm}) => {
-                // console.log(values)
+                console.log(values)
                 if(verifySts === 2) {
                   router.push('/become-a-tutor/interest')
                 } else {
@@ -162,7 +163,7 @@ const IntroVideo = () => {
                       ApiKey: `${API_KEY}`
                     }
                   }).then(res => {
-                    // console.log(values)
+                    console.log(values)
                     const retData = JSON.parse(res.data)
                     // console.log(retData)
                     resetForm({})

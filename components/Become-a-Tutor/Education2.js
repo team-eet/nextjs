@@ -11,6 +11,8 @@ import { useRouter } from "next/router";
 import {EncryptData} from "@/components/Services/encrypt-decrypt";
 import {Alert} from "reactstrap";
 
+
+
 const Education = () => {
     const REACT_APP = API_URL
     const [country, setCountry] = useState([]);
@@ -30,7 +32,7 @@ const Education = () => {
     const EducationList = []
     const [educationFields, seteducationFields] = useState([
         {
-            nCountryId: 0,
+            nCountryId: 101,
             sUniversity:'',
             sDegree:'',
             sSpecialization:'',
@@ -113,33 +115,129 @@ const Education = () => {
             };
         });
     };
+
+    const handleChangeImage = (event, index) => {
+        const file = event.target.files[0];
+        const updatedFields = [...educationFields];
+
+        const fileext = ['image/jpeg', 'image/jpg', 'image/png'];
+
+        if (event.target.files[0].size < 2000000) {
+            if (fileext.includes(event.target.files[0].type)) {
+                // console.log(event.target.files[0])
+                getBase64(event.target.files[0])
+                    .then((result) => {
+                        if(educationFields.length > 1){
+                            const updatedFields = [...educationFields];
+                            updatedFields[index].sEdu_imagePath = result;
+                            // updatedFields[index].sEdu_imagePath = result
+                            seteducationFields(updatedFields);
+                        } else {
+                            const updatedFields = educationFields;
+                            updatedFields[0].sEdu_imagePath = result;
+                            // updatedFields[index].sEdu_imagePath = result
+                            seteducationFields(updatedFields);
+                        }
+
+                    })
+                    .catch((err) => {
+                        console.error('Error converting image to base64:', err);
+                    });
+
+                if(educationFields.length >= 1){
+                    const updatedFields = [...educationFields];
+                    updatedFields[index].sEdu_Image = URL.createObjectURL(event.target.files[0]);
+                    seteducationFields(updatedFields);
+                } else {
+                    const updatedFields = educationFields;
+                    updatedFields[0].sEdu_Image = URL.createObjectURL(event.target.files[0]);
+                    seteducationFields(updatedFields);
+                }``
+
+                // setsEdu_Image(URL.createObjectURL(event.target.files[0]));
+            } else {
+                alert('Please select only image file types (jpeg/jpg/png)');
+            }
+        } else {
+            alert('Please upload a file less than 2MB');
+        }
+    };
+    // const handleYearFromChange = (e, index) => {
+    //     const { value } = e.target;
+    //     if(educationFields.length >= 1) {
+    //         const updatedFields = [...educationFields];
+    //         updatedFields[index].sFrom_year = value;
+    //         seteducationFields(updatedFields);
+    //     } else {
+    //         const updatedFields = educationFields;
+    //         updatedFields.sFrom_year = value;
+    //         seteducationFields(updatedFields);
+    //     }
+    //
+    //     // if (updatedFields[index].sTo_year && parseInt(updatedFields[index].sTo_year) <= parseInt(value)) {
+    //     //     alert("Year of study to should be greater than Year of study from.");
+    //     // } else {
+    //     //     seteducationFields(updatedFields);
+    //     // }
+    //
+    // };
+    //
+    // const handleYearToChange = (e, index) => {
+    //     const { value } = e.target;
+    //     if(educationFields.length >= 1){
+    //         const updatedFields = [...educationFields];
+    //         updatedFields[index].sTo_year = value;
+    //         seteducationFields(updatedFields);
+    //     } else {
+    //         const updatedFields = educationFields;
+    //         updatedFields.sTo_year = value;
+    //         seteducationFields(updatedFields);
+    //     }
+    //
+    //     // if (updatedFields[index].sFrom_year && value !== "Present" && parseInt(value) <= parseInt(updatedFields[index].sFrom_year)) {
+    //     //     alert("Year of study to should be greater than Year of study from.");
+    //     // } else {
+    //     //     seteducationFields(updatedFields);
+    //     // }
+    // };
+
+
     const handleYearFromChange = (e, index) => {
         const { value } = e.target;
-        if(educationFields.length >= 1) {
-            const updatedFields = [...educationFields];
-            updatedFields[index].sFrom_year = value;
-            seteducationFields(updatedFields);
-        } else {
-            const updatedFields = educationFields;
-            updatedFields.sFrom_year = value;
-            seteducationFields(updatedFields);
+        const updatedFields = [...educationFields];
+
+        updatedFields[index].sFrom_year = value;
+
+        // Validation: Check if "To" year is less than "From" year
+        if (
+            updatedFields[index].sTo_year &&
+            parseInt(updatedFields[index].sTo_year) < parseInt(value)
+
+        ) {
+            alert("Year of study to should not be less than Year of study from.");
+            seteducationFields('');
         }
 
-    };
+        seteducationFields(updatedFields)
 
+
+    };
     const handleYearToChange = (e, index) => {
         const { value } = e.target;
-        if(educationFields.length >= 1){
-            const updatedFields = [...educationFields];
-            updatedFields[index].sTo_year = value;
-            seteducationFields(updatedFields);
-        } else {
-            const updatedFields = educationFields;
-            updatedFields.sTo_year = value;
-            seteducationFields(updatedFields);
-        }
-    };
+        const updatedFields = [...educationFields];
 
+        updatedFields[index].sTo_year = value;
+        // Validation: Check if "To" year is less than "From" year
+        if (
+            updatedFields[index].sFrom_year &&
+            parseInt(value) < parseInt(updatedFields[index].sFrom_year)
+        ) {
+            updatedFields[index].sTo_year = '';
+            alert("Year of study to should not be less than Year of study from.");
+        }
+
+        seteducationFields(updatedFields);
+    };
 
     // const [educationFields, setEducationFields] = useState([{ id: 1 }]);
     const [cancelButton, setCancelButton] = useState(false);
@@ -225,7 +323,8 @@ const Education = () => {
     const [updateArray, setUpdatearray] = useState([])
     const [deletedArray, setdeletedArray] = useState([])
     const [verifySts, setverifySts] = useState()
-
+    const [verifyeduSts, setverifyeduSts] = useState()
+    const [noeducation, setnoeducation] = useState(false)
     const bindCountry = () => {
         Axios.get(`${API_URL}/api/registration/BindCountry`, {
             headers: {
@@ -299,6 +398,7 @@ const Education = () => {
                     // console.log("GetTutorEducationVerify",res.data)
                     if (res.data.length !== 0) {
                         setverifySts(res.data[0].sCertification_verify)
+                        setverifyeduSts(res.data[0].sEducation_verify)
                     }
                 })
                 .catch(err => {
@@ -312,7 +412,7 @@ const Education = () => {
                 }
             })
                 .then(res => {
-                    // console.log(res.data)
+                    console.log('GetTutorProfile', res.data)
                     if(res.data[0].cnt !== 0) {
                         setTutorcnt(res.data[0].cnt)
                     }
@@ -327,7 +427,14 @@ const Education = () => {
                 }
             })
                 .then(res => {
-                    // console.log(res.data)
+                    console.log(res.data, verifyeduSts)
+                    if (verifyeduSts === 2) {
+                        // if () {
+                        //
+                        // }
+                        setnoeducation(true)
+                        sethideFields(false)
+                    }
                     const array = res.data.map((item, index) => {
                         return item.nTCId
                     })
@@ -339,7 +446,6 @@ const Education = () => {
                     if(res.data.length !== 0) {
                         seteducationFields(res.data)
                     } else {
-
                         seteducationFields(educationFields)
                     }
                     // ---------------------
@@ -574,172 +680,190 @@ const Education = () => {
                                                 </>}
                                             </>}
                                             <p>Let us know about Education</p>
-                                            <input id="Education" type="checkbox" value={isEducated} name="Education" onChange={handleIsCertification}/>
-                                            <label htmlFor="Education">
-                                                I have not pursued any professional degree
-                                            </label>
+                                            {verifyeduSts === 2 ? <>
+                                                <input id="Education" type="checkbox" checked value={isEducated}
+                                                       name="Education" onChange={handleIsCertification} />
+                                                <label htmlFor="Education">
+                                                    I have not pursued any professional degree
+                                                </label>
+                                            </> : <>
+                                                <input id="Education" type="checkbox" value={isEducated}
+                                                       name="Education" onChange={handleIsCertification}/>
+                                                <label htmlFor="Education">
+                                                    I have not pursued any professional degree
+                                                </label>
+                                            </>}
+
                                         </div>
                                         <div className={'row'}>
-                                            {/*{console.log(certificationFields)}*/}
+                                        {/*{console.log(certificationFields)}*/}
                                             {/*<form action="#" className="row row--15 mt-5">*/}
                                             {hideFields ? <>
-                                                {educationFields.length >= 1 ? <>
+                                                {verifyeduSts !== 2 ? <>
+                                                    {educationFields.length >= 1 ? <>
 
-                                                    {educationFields && educationFields.map((education, index) => {
-                                                        // console.log(certification)
-                                                        return (
-                                                            <>
-                                                                <div key={education.nTCId}>
-                                                                    <div className={'row'}>
-                                                                        <div className="col-lg-6">
-                                                                            <input type={'hidden'}
-                                                                                   value={education.nTEId}/>
-                                                                            <label>
-                                                                                Country of Education
-                                                                            </label>
-                                                                            <div className="form-group">
-                                                                                <select
-                                                                                    disabled={verifySts === 2}
-                                                                                    value={education.nCountryId}
-                                                                                    onChange={(e) => handleChangeCountry(e, index)}
-                                                                                >
-                                                                                    {country.map((item, index) => {
-                                                                                        return (
-                                                                                            <>
-                                                                                                <option key={index}
-                                                                                                        value={item.nCountryId}>{item.sCountryname}</option>
-                                                                                            </>
-                                                                                        )
-                                                                                    })}
-                                                                                </select>
-                                                                                {/*<input*/}
-                                                                                {/*    readOnly={verifySts === 2}*/}
-                                                                                {/*    onChange={(e) => handleChangeTitle(e, index)}*/}
-                                                                                {/*    value={certification.sCerti_title}*/}
-                                                                                {/*    type="text"*/}
-                                                                                {/*    placeholder="Certification Title"/>*/}
-                                                                                {/*<span className="focus-border"></span>*/}
+                                                        {educationFields && educationFields.map((education, index) => {
+                                                            // console.log(certification)
+                                                            return (
+                                                                <>
+                                                                    <div key={education.nTCId}>
+                                                                        <div className={'row'}>
+                                                                            <div className="col-lg-6">
+                                                                                <input type={'hidden'}
+                                                                                       value={education.nTEId}/>
+                                                                                <label>
+                                                                                    Country of Education
+                                                                                </label>
+                                                                                <div className="form-group">
+                                                                                    <select
+                                                                                        disabled={verifySts === 2}
+                                                                                        value={education.nCountryId}
+                                                                                        onChange={(e) => handleChangeCountry(e, index)}
+                                                                                    >
+                                                                                        {country.map((item, index) => {
+                                                                                            return (
+                                                                                                <>
+                                                                                                    <option key={index}
+                                                                                                            value={item.nCountryId}>{item.sCountryname}</option>
+                                                                                                </>
+                                                                                            )
+                                                                                        })}
+                                                                                    </select>
+                                                                                    {/*<input*/}
+                                                                                    {/*    readOnly={verifySts === 2}*/}
+                                                                                    {/*    onChange={(e) => handleChangeTitle(e, index)}*/}
+                                                                                    {/*    value={certification.sCerti_title}*/}
+                                                                                    {/*    type="text"*/}
+                                                                                    {/*    placeholder="Certification Title"/>*/}
+                                                                                    {/*<span className="focus-border"></span>*/}
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div className="col-lg-6">
-                                                                            <label>
-                                                                                University
-                                                                            </label>
-                                                                            <div className="form-group">
+                                                                            <div className="col-lg-6">
+                                                                                <label>
+                                                                                    University
+                                                                                </label>
+                                                                                <div className="form-group">
+                                                                                    <input
+                                                                                        readOnly={verifySts === 2}
+                                                                                        onChange={(e) => handleChangeUniversity(e, index)}
+                                                                                        value={education.sUniversity}
+                                                                                        type="text"
+                                                                                        placeholder="university"/>
+                                                                                    <span className="focus-border"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className={'col-lg-6 mt-3'}>
+                                                                                <label>
+                                                                                    Degree
+                                                                                </label>
                                                                                 <input
-                                                                                    readOnly={verifySts === 2}
-                                                                                    onChange={(e) => handleChangeUniversity(e, index)}
-                                                                                    value={education.sUniversity}
                                                                                     type="text"
-                                                                                    placeholder="university"/>
-                                                                                <span className="focus-border"></span>
+                                                                                    readOnly={verifySts === 2}
+                                                                                    value={education.sDegree}
+                                                                                    onChange={(e) => handleChangeDegree(e, index)}
+                                                                                />
+
                                                                             </div>
-                                                                        </div>
-                                                                        <div className={'col-lg-6 mt-3'}>
-                                                                            <label>
-                                                                                Degree
-                                                                            </label>
-                                                                            <input
-                                                                                type="text"
-                                                                                readOnly={verifySts === 2}
-                                                                                value={education.sDegree}
-                                                                                onChange={(e) => handleChangeDegree(e, index)}
-                                                                            />
+                                                                            <div className={'col-lg-6 mt-3'}>
+                                                                                <label>
+                                                                                    Specialization
+                                                                                </label>
+                                                                                <input
+                                                                                    type="text"
+                                                                                    readOnly={verifySts === 2}
+                                                                                    value={education.sSpecialization}
+                                                                                    onChange={(e) => handleChangeSpecialization(e, index)}
+                                                                                />
+                                                                            </div>
+                                                                            <div className={'col-lg-6'}>
+                                                                                <label>Year of study from</label>
+                                                                                <select value={education.sFrom_year}
+                                                                                        disabled={verifySts === 2}
+                                                                                        onChange={(e) => handleYearFromChange(e, index)}>
+                                                                                    {options}
+                                                                                </select>
+                                                                            </div>
+                                                                            <div className={'col-lg-6'}>
+                                                                                <label>Year of study to</label>
+                                                                                <select disabled={verifySts === 2}
+                                                                                        value={education.sTo_year}
+                                                                                        onChange={(e) => handleYearToChange(e, index)}>
+                                                                                    <option value="Present">Present</option>
+                                                                                    {options}
+                                                                                </select>
 
-                                                                        </div>
-                                                                        <div className={'col-lg-6 mt-3'}>
-                                                                            <label>
-                                                                                Specialization
-                                                                            </label>
-                                                                            <input
-                                                                                type="text"
-                                                                                readOnly={verifySts === 2}
-                                                                                value={education.sSpecialization}
-                                                                                onChange={(e) => handleChangeSpecialization(e, index)}
-                                                                            />
-                                                                        </div>
-                                                                        <div className={'col-lg-6'}>
-                                                                            <label>Year of study from</label>
-                                                                            <select value={education.sFrom_year}
-                                                                                    disabled={verifySts === 2}
-                                                                                    onChange={(e) => handleYearFromChange(e, index)}>
-                                                                                {options}
-                                                                            </select>
-                                                                        </div>
-                                                                        <div className={'col-lg-6'}>
-                                                                            <label>Year of study to</label>
-                                                                            <select disabled={verifySts === 2}
-                                                                                    value={education.sTo_year}
-                                                                                    onChange={(e) => handleYearToChange(e, index)}>
-                                                                                <option value="Present">Present</option>
-                                                                                {options}
-                                                                            </select>
+                                                                            </div>
+                                                                            <div className={'col-lg-12 mt-5 mb-3'}>
+                                                                                <div className={'rounded-2 p-3'}
+                                                                                     style={{background: "#f4f4f8"}}>
+                                                                                    <h5>Get a qualification verified
+                                                                                        badge</h5>
+                                                                                    <small>Upload your diploma to boost your
+                                                                                        credibility! Our team will review it
+                                                                                        and add
+                                                                                        the badge to
+                                                                                        your profile. Once reviewed, your
+                                                                                        files will
+                                                                                        be deleted.
+                                                                                        JPG or PNG format; maximum size of
+                                                                                        2MB</small>
 
-                                                                        </div>
-                                                                        <div className={'col-lg-12 mt-5 mb-3'}>
-                                                                            <div className={'rounded-2 p-3'}
-                                                                                 style={{background: "#f4f4f8"}}>
-                                                                                <h5>Get a qualification verified
-                                                                                    badge</h5>
-                                                                                <small>Upload your diploma to boost your
-                                                                                    credibility! Our team will review it
-                                                                                    and add
-                                                                                    the badge to
-                                                                                    your profile. Once reviewed, your
-                                                                                    files will
-                                                                                    be deleted.
-                                                                                    JPG or PNG format; maximum size of
-                                                                                    2MB</small>
-
-                                                                                <div>
-                                                                                    <label id='label'
-                                                                                           className='rbt-btn btn-md btn-gradient hover-icon-reverse'>Upload
-                                                                                        image
-                                                                                        <input type="file" id="file"
-                                                                                               name="file"
-                                                                                               onChange={(e) => handleChangeImage(e, index)}
-                                                                                               accept="image/*"/>
-                                                                                    </label>
                                                                                     <div>
-                                                                                        {education.sEdu_imagePath && (
-                                                                                            <img className={'mt-3'}
-                                                                                                 src={education.sEdu_imagePath}
-                                                                                                 alt=""
-                                                                                                 style={{width: 100}}/>
-                                                                                        )}
+                                                                                        <label id='label'
+                                                                                               className='rbt-btn btn-md btn-gradient hover-icon-reverse'>Upload
+                                                                                            image
+                                                                                            <input type="file" id="file"
+                                                                                                   name="file"
+                                                                                                   onChange={(e) => handleChangeImage(e, index)}
+                                                                                                   accept="image/*"/>
+                                                                                        </label>
+                                                                                        <div>
+                                                                                            {education.sEdu_imagePath && (
+                                                                                                <img className={'mt-3'}
+                                                                                                     src={education.sEdu_imagePath}
+                                                                                                     alt=""
+                                                                                                     style={{width: 100}}/>
+                                                                                            )}
+                                                                                        </div>
+
                                                                                     </div>
 
                                                                                 </div>
-
                                                                             </div>
+                                                                            {verifySts === 2 ? <></> : <>
+                                                                                <div className="col-lg-12 text-end mt-2">
+                                                                                    {educationFields.length > 1 ? <>
+                                                                                        <button type={'button'}
+                                                                                                className="btn btn-danger"
+                                                                                                onClick={() => handleRemoveEducation(education.nTEId)}>Remove
+                                                                                        </button>
+                                                                                    </> : <>
+
+                                                                                    </>}
+
+                                                                                </div>
+                                                                            </>}
+
                                                                         </div>
-                                                                        {verifySts === 2 ? <></> : <>
-                                                                            <div className="col-lg-12 text-end mt-2">
-                                                                                <button type={'button'}
-                                                                                        className="btn btn-danger"
-                                                                                        onClick={() => handleRemoveEducation(education.nTEId)}>Remove
-                                                                                </button>
-                                                                            </div>
-                                                                        </>}
-
                                                                     </div>
-                                                                </div>
 
-                                                            </>
-                                                        )
-                                                    })
-                                                    }
+                                                                </>
+                                                            )
+                                                        })
+                                                        }
 
-                                                    {verifySts === 2 ? <></> : <>
-                                                        <div className={'col-lg-5 mt-5 mb-5'}>
-                                                            <button type={'button'}
-                                                                    className="rbt-btn-link left-icon border-0 bg-white"
-                                                                    onClick={handleAddEducation}>
-                                                                <i className="feather-plus"></i>Add More Education
-                                                            </button>
-                                                        </div>
-                                                    </>}
-                                                </> : ''}
+                                                        {/*{verifySts === 2 ? <></> : <>*/}
+                                                        {/*    <div className={'col-lg-5 mt-5 mb-5'}>*/}
+                                                        {/*        <button type={'button'}*/}
+                                                        {/*                className="rbt-btn-link left-icon border-0 bg-white"*/}
+                                                        {/*                onClick={handleAddEducation}>*/}
+                                                        {/*            <i className="feather-plus"></i>Add More Education*/}
+                                                        {/*        </button>*/}
+                                                        {/*    </div>*/}
+                                                        {/*</>}*/}
+                                                    </> : ''}
+                                                </> : <></>}
+
                                             </> : <>
                                                 {/*<div key={certificationFields.nTCId}>*/}
                                                 {/*  <div className={'row'}>*/}

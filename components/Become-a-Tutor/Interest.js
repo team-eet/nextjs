@@ -10,8 +10,8 @@ import { useRouter } from "next/router";
 import {DecryptData} from "@/components/Services/encrypt-decrypt";
 import * as Yup from 'yup'
 import { Formik, ErrorMessage, Form } from 'formik'
-// import TextField from "@mui/material/TextField";
-// import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 import {Alert, Button, CardText} from "reactstrap";
 
 const UserValidationSchema = Yup.object().shape({
@@ -241,20 +241,20 @@ const Interest = () => {
                                                      alignItems: "center",
                                                      justifyContent: "center"
                                                  }}>
-                                                {/*<Autocomplete*/}
-                                                {/*    multiple*/}
-                                                {/*    name={'sFieldOfInterest'}*/}
-                                                {/*    limitTags={3} // displays only 3 max tags of autocomplete when not in focus*/}
-                                                {/*    options={category}*/}
-                                                {/*    onChange={handleChangeInterest}*/}
-                                                {/*    getOptionLabel={(option) => option.sCategory}*/}
-                                                {/*    renderInput={(params) => (*/}
-                                                {/*        <TextField*/}
-                                                {/*            classes={'border-transparent'}*/}
-                                                {/*            {...params}*/}
-                                                {/*        />*/}
-                                                {/*    )}*/}
-                                                {/*/>*/}
+                                                <Autocomplete
+                                                    multiple
+                                                    name={'sFieldOfInterest'}
+                                                    limitTags={3} // displays only 3 max tags of autocomplete when not in focus
+                                                    options={category}
+                                                    onChange={handleChangeInterest}
+                                                    getOptionLabel={(option) => option.sCategory}
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            classes={'border-transparent'}
+                                                            {...params}
+                                                        />
+                                                    )}
+                                                />
                                                 <ErrorMessage name='sFieldOfInterest' component='div'
                                                               className='field-error text-danger'/>
                                             </div>

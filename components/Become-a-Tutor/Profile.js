@@ -164,7 +164,7 @@ const Profile = () => {
                     }}
                     enableReinitialize={true}
                     onSubmit={async (values, {resetForm}) => {
-
+                        console.log(values)
                         if(verifysts.sProfilePhoto_verify === 2) {
                             router.push('/become-a-tutor/cover-photo')
                         } else {

@@ -90,7 +90,7 @@ const Certification = () => {
 
     const fileext = ['image/jpeg', 'image/jpg', 'image/png'];
 
-    if (event.target.files[0].size < 5000000) {
+    if (event.target.files[0].size < 2000000) {
       if (fileext.includes(event.target.files[0].type)) {
         // console.log(event.target.files[0])
         getBase64(event.target.files[0])
@@ -117,35 +117,71 @@ const Certification = () => {
         alert('Please select only image file types (jpeg/jpg/png)');
       }
     } else {
-      alert('Please upload a file less than 5MB');
+      alert('Please upload a file less than 2MB');
     }
   };
+
+  // const handleYearFromChange = (e, index) => {
+  //   const { value } = e.target;
+  //   if(certificationFields.length >= 1){
+  //     const updatedFields = [...certificationFields];
+  //     updatedFields[index].sFrom_year = value;
+  //     setcertificationFields(updatedFields);
+  //   } else {
+  //     const updatedFields = certificationFields;
+  //     updatedFields[0].sFrom_year = value;
+  //     setcertificationFields(updatedFields);
+  //   }
+  //
+  // };
+  // const handleYearToChange = (e, index) => {
+  //   const { value } = e.target;
+  //  if(certificationFields.length >= 1){
+  //    const updatedFields = [...certificationFields];
+  //    updatedFields[index].sTo_year = value;
+  //    setcertificationFields(updatedFields);
+  //  } else {
+  //    const updatedFields = certificationFields;
+  //    updatedFields[0].sTo_year = value;
+  //    setcertificationFields(updatedFields);
+  //  }
+  // };
 
   const handleYearFromChange = (e, index) => {
     const { value } = e.target;
-    if(certificationFields.length >= 1){
-      const updatedFields = [...certificationFields];
-      updatedFields[index].sFrom_year = value;
-      setcertificationFields(updatedFields);
-    } else {
-      const updatedFields = certificationFields;
-      updatedFields[0].sFrom_year = value;
-      setcertificationFields(updatedFields);
+    const updatedFields = [...certificationFields];
+
+    updatedFields[index].sFrom_year = value;
+
+    // Validation: Check if "To" year is less than "From" year
+    if (
+        updatedFields[index].sTo_year &&
+        parseInt(updatedFields[index].sTo_year) < parseInt(value)
+
+    ) {
+      alert("Year of study to should not be less than Year of study from.");
+      setcertificationFields('');
     }
 
-  };
+    setcertificationFields(updatedFields)
 
+
+  };
   const handleYearToChange = (e, index) => {
     const { value } = e.target;
-   if(certificationFields.length >= 1){
-     const updatedFields = [...certificationFields];
-     updatedFields[index].sTo_year = value;
-     setcertificationFields(updatedFields);
-   } else {
-     const updatedFields = certificationFields;
-     updatedFields[0].sTo_year = value;
-     setcertificationFields(updatedFields);
-   }
+    const updatedFields = [...certificationFields];
+
+    updatedFields[index].sTo_year = value;
+    // Validation: Check if "To" year is less than "From" year
+    if (
+        updatedFields[index].sFrom_year &&
+        parseInt(value) < parseInt(updatedFields[index].sFrom_year)
+    ) {
+      updatedFields[index].sTo_year = '';
+      alert("Year of study to should not be less than Year of study from.");
+    }
+
+    setcertificationFields(updatedFields);
   };
 
   const [educationFields, setEducationFields] = useState([{ id: 1 }]);
@@ -228,6 +264,7 @@ const Certification = () => {
   const [updateArray, setUpdatearray] = useState([])
   const [deletedArray, setdeletedArray] = useState([])
   const [verifySts, setverifySts] = useState()
+  const [nocertificate, setnocertificate] = useState(false)
 
   useEffect(() => {
     let array2 = [2, 2, 1, 3, 2, 2, 3, 2, 2, 2, 3, 2];
@@ -312,7 +349,11 @@ const Certification = () => {
       }
     })
         .then(res => {
-          // console.log(res.data)
+          console.log('GetTutorCertiData', res.data)
+
+          if(verifySts === 2 ) {
+            setnocertificate(true)
+          }
           const array = res.data.map((item, index) => {
             return item.nTCId
           })
@@ -362,7 +403,7 @@ const Certification = () => {
                           sIsCertification : "true"
                         }
                         // console.log(noEducation)
-                        await Axios.post(`${API_URL}/api/TutorEducation/InsertTutorBasicEducation`, noEducation, {
+                        await Axios.post(`${API_URL}/api/TutorCertification/InsertTutorBasicCertificate`, noEducation, {
                           headers: {
                             ApiKey: `${API_KEY}`
                             // 'Content-Type' : 'application/json'
@@ -559,126 +600,144 @@ const Certification = () => {
                             </>}
                           </>}
                           <p>Let us know about teaching certification</p>
-                          <input id="Certifcation" type="checkbox" value={isCertified} name="isCertification" onChange={handleIsCertification}/>
-                          <label htmlFor="Certifcation">
-                            I have not pursued any professional teaching certification
-                          </label>
+                          {verifySts === 2 ? <>
+                            <input id="Certifcation" type="checkbox" checked value={isCertified} name="isCertification"
+                                   onChange={handleIsCertification}/>
+                            <label htmlFor="Certifcation">
+                              I have not pursued any professional teaching certification
+                            </label>
+                          </> : <>
+                            <input id="Certifcation" type="checkbox" value={isCertified} name="isCertification"
+                                   onChange={handleIsCertification}/>
+                            <label htmlFor="Certifcation">
+                              I have not pursued any professional teaching certification
+                            </label>
+                          </>}
+
                         </div>
                         <div className={'row'}>
                           {/*{console.log(certificationFields)}*/}
                           {/*<form action="#" className="row row--15 mt-5">*/}
-                            {hideFields ? <>
-                            {certificationFields.length >= 1 ? <>
+                          {hideFields ? <>
+                            {verifySts !== 2 ? <>
+                              {certificationFields.length >= 1 ? <>
 
-                              {certificationFields && certificationFields.map((certification, index) => {
-                                // console.log(certification)
-                                return (
-                                    <>
-                                      <div key={certification.nTCId}>
-                                        <div className={'row'}>
-                                          <div className="col-lg-6">
-                                            <label>
-                                              Certification Title
-                                            </label>
-                                            <div className="form-group">
-                                              <input
-                                                  readOnly={verifySts === 2}
-                                                  onChange={(e) => handleChangeTitle(e, index)}
-                                                  value={certification.sCerti_title}
-                                                  type="text"
-                                                  placeholder="Certification Title"/>
-                                              <span className="focus-border"></span>
+                                {certificationFields && certificationFields.map((certification, index) => {
+                                  // console.log(certification)
+                                  return (
+                                      <>
+                                        <div key={certification.nTCId}>
+                                          <div className={'row'}>
+                                            <div className="col-lg-6">
+                                              <label>
+                                                Certification Title
+                                              </label>
+                                              <div className="form-group">
+                                                <input
+                                                    readOnly={verifySts === 2}
+                                                    onChange={(e) => handleChangeTitle(e, index)}
+                                                    value={certification.sCerti_title}
+                                                    type="text"
+                                                    placeholder="Certification Title"/>
+                                                <span className="focus-border"></span>
+                                              </div>
                                             </div>
-                                          </div>
-                                          <div className="col-lg-6">
-                                            <label>
-                                              Issued By
-                                            </label>
-                                            <div className="form-group">
-                                              <input
-                                                  readOnly={verifySts === 2}
-                                                  onChange={(e) => handleChangeIssuedBy(e, index)}
-                                                  value={certification.sIssued_by}
-                                                  type="text"
-                                                  placeholder="Issued By"/>
-                                              <span className="focus-border"></span>
+                                            <div className="col-lg-6">
+                                              <label>
+                                                Issued By
+                                              </label>
+                                              <div className="form-group">
+                                                <input
+                                                    readOnly={verifySts === 2}
+                                                    onChange={(e) => handleChangeIssuedBy(e, index)}
+                                                    value={certification.sIssued_by}
+                                                    type="text"
+                                                    placeholder="Issued By"/>
+                                                <span className="focus-border"></span>
+                                              </div>
                                             </div>
-                                          </div>
-                                          <div className={'col-lg-6 mt-3'}>
-                                            <label>
-                                              Year of study from
-                                            </label>
-                                            <select disabled={verifySts === 2} value={certification.sFrom_year}
-                                                    onChange={(e) => handleYearFromChange(e, index)}>
-                                              {options}
-                                            </select>
+                                            <div className={'col-lg-6 mt-3'}>
+                                              <label>
+                                                Year of study from
+                                              </label>
+                                              <select disabled={verifySts === 2} value={certification.sFrom_year}
+                                                      onChange={(e) => handleYearFromChange(e, index)}>
+                                                {options}
+                                              </select>
 
-                                          </div>
-                                          <div className={'col-lg-6 mt-3'}>
-                                            <label>
-                                              Year of study to
-                                            </label>
-                                            <select disabled={verifySts === 2} value={certification.sTo_year}
-                                                    onChange={(e) => handleYearToChange(e, index)}>
-                                              <option value="Present">Present</option>
-                                              {options}
-                                            </select>
-                                          </div>
-                                          <div className={'col-lg-12 mt-5 mb-3'}>
-                                            <div className={'rounded-2 p-3'} style={{background: "#f4f4f8"}}>
-                                              <h5>Get a certification verified badge</h5>
-                                              <small>Upload your diploma to boost your credibility! Our team will review
-                                                it and add
-                                                the badge to your profile.
-                                                Once reviewed, your files will be deleted.
-                                                JPG or PNG format; maximum size of 7MB</small>
+                                            </div>
+                                            <div className={'col-lg-6 mt-3'}>
+                                              <label>
+                                                Year of study to
+                                              </label>
+                                              <select disabled={verifySts === 2} value={certification.sTo_year}
+                                                      onChange={(e) => handleYearToChange(e, index)}>
+                                                <option value="Present">Present</option>
+                                                {options}
+                                              </select>
+                                            </div>
+                                            <div className={'col-lg-12 mt-5 mb-3'}>
+                                              <div className={'rounded-2 p-3'} style={{background: "#f4f4f8"}}>
+                                                <h5>Get a certification verified badge</h5>
+                                                <small>Upload your diploma to boost your credibility! Our team will review
+                                                  it and add
+                                                  the badge to your profile.
+                                                  Once reviewed, your files will be deleted.
+                                                  JPG or PNG format; maximum size of 2MB</small>
 
-                                              <div>
-                                                <label id='label'
-                                                       className='rbt-btn btn-md btn-gradient hover-icon-reverse'>Upload
-                                                  image
-                                                  <input type="file" id="file" name="file"
-                                                         onChange={(e) => handleChangeImage(e, index)}
-                                                         accept="image/*"/>
-                                                </label>
                                                 <div>
-                                                  {certification.sCerti_imagePath && (
-                                                      <img className={'mt-3'} src={certification.sCerti_imagePath} alt="Uploaded"
-                                                           style={{width: 100}}/>
-                                                  )}
+                                                  <label id='label'
+                                                         className='rbt-btn btn-md btn-gradient hover-icon-reverse'>Upload
+                                                    image
+                                                    <input type="file" id="file" name="file"
+                                                           onChange={(e) => handleChangeImage(e, index)}
+                                                           accept="image/*"/>
+                                                  </label>
+                                                  <div>
+                                                    {certification.sCerti_imagePath && (
+                                                        <img className={'mt-3'} src={certification.sCerti_imagePath} alt="Uploaded"
+                                                             style={{width: 100}}/>
+                                                    )}
+                                                  </div>
+
                                                 </div>
+                                              </div>
+                                            </div>
+                                            {verifySts === 2 ? <></> : <>
+                                              <div className="col-lg-12 text-end mt-2">
+                                                {certificationFields.length > 1 ? <>
+                                                  <button type={'button'} className="btn btn-danger"
+                                                          onClick={() => handleRemoveCertification(certification.nTCId)}>Remove
+                                                  </button>
+                                                </> : <>
+
+                                                </>}
 
                                               </div>
-                                                                                        </div>
+                                            </>}
+
                                           </div>
-                                          {verifySts === 2 ? <></> : <>
-                                            <div className="col-lg-12 text-end mt-2">
-                                              <button type={'button'} className="btn btn-danger"
-                                                      onClick={() => handleRemoveCertification(certification.nTCId)}>Remove
-                                              </button>
-                                            </div>
-                                          </>}
-
                                         </div>
-                                      </div>
 
-                                    </>
-                                )
-                              })
-                              }
+                                      </>
+                                  )
+                                })
+                                }
 
-                              {verifySts === 2 ? <></> : <>
-                                <div className={'col-lg-5 mt-5 mb-5'}>
-                                  <button
-                                      type={'button'}
-                                      className="rbt-btn-link left-icon border-0 bg-white"
-                                      onClick={handleAddCertification}
-                                  >
-                                    <i className="feather-plus"></i>Add Certification
-                                  </button>
-                                </div>
-                              </>}
-                            </> : ''}
+                                {verifySts === 2 ? <></> : <>
+                                  <div className={'col-lg-5 mt-5 mb-5'}>
+                                    <button
+                                        type={'button'}
+                                        className="rbt-btn-link left-icon border-0 bg-white"
+                                        onClick={handleAddCertification}
+                                    >
+                                      <i className="feather-plus"></i>Add Certification
+                                    </button>
+                                  </div>
+                                </>}
+                              </> : ''}
+                            </> : <></>}
+
                             </> : <>
                               {/*<div key={certificationFields.nTCId}>*/}
                               {/*  <div className={'row'}>*/}

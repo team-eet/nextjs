@@ -138,8 +138,8 @@ const InstructorDashboardSidebar = ({ url }) => {
     ]
   const [percentage, setPercentages] = useState(0);
 
-  const countStatus2 = options.filter(option => option.status === 2).length;
-
+  const countStatus2 = options.filter(option => option.status === 1).length;
+  // console.log(countStatus2)
   // Calculate the percentage
   const totalOptions = options.length;
   const percentagecount = (countStatus2 / totalOptions) * 100;
