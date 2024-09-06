@@ -23,6 +23,7 @@ const Education = () => {
     const minOffset = 0;
     const maxOffset = 53;
     const [drid, setdrid] = useState('')
+    const [isLoading, setisLoading] = useState(false)
 
     const EducationList = []
     const [educationFields, setEducationFields] = useState([
@@ -402,6 +403,7 @@ const Education = () => {
                                             nRegid : regId,
                                             sIsEducation : "true"
                                         }
+                                        setisLoading(true)
                                         // console.log(noEducation)
                                         await Axios.post(`${REACT_APP.API_URL}/api/TutorEducation/InsertTutorBasicEducation`, noEducation, {
                                             headers: {
@@ -431,6 +433,8 @@ const Education = () => {
                                             deleteId: deletedArray,
                                             sEducation : EducationList[0]
                                         }]
+
+                                        setisLoading(true)
                                         // console.log(updateValues)
                                         await Axios.put(`${REACT_APP.API_URL}/api/TutorEducation/UpdateTutorEducation`, updateValues, {
                                             headers: {
@@ -502,6 +506,7 @@ const Education = () => {
                                             nRegid : regId,
                                             sIsEducation : "true"
                                         }
+                                        setisLoading(true)
                                         // console.log(noEducation)
                                         await Axios.post(`${REACT_APP.API_URL}/api/TutorEducation/InsertTutorBasicEducation`, noEducation, {
                                             headers: {
@@ -523,6 +528,7 @@ const Education = () => {
                                             })
                                     } else {
                                         // alert('yes education')
+                                        setisLoading(true)
                                         await Axios.post(`${REACT_APP.API_URL}/api/TutorEducation/InsertTutorEducation`, [values], {
                                             headers: {
                                                 ApiKey: `${REACT_APP.API_KEY}`
@@ -852,8 +858,18 @@ const Education = () => {
                                             {/*{console.log(educationFields)}*/}
                                             <div className="col-lg-12 mt-5">
                                                 <div className="form-submit-group">
-                                                    <button type="submit"
-                                                            className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                                    {isLoading ? <>
+                                                        <button
+                                                            disabled={true}
+                                                            type="submit"
+                                                            className="rbt-btn btn-md btn-gradient w-100"
+                                                        >
+                                                            <span className="btn-text"><i
+                                                                className="feather-loader"></i>isLoading...</span>
+                                                        </button>
+                                                    </> : <>
+                                                        <button type="submit"
+                                                                className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
                                                          <span className="icon-reverse-wrapper">
                                                            <span className="btn-text">Continue</span>
                                                            <span className="btn-icon">
@@ -863,7 +879,9 @@ const Education = () => {
                                                             <i className="feather-arrow-right"></i>
                                                            </span>
                                                         </span>
-                                                    </button>
+                                                        </button>
+                                                    </>}
+
                                                 </div>
                                             </div>
                                         </div>

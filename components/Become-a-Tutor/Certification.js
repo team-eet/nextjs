@@ -16,6 +16,7 @@ const Certification = () => {
   const [country, setCountry] = useState([]);
   const [countryId, setcountryId] = useState('')
   const [hideFields, sethideFields] = useState(true)
+  const [isLoading, setisLoading] = useState(false)
   const defaultValue = new Date().getFullYear();
   const [regId, setregId] = useState('')
   const [Certi_Image, setCerti_Image] = useState('')
@@ -276,13 +277,13 @@ const Certification = () => {
       positionsOfThree.push(currentIndex);
     }
 
-    console.log(positionsOfThree);
+    // console.log(positionsOfThree);
     let array1 = ['basics', 'profile-photo', 'cover-photo', 'cover-photo', 'cover-photo', 'education', 'certification', 'teaching-experience', 'description', 'intro-video', 'interest', 'time-availability'];
     const array3 = positionsOfThree;
 
     let valuesFromArray1 = array3.map(index => array1[index - 1]);
 
-    console.log(valuesFromArray1);
+    // console.log(valuesFromArray1);
     let startIndex = ''
     for (let i = 0; i < array3.length; i++) {
       startIndex = array3[i];
@@ -398,6 +399,7 @@ const Certification = () => {
                     if (tutorcnt !== 0) {
                       if (hideFields === false) {
                         //no education
+                        setisLoading(true)
                         const noEducation = {
                           nRegId : regId,
                           sIsCertification : "true"
@@ -430,6 +432,7 @@ const Certification = () => {
                           deleteId: deletedArray,
                           sCertification : CertificationList[0]
                         }]
+                        setisLoading(true)
                         // console.log(updateValues)
                         await Axios.put(`${API_URL}/api/TutorCertification/UpdateTutorCertification  `, updateValues, {
                           headers: {
@@ -514,6 +517,7 @@ const Certification = () => {
                           nRegId : regId,
                           sIsCertification : "true"
                         }
+                        setisLoading(true)
                         // console.log(noEducation)
                         await Axios.post(`${API_URL}/api/TutorCertification/InsertTutorBasicCertificate`, noCertification, {
                           headers: {
@@ -536,6 +540,7 @@ const Certification = () => {
                               }
                             })
                       } else {
+                        setisLoading(true)
                         // alert('yes education')
                         await Axios.post(`${API_URL}/api/TutorCertification/InsertTutorCertificate  `, [values], {
                           headers: {
@@ -848,11 +853,20 @@ const Certification = () => {
 
                           <div className="col-lg-12 mt-5">
                             <div className="form-submit-group">
-                              <button
-                                  type="submit"
-                                  className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
-                              >
-                                {/*<Link href={"/become-a-tutor/teaching-experience"} className={'text-white'}>*/}
+                              {isLoading ? <>
+                                <button
+                                    disabled={true}
+                                    type="submit"
+                                    className="rbt-btn btn-md btn-gradient w-100"
+                                >
+                                                            <span className="btn-text"><i
+                                                                className="feather-loader"></i>isLoading...</span>
+                                </button>
+                              </> : <>
+                                <button
+                                    type="submit"
+                                    className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
+                                >
                                 <span className="icon-reverse-wrapper">
                                       <span className="btn-text">Continue</span>
                                       <span className="btn-icon">
@@ -862,9 +876,9 @@ const Certification = () => {
                                         <i className="feather-arrow-right"></i>
                                       </span>
                                     </span>
-                                {/*</Link>*/}
+                                </button>
+                              </>}
 
-                              </button>
                             </div>
                           </div>
                         </div>
@@ -881,31 +895,6 @@ const Certification = () => {
           </div>
         </div>
 
-        {/*<div className="rbt-dashboard-content bg-color-white rbt-shadow-box">*/}
-        {/*  <div className="content">*/}
-        {/*    <div className="section-title">*/}
-        {/*      <h4 className="rbt-title-style-3">Certification</h4>*/}
-        {/*    </div>*/}
-        {/*<div className="row g-5">*/}
-        {/*  {Courses.slice(0, 6)?.map((slide, index) => (*/}
-        {/*    <div*/}
-        {/*      className="col-lg-4 col-md-6 col-12"*/}
-        {/*      key={`course-wishlist-${index}`}*/}
-        {/*    >*/}
-        {/*      <CourseWidgets*/}
-        {/*        data={slide}*/}
-        {/*        courseStyle="two"*/}
-        {/*        isCompleted={false}*/}
-        {/*        isProgress={false}*/}
-        {/*        showDescription={false}*/}
-        {/*        showAuthor={false}*/}
-        {/*        isEdit={false}*/}
-        {/*      />*/}
-        {/*    </div>*/}
-        {/*  ))}*/}
-        {/*</div>*/}
-        {/*  </div>*/}
-        {/*</div>*/}
       </>
   );
 };

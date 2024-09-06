@@ -54,6 +54,7 @@ const Basics = () => {
     const [stateId, setstateId] = useState('')
     const [cityId, setcityId] = useState('')
 
+    const [isLoading, setisLoading] = useState(false)
     const handleFname = (e) => {
     setsFname(e.target.value)
   }
@@ -72,6 +73,28 @@ const Basics = () => {
 
     const [ageErrorMessage, setAgeErrorMessage] = useState(''); // State for age validation message
 
+    const range = (start, end, step = 1) => {
+        const array = [];
+        for (let i = start; i <= end; i += step) {
+            array.push(i);
+        }
+        return array;
+    };
+    const years = range(1960, new Date().getFullYear() + 1, 1);
+    const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
     const handleDOB = (date) => {
 
         if (date) {
@@ -548,6 +571,7 @@ const Basics = () => {
                           }
                       }).then(res => {
                           // console.log(res.data)
+                          setisLoading(true)
                           const retData = JSON.parse(res.data)
                           localStorage.removeItem('verify_uname')
                           // console.log(retData)
@@ -843,24 +867,70 @@ const Basics = () => {
                                               placeholder="DOB"
                                           />
                                       </> : <>
-                                          <DatePicker
-                                              selected={dDOB}
-                                              onChange={handleDOB}
-                                              value={dDOB}
-                                              name="dDOB"
-                                              dateFormat="dd/MM/yyyy"
-                                              className='form-control'
-                                              showYearDropdown
-                                              showMonthDropdown
-                                          />
-                                          {/*<input*/}
+                                          {/*<DatePicker*/}
+                                          {/*    selected={dDOB}*/}
                                           {/*    onChange={handleDOB}*/}
                                           {/*    value={dDOB}*/}
-                                          {/*    className={`form-control ${errors.dDOB && touched.dDOB && 'is-invalid'}`}*/}
                                           {/*    name="dDOB"*/}
-                                          {/*    type="date"*/}
-                                          {/*    placeholder="DOB"*/}
+                                          {/*    dateFormat="dd/MM/yyyy"*/}
+                                          {/*    className='form-control'*/}
+                                          {/*    showYearDropdown*/}
+                                          {/*    showMonthDropdown*/}
                                           {/*/>*/}
+                                          <DatePicker
+                                              renderCustomHeader={({
+                                                                       date,
+                                                                       changeYear,
+                                                                       changeMonth,
+                                                                       decreaseMonth,
+                                                                       increaseMonth,
+                                                                       prevMonthButtonDisabled,
+                                                                       nextMonthButtonDisabled,
+                                                                   }) => (
+                                                  <div
+                                                      style={{
+                                                          // margin: 10,
+                                                          display: "flex",
+                                                          justifyContent: "center",
+                                                      }}
+                                                  >
+                                                      {/*<button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>*/}
+                                                      {/*    {"<"}*/}
+                                                      {/*</button>*/}
+                                                      <select
+
+                                                          value={new Date().getFullYear(date)}
+                                                          onChange={({ target: { value } }) => changeYear(value)}
+                                                      >
+                                                          {years.map((option) => (
+                                                              <option key={option} value={option}>
+                                                                  {option}
+                                                              </option>
+                                                          ))}
+                                                      </select>
+
+                                                      <select
+                                                          value={new Date().getMonth(date)}
+                                                          // value={months[getMonth(date)]}
+                                                          onChange={({ target: { value } }) =>
+                                                              changeMonth(months.indexOf(value))
+                                                          }
+                                                      >
+                                                          {months.map((option) => (
+                                                              <option key={option} value={option}>
+                                                                  {option}
+                                                              </option>
+                                                          ))}
+                                                      </select>
+
+                                                      {/*<button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>*/}
+                                                      {/*    {">"}*/}
+                                                      {/*</button>*/}
+                                                  </div>
+                                              )}
+                                              selected={dDOB}
+                                              onChange={handleDOB}
+                                          />
                                       </>}
 
                                       <ErrorMessage name='dDOB' component='div' className='field-error text-danger'/>
@@ -1106,10 +1176,20 @@ const Basics = () => {
 
                               <div className="col-lg-12">
                                   <div className="form-submit-group">
-                                      <button
-                                          type="submit"
-                                          className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
-                                      >
+                                      {isLoading ? <>
+                                          <button
+                                              disabled={true}
+                                              type="submit"
+                                              className="rbt-btn btn-md btn-gradient w-100"
+                                          >
+                                              <span className="btn-text"><i className="feather-loader"></i>isLoading...</span>
+                                          </button>
+                                      </> : <>
+                                          <button
+                                              disabled={isLoading}
+                                              type="submit"
+                                              className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
+                                          >
                                               <span className="icon-reverse-wrapper">
                                                   <span className="btn-text">Continue</span>
                                                   <span className="btn-icon">
@@ -1119,8 +1199,10 @@ const Basics = () => {
                                                     <i className="feather-arrow-right"></i>
                                                   </span>
                                               </span>
-                                          {/*</Link>*/}
-                                      </button>
+                                              {/*</Link>*/}
+                                          </button>
+                                      </>}
+
                                   </div>
                               </div>
                           </div>

@@ -37,6 +37,7 @@ const Cover = () => {
 
     const [coverRightimg, setcoverRightimg] = useState();
     const [sImagePathRight, setSImagePathRight] = useState('');
+    const [isLoading, setisLoading] = useState(false);
 
     const getBase64 = (file) => {
         return new Promise((resolve) => {
@@ -287,6 +288,7 @@ const Cover = () => {
                                 }).then(res => {
                                     // console.log(values)
                                     // console.log(res.data)
+                                    setisLoading(true)
                                     const retData = JSON.parse(res.data)
                                     resetForm({})
                                     if(retData.success === '1') {
@@ -447,10 +449,20 @@ const Cover = () => {
 
                                             <div className="col-lg-12 mt-5">
                                                 <div className="form-submit-group">
-                                                    <button
-                                                        type="submit"
-                                                        className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
-                                                    >
+                                                    {isLoading ? <>
+                                                        <button
+                                                            disabled={true}
+                                                            type="submit"
+                                                            className="rbt-btn btn-md btn-gradient w-100"
+                                                        >
+                                                            <span className="btn-text"><i
+                                                                className="feather-loader"></i>isLoading...</span>
+                                                        </button>
+                                                    </> : <>
+                                                        <button
+                                                            type="submit"
+                                                            className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
+                                                        >
                                                         <span className="icon-reverse-wrapper">
                                                           <span className="btn-text">Continue</span>
                                                           <span className="btn-icon">
@@ -460,7 +472,9 @@ const Cover = () => {
                                                             <i className="feather-arrow-right"></i>
                                                           </span>
                                                         </span>
-                                                    </button>
+                                                        </button>
+                                                    </>}
+
                                                 </div>
                                             </div>
                                         </div>
@@ -474,80 +488,6 @@ const Cover = () => {
                     </Formik>
 
 
-                    {/*<div>*/}
-                    {/*  <div className="rbt-profile-row row row--15">*/}
-                    {/*    <div className="col-lg-4 col-md-4">*/}
-                    {/*      <div className="rbt-profile-content b2">Registration Date</div>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="col-lg-8 col-md-8">*/}
-                    {/*      <div className="rbt-profile-content b2">*/}
-                    {/*        February 25, 2025 6:01 am*/}
-                    {/*      </div>*/}
-                    {/*    </div>*/}
-                    {/*  </div>*/}
-                    {/*  <div className="rbt-profile-row row row--15 mt--15">*/}
-                    {/*    <div className="col-lg-4 col-md-4">*/}
-                    {/*      <div className="rbt-profile-content b2">First Name</div>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="col-lg-8 col-md-8">*/}
-                    {/*      <div className="rbt-profile-content b2">John</div>*/}
-                    {/*    </div>*/}
-                    {/*  </div>*/}
-                    {/*  <div className="rbt-profile-row row row--15 mt--15">*/}
-                    {/*    <div className="col-lg-4 col-md-4">*/}
-                    {/*      <div className="rbt-profile-content b2">Last Name</div>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="col-lg-8 col-md-8">*/}
-                    {/*      <div className="rbt-profile-content b2">Doe</div>*/}
-                    {/*    </div>*/}
-                    {/*  </div>*/}
-                    {/*  <div className="rbt-profile-row row row--15 mt--15">*/}
-                    {/*    <div className="col-lg-4 col-md-4">*/}
-                    {/*      <div className="rbt-profile-content b2">Username</div>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="col-lg-8 col-md-8">*/}
-                    {/*      <div className="rbt-profile-content b2">instructor</div>*/}
-                    {/*    </div>*/}
-                    {/*  </div>*/}
-                    {/*  <div className="rbt-profile-row row row--15 mt--15">*/}
-                    {/*    <div className="col-lg-4 col-md-4">*/}
-                    {/*      <div className="rbt-profile-content b2">Email</div>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="col-lg-8 col-md-8">*/}
-                    {/*      <div className="rbt-profile-content b2">example@gmail.com</div>*/}
-                    {/*    </div>*/}
-                    {/*  </div>*/}
-                    {/*  <div className="rbt-profile-row row row--15 mt--15">*/}
-                    {/*    <div className="col-lg-4 col-md-4">*/}
-                    {/*      <div className="rbt-profile-content b2">Phone Number</div>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="col-lg-8 col-md-8">*/}
-                    {/*      <div className="rbt-profile-content b2">+1-202-555-0174</div>*/}
-                    {/*    </div>*/}
-                    {/*  </div>*/}
-                    {/*  <div className="rbt-profile-row row row--15 mt--15">*/}
-                    {/*    <div className="col-lg-4 col-md-4">*/}
-                    {/*      <div className="rbt-profile-content b2">Skill/Occupation</div>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="col-lg-8 col-md-8">*/}
-                    {/*      <div className="rbt-profile-content b2">*/}
-                    {/*        Application Developer*/}
-                    {/*      </div>*/}
-                    {/*    </div>*/}
-                    {/*  </div>*/}
-                    {/*  <div className="rbt-profile-row row row--15 mt--15">*/}
-                    {/*    <div className="col-lg-4 col-md-4">*/}
-                    {/*      <div className="rbt-profile-content b2">Biography</div>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="col-lg-8 col-md-8">*/}
-                    {/*      <div className="rbt-profile-content b2">*/}
-                    {/*        I&apos;m the Front-End Developer for #Rainbow IT in Bangladesh,*/}
-                    {/*        OR. I have serious passion for UI effects, animations and*/}
-                    {/*        creating intuitive, dynamic user experiences.*/}
-                    {/*      </div>*/}
-                    {/*    </div>*/}
-                    {/*  </div>*/}
-                    {/*</div>*/}
                 </div>
             </div>
         </>

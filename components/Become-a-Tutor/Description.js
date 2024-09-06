@@ -23,6 +23,7 @@ const UserValidationSchema = Yup.object().shape({
 const Description = () => {
   const REACT_APP = API_URL
   const [text, setText] = useState('');
+  const [isLoading, setisLoading] = useState(false);
   const router = useRouter()
   const handleTextChange = (e) => {
 
@@ -147,6 +148,7 @@ const Description = () => {
                   if(verifySts === 2){
                     router.push('/become-a-tutor/intro-video')
                   } else {
+                    setisLoading(true)
                     await Axios.put(`${API_URL}/api/TutorBasics/UpdateTutorProfile`, values, {
                       headers: {
                         ApiKey: `${API_KEY}`
@@ -298,20 +300,29 @@ const Description = () => {
                           </div>
                           <div className="col-lg-12 mt-5">
                             <div className="form-submit-group">
-                              <button
-                                  type="submit"
-                                  className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
-                              >
-                               <span className="icon-reverse-wrapper">
-                                <span className="btn-text">Continue</span>
-                                <span className="btn-icon">
-                                  <i className="feather-arrow-right"></i>
-                                </span>
-                                <span className="btn-icon">
-                                  <i className="feather-arrow-right"></i>
-                                </span>
-                              </span>
-                              </button>
+                              {isLoading ? <>
+                                <button
+                                    disabled={true}
+                                    type="submit"
+                                    className="rbt-btn btn-md btn-gradient w-100"
+                                >
+                                                            <span className="btn-text"><i
+                                                                className="feather-loader"></i>isLoading...</span>
+                                </button>
+                              </> : <>
+                                <button type="submit"
+                                        className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                                         <span className="icon-reverse-wrapper">
+                                                           <span className="btn-text">Continue</span>
+                                                           <span className="btn-icon">
+                                                             <i className="feather-arrow-right"></i>
+                                                           </span>
+                                                           <span className="btn-icon">
+                                                            <i className="feather-arrow-right"></i>
+                                                           </span>
+                                                        </span>
+                                </button>
+                              </>}
                             </div>
                           </div>
                         </div>

@@ -21,6 +21,7 @@ const Profile = () => {
     const REACT_APP = API_URL
     const [Profileimg, setProfileimg] = useState();
     const [sImagePath, setSImagePath] = useState('');
+    const [isLoading, setisLoading] = useState(false);
 
     // const [sProfilePhotoPath, setsProfilePhotoPath] = useState('')
     const router = useRouter();
@@ -168,6 +169,7 @@ const Profile = () => {
                         if(verifysts.sProfilePhoto_verify === 2) {
                             router.push('/become-a-tutor/cover-photo')
                         } else {
+                            setisLoading(true)
                             await Axios.put(`${API_URL}/api/TutorBasics/UpdateTutorProfile`, values, {
                                 headers: {
                                     ApiKey: `${API_KEY}`
@@ -175,10 +177,10 @@ const Profile = () => {
                             }).then(res => {
                                 // console.log(values)
                                 console.log(res.data)
+
                                 const retData = JSON.parse(res.data)
                                 resetForm({})
                                 if(retData.success === '1') {
-
                                     Axios.get(`${API_URL}/api/TutorBasics/GetTutorDetails/${JSON.parse(localStorage.getItem('userData')).regid}`, {
                                         headers: {
                                             ApiKey: `${API_KEY}`
@@ -287,12 +289,21 @@ const Profile = () => {
                                     </div>
                                     <div className="col-lg-12 mt-5">
                                         <div className="form-submit-group">
-                                            <button
-                                                type="submit"
-                                                className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
-                                            >
-                                                {/*<Link href={"/become-a-tutor/cover-photo"} className={'text-white'}>*/}
-
+                                            {isLoading ? <>
+                                                <button
+                                                    disabled={true}
+                                                    type="submit"
+                                                    className="rbt-btn btn-md btn-gradient w-100"
+                                                >
+                                                    <span className="btn-text">
+                                                        <i className="feather-loader"></i>isLoading...
+                                                    </span>
+                                                </button>
+                                            </> : <>
+                                                <button
+                                                    type="submit"
+                                                    className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
+                                                >
                                                 <span className="icon-reverse-wrapper">
                                                       <span className="btn-text">Continue</span>
                                                       <span className="btn-icon">
@@ -302,8 +313,10 @@ const Profile = () => {
                                                         <i className="feather-arrow-right"></i>
                                                       </span>
                                                 </span>
-                                                {/*</Link>*/}
-                                            </button>
+                                                    {/*</Link>*/}
+                                                </button>
+                                            </>}
+
                                         </div>
                                     </div>
                                 </div>
@@ -314,118 +327,14 @@ const Profile = () => {
                 }}
 
 
-            </Formik>
+                </Formik>
 
-            {/*<Formik*/}
-            {/*    // validationSchema={UserValidationSchema}*/}
-            {/*    initialValues={{*/}
-            {/*        nRegId : regId,*/}
-            {/*        sProfilePhotoPath: sImagePath*/}
-            {/*    }}*/}
-            {/*    onSubmit={async (values, {resetForm}) => {*/}
-            {/*            console.log(values)*/}
-            {/*        if (sImagePath !== ''){*/}
-            {/*            // alert(sImagePath)*/}
-            {/*            await Axios.put(`${REACT_APP.API_URL}/api/TutorBasics/UpdateTutorProfile`,  values,{*/}
-            {/*                    headers: {*/}
-            {/*                        ApiKey: `${REACT_APP.API_KEY}`*/}
-            {/*                    }*/}
-            {/*                }).then(res => {*/}
-            {/*                    console.log(res.data)*/}
-            {/*                    const retData = JSON.parse(res.data)*/}
-            {/*                    console.log(retData)*/}
-            {/*                    resetForm({})*/}
-            {/*                    // if(retData.success === '1') {*/}
-            {/*                    //     router.push('/become-a-tutor/cover-photo')*/}
-            {/*                    // }*/}
-            {/*                })*/}
-            {/*                    .catch(err => {*/}
-            {/*                        {*/}
-            {/*                            ErrorDefaultAlert(JSON.stringify(err.response))*/}
-            {/*                        }*/}
-            {/*                    })*/}
-            {/*        } else{*/}
-            {/*            // alert("no")*/}
-            {/*            Yup.object().shape({*/}
-            {/*                sProfilePhotoPath: Yup.string()*/}
-            {/*                    .required('This field is required')*/}
-            {/*            })*/}
-            {/*        }*/}
 
-            {/*        //*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*    <Form >*/}
-            {/*        <div className={'row mt-5 p-0'}>*/}
-            {/*            <div className={'col-lg-6'}>*/}
-            {/*                <FormGroup>*/}
-            {/*                <input type="file" className={'p-0'} name='sProfilePhotoPath' onChange={onChangeImage}  accept="image/*" />*/}
-            {/*                <small>JPG or PNG format, maximum 2 MB</small>*/}
-            {/*                /!*{file && <img src={file} alt="Selected" style={{ maxWidth: '100px', maxHeight: '100px' }} />}*!/*/}
-
-            {/*                /!*{(this.state.batchimagefile) ? <img className='w-100 h-200' src={this.state.batchimagefile} /> : <img*!/*/}
-            {/*                /!*    className='w-100 h-180 bg-light-primary p-1' src={noimg} alt='no-img' />}*!/*/}
-            {/*                {Profileimg ? <img src={Profileimg} height={200} width={200}/> : ''}*/}
-            {/*                </FormGroup>*/}
-            {/*                <ErrorMessage name='sProfilePhotoPath' component='div' className='field-error text-danger' />*/}
-            {/*            </div>*/}
-            {/*            <div className={'col-lg-6 profile-sample-photo'}>*/}
-            {/*                <h6>Guidelines for capturing an exceptional photograph</h6>*/}
-            {/*                <img src={'/images/client/img1.png'}></img>*/}
-            {/*                <img src={'/images/client/img2.png'}></img>*/}
-            {/*                <img src={'/images/client/img3.png'}></img>*/}
-            {/*                <ul className="rbt-list-style-1 mt-5">*/}
-            {/*                    <li>*/}
-            {/*                        <i className="feather-check"></i>*/}
-            {/*                        Look straight at camera and smile*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <i className="feather-check"></i>*/}
-            {/*                        Maintain genuine and engaging facial expression*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <i className="feather-check"></i>*/}
-            {/*                        Make sure your head and shoulders are covered*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <i className="feather-check"></i>*/}
-            {/*                        Use natural lighting*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <i className="feather-check"></i>*/}
-            {/*                        Simple, uncluttered and white background*/}
-            {/*                    </li>*/}
-            {/*                </ul>*/}
-            {/*            </div>*/}
-            {/*            <div className="col-lg-12 mt-5">*/}
-            {/*                <div className="form-submit-group">*/}
-            {/*                    <button*/}
-            {/*                        type="submit"*/}
-            {/*                        className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"*/}
-            {/*                    >*/}
-            {/*                        /!*<Link href={"/become-a-tutor/cover-photo"} className={'text-white'}>*!/*/}
-
-            {/*                        <span className="icon-reverse-wrapper">*/}
-            {/*                      <span className="btn-text">Continue</span>*/}
-            {/*                      <span className="btn-icon">*/}
-            {/*                        <i className="feather-arrow-right"></i>*/}
-            {/*                      </span>*/}
-            {/*                      <span className="btn-icon">*/}
-            {/*                        <i className="feather-arrow-right"></i>*/}
-            {/*                      </span>*/}
-            {/*                    </span>*/}
-            {/*                        /!*</Link>*!/*/}
-            {/*                    </button>*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    </Form>*/}
-            {/*</Formik>*/}
+            </div>
         </div>
-        </div>
-</>
-)
-    ;
+        </>
+    )
+        ;
 };
 
 export default Profile;

@@ -11,7 +11,7 @@ import PageHead from "@/pages/Head";
 import BackToTop from "@/pages/backToTop";
 import Store from "@/redux/store";
 import { Provider } from "react-redux";
-import Experience from "@/components/Become-a-Tutor/Experience";
+import Experience from "@/components/Become-a-Tutor/Experience2";
 
 const TeachingExperience = () => {
   return (

@@ -30,6 +30,8 @@ const Availability = () => {
   const [timeSlot, setTimeSlot] = useState('')
   const [weekendBatch, setWeekendBatch] = useState('')
   const [teachingDays, setTeachingDays] = useState([])
+  const [isLoading, setisLoading] = useState(false)
+
 
   const handleChangeDuration = (e) => {
       console.log(e.target.value)
@@ -97,6 +99,7 @@ const Availability = () => {
     const [verifySts, setverifySts] = useState()
     const [tutorcnt, setTutorcnt] = useState('')
   useEffect(() => {
+      bindCountry()
     if(localStorage.getItem('userData')) {
       setregId(JSON.parse(localStorage.getItem('userData')).regid)
 
@@ -158,7 +161,7 @@ const Availability = () => {
               { ErrorDefaultAlert(err) }
           })
     }
-      bindCountry()
+
   }, []);
   return (
     <>
@@ -191,7 +194,7 @@ const Availability = () => {
                 </>}
             </>}
           <Formik
-              // validationSchema={UserValidationSchema}
+              validationSchema={UserValidationSchema}
               initialValues={{
                   nRegId : regId,
                   nCountryId: countryId ? countryId : '',
@@ -207,7 +210,7 @@ const Availability = () => {
 
                   } else {
                       if(tutorcnt !== 0) {
-
+                          setisLoading(true)
                           await Axios.put(`${API_URL}/api/TutorAvailQue/UpdateTutorAvailQue`, values, {
                               headers: {
                                   ApiKey: `${API_KEY}`
@@ -229,6 +232,7 @@ const Availability = () => {
                                   }
                               })
                       } else {
+                          setisLoading(true)
                           await Axios.post(`${API_URL}/api/TutorAvailQue/InsertTutorAvailQue`, values, {
                               headers: {
                                   ApiKey: `${API_KEY}`
@@ -266,9 +270,7 @@ const Availability = () => {
                           <select disabled={verifySts === 2} className="w-100" name={'nCountryId'} onChange={handleChangeCountry} value={countryId}>
                             {country.map((item, index) => {
                               return (
-                                  <div key={index}>
-                                    <option value={item.nCountryId}>{item.sCountryname}</option>
-                                  </div>
+                                    <option key={index} value={item.nCountryId}>{item.sCountryname}</option>
                               )
                             })}
                           </select>
@@ -392,7 +394,7 @@ const Availability = () => {
                                 </label>
                             </div>
                               <ErrorMessage name='sWeekend_batches' component='div'
-                                            className='field-error text-danger'/>
+                                            className='field-error text-danger ms-3 mt-3'/>
                             <span className="focus-border"></span>
                           </div>
                         </div>
@@ -500,24 +502,29 @@ const Availability = () => {
                         </div>
                         <div className="col-lg-12 mt-5">
                           <div className="form-submit-group">
-                            <button
-                                type="submit"
-                                className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
-                            >
-                              {/*<Link href={""} className={'text-white'}>*/}
-
-                              <span className="icon-reverse-wrapper">
-                                  <span className="btn-text">Submit</span>
-                                  <span className="btn-icon">
-                                    <i className="feather-arrow-right"></i>
-                                  </span>
-                                  <span className="btn-icon">
-                                    <i className="feather-arrow-right"></i>
-                                  </span>
-                                </span>
-                              {/*</Link>*/}
-
-                            </button>
+                              {isLoading ? <>
+                                  <button
+                                      disabled={true}
+                                      type="submit"
+                                      className="rbt-btn btn-md btn-gradient w-100"
+                                  >
+                                                            <span className="btn-text"><i
+                                                                className="feather-loader"></i>isLoading...</span>
+                                  </button>
+                              </> : <>
+                                  <button type="submit"
+                                          className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                                         <span className="icon-reverse-wrapper">
+                                                           <span className="btn-text">Continue</span>
+                                                           <span className="btn-icon">
+                                                             <i className="feather-arrow-right"></i>
+                                                           </span>
+                                                           <span className="btn-icon">
+                                                            <i className="feather-arrow-right"></i>
+                                                           </span>
+                                                        </span>
+                                  </button>
+                              </>}
                           </div>
                         </div>
                       </div>

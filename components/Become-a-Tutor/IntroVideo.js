@@ -12,10 +12,10 @@ import {API_URL, API_KEY} from "../../constants/constant";
 
 
 const UserValidationSchema = Yup.object().shape({
-  // sIntroVideoPath: Yup.string()
-  //     .required('This field is required')
-  // sIntroVideoUrl: Yup.string()
-  //     .required('This field is required')
+  sIntroVideoPath: Yup.string()
+      .required('This field is required'),
+  sIntroVideoUrl: Yup.string()
+      .required('This field is required')
 })
 const IntroVideo = () => {
   const REACT_APP = API_URL
@@ -24,6 +24,7 @@ const IntroVideo = () => {
   const [videoUrl, setvideoUrl] = useState('')
 
   const [thumbnail, setthumbnail] = useState();
+  const [isLoading, setisLoading] = useState(false);
   function handleChangeThumbnail(e) {
     // console.log(e.target.files);
     setthumbnail(URL.createObjectURL(e.target.files[0]));
@@ -158,6 +159,7 @@ const IntroVideo = () => {
                 if(verifySts === 2) {
                   router.push('/become-a-tutor/interest')
                 } else {
+                    setisLoading(true)
                   await Axios.put(`${API_URL}/api/TutorBasics/UpdateTutorProfile`, values, {
                     headers: {
                       ApiKey: `${API_KEY}`
@@ -200,15 +202,19 @@ const IntroVideo = () => {
                                           height="200px"
                                           url={video}></ReactPlayer> : ''}
                                   </div>
-
+                                  {/*<ErrorMessage name='sIntroVideoPath' component='div'*/}
+                                  {/*              className='field-error text-danger'/>*/}
+                                  {/*<span className="focus-border"></span>*/}
                               </div>
 
                               <p className={'mt-5 m-0'}>Or</p>
                               <p className={'m-0 mb-3'}>Paste a link of video</p>
                               <div className="form-group">
-                                  <input required={verifySts === 2} onChange={handleChangeURL} name="" type="text"
+                                  <input required={verifySts === 2} onChange={handleChangeURL} name="sIntroVideoUrl" type="text"
                                          placeholder="Video Url"/>
-                                  <span className="focus-border"></span>
+                                  {/*<ErrorMessage name='sIntroVideoUrl' component='div'*/}
+                                  {/*              className='field-error text-danger'/>*/}
+                                  {/*<span className="focus-border"></span>*/}
                               </div>
                           </div>
                           <div className={'col-lg-6 thumbnail-preview'}>
@@ -236,31 +242,37 @@ const IntroVideo = () => {
                                   </li>
                               </ul>
 
-                              <label className={'mt-5 ms-5'}>Add a thumbnail</label>
-                              <input type="file" className={'p-0 mt-5 ms-5'} onChange={handleChangeThumbnail}/>
-                              <small className={'p-0 mt-5 ms-5'}>JPG or PNG format, maximum 2 MB</small>
-                          {thumbnail ? <img className={'mt-5 ms-5'} src={thumbnail}/> : ''}
+                          {/*    <label className={'mt-5 ms-5'}>Add a thumbnail</label>*/}
+                          {/*    <input type="file" className={'p-0 mt-5 ms-5'} onChange={handleChangeThumbnail}/>*/}
+                          {/*    <small className={'p-0 mt-5 ms-5'}>JPG or PNG format, maximum 2 MB</small>*/}
+                          {/*{thumbnail ? <img className={'mt-5 ms-5'} src={thumbnail}/> : ''}*/}
                         </div>
 
                         <div className="col-lg-12 mt-5">
                           <div className="form-submit-group">
-                            <button
-                                type="submit"
-                                className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
-                            >
-                              {/*<Link href={"/become-a-tutor/interest"} className={'text-white'}>*/}
-                               <span className="icon-reverse-wrapper">
-                                <span className="btn-text">Continue</span>
-                                <span className="btn-icon">
-                                  <i className="feather-arrow-right"></i>
-                                </span>
-                                <span className="btn-icon">
-                                  <i className="feather-arrow-right"></i>
-                                </span>
-                              </span>
-                              {/*</Link>*/}
-
-                            </button>
+                              {isLoading ? <>
+                                  <button
+                                      disabled={true}
+                                      type="submit"
+                                      className="rbt-btn btn-md btn-gradient w-100"
+                                  >
+                                                            <span className="btn-text"><i
+                                                                className="feather-loader"></i>isLoading...</span>
+                                  </button>
+                              </> : <>
+                                  <button type="submit"
+                                          className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                                         <span className="icon-reverse-wrapper">
+                                                           <span className="btn-text">Continue</span>
+                                                           <span className="btn-icon">
+                                                             <i className="feather-arrow-right"></i>
+                                                           </span>
+                                                           <span className="btn-icon">
+                                                            <i className="feather-arrow-right"></i>
+                                                           </span>
+                                                        </span>
+                                  </button>
+                              </>}
                           </div>
                         </div>
                       </div>

@@ -3,21 +3,37 @@ import CourseWidgets from "./Dashboard-Section/widgets/CourseWidget";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import { API_URL, API_KEY } from "../../constants/constant";
-import {Form, Formik} from "formik";
+import {ErrorMessage, Form, Formik} from "formik";
 import Axios from "axios";
 import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
 import img from "@/public/images/others/thumbnail-placeholder.svg";
 import { useRouter } from "next/router";
 import {EncryptData} from "@/components/Services/encrypt-decrypt";
 import {Alert} from "reactstrap";
+import * as Yup from "yup";
 
 
+const UserValidationSchema = Yup.object().shape({
+    nCountryId: Yup.string()
+        .required('This field is required'),
+    sDegree: Yup.string()
+        .required('This field is required'),
+    sUniversity: Yup.string()
+        .required('This field is required'),
+    sSpecialization: Yup.string()
+        .required('This field is required'),
+    sFrom_year: Yup.string()
+        .required('This field is required'),
+    sTo_year: Yup.string()
+        .required('This field is required')
+})
 
 const Education = () => {
     const REACT_APP = API_URL
     const [country, setCountry] = useState([]);
     const [countryId, setcountryId] = useState('')
     const [hideFields, sethideFields] = useState(true)
+    const [isLoading, setisLoading] = useState(false)
     const defaultValue = new Date().getFullYear();
     const [regId, setregId] = useState('')
     const [Certi_Image, setCerti_Image] = useState('')
@@ -162,45 +178,6 @@ const Education = () => {
             alert('Please upload a file less than 2MB');
         }
     };
-    // const handleYearFromChange = (e, index) => {
-    //     const { value } = e.target;
-    //     if(educationFields.length >= 1) {
-    //         const updatedFields = [...educationFields];
-    //         updatedFields[index].sFrom_year = value;
-    //         seteducationFields(updatedFields);
-    //     } else {
-    //         const updatedFields = educationFields;
-    //         updatedFields.sFrom_year = value;
-    //         seteducationFields(updatedFields);
-    //     }
-    //
-    //     // if (updatedFields[index].sTo_year && parseInt(updatedFields[index].sTo_year) <= parseInt(value)) {
-    //     //     alert("Year of study to should be greater than Year of study from.");
-    //     // } else {
-    //     //     seteducationFields(updatedFields);
-    //     // }
-    //
-    // };
-    //
-    // const handleYearToChange = (e, index) => {
-    //     const { value } = e.target;
-    //     if(educationFields.length >= 1){
-    //         const updatedFields = [...educationFields];
-    //         updatedFields[index].sTo_year = value;
-    //         seteducationFields(updatedFields);
-    //     } else {
-    //         const updatedFields = educationFields;
-    //         updatedFields.sTo_year = value;
-    //         seteducationFields(updatedFields);
-    //     }
-    //
-    //     // if (updatedFields[index].sFrom_year && value !== "Present" && parseInt(value) <= parseInt(updatedFields[index].sFrom_year)) {
-    //     //     alert("Year of study to should be greater than Year of study from.");
-    //     // } else {
-    //     //     seteducationFields(updatedFields);
-    //     // }
-    // };
-
 
     const handleYearFromChange = (e, index) => {
         const { value } = e.target;
@@ -353,13 +330,13 @@ const Education = () => {
             positionsOfThree.push(currentIndex);
         }
 
-        console.log(positionsOfThree);
+        // console.log(positionsOfThree);
         let array1 = ['basics', 'profile-photo', 'cover-photo', 'cover-photo', 'cover-photo', 'education', 'certification', 'teaching-experience', 'description', 'intro-video', 'interest', 'time-availability'];
         const array3 = positionsOfThree;
 
         let valuesFromArray1 = array3.map(index => array1[index - 1]);
 
-        console.log(valuesFromArray1);
+        // console.log(valuesFromArray1);
         let startIndex = ''
         for (let i = 0; i < array3.length; i++) {
             startIndex = array3[i];
@@ -464,24 +441,27 @@ const Education = () => {
                 <div className="content">
 
                     <Formik
+                        // validationSchema={UserValidationSchema}
                         initialValues={{
                             nRegId : regId,
                             sEducation : EducationList[0]
                         }}
                         enableReinitialize={true}
                         onSubmit={async (values, {resetForm}) => {
-                            // console.log([values])
+                            console.log(values)
                             // console.log([values])s
                             if(verifySts === 2) {
                                 router.push('/become-a-tutor/certification')
                             } else {
                                 if (tutorcnt !== 0) {
+
                                     if (hideFields === false) {
                                         //no education
                                         const noEducation = {
                                             nRegId : regId,
                                             sIsEducation : "true"
                                         }
+                                        setisLoading(true)
                                         // console.log(noEducation)
                                         await Axios.post(`${API_URL}/api/TutorEducation/InsertTutorBasicEducation`, noEducation, {
                                             headers: {
@@ -511,6 +491,7 @@ const Education = () => {
                                             sEducation : EducationList[0]
                                         }]
                                         // console.log(updateValues)
+                                        setisLoading(true)
                                         await Axios.put(`${API_URL}/api/TutorEducation/UpdateTutorEducation  `, updateValues, {
                                             headers: {
                                                 ApiKey: `${API_KEY}`
@@ -595,6 +576,7 @@ const Education = () => {
                                             sIsEducation : "true"
                                         }
                                         // console.log(noEducation)
+                                        setisLoading(true)
                                         await Axios.post(`${API_URL}/api/TutorEducation/InsertTutorBasicEducation`, noEducation, {
                                             headers: {
                                                 ApiKey: `${API_KEY}`
@@ -617,6 +599,7 @@ const Education = () => {
                                             })
                                     } else {
                                         // alert('yes education')
+                                        setisLoading(true)
                                         await Axios.post(`${API_URL}/api/TutorEducation/InsertTutorEducation  `, [values], {
                                             headers: {
                                                 ApiKey: `${API_KEY}`
@@ -717,6 +700,7 @@ const Education = () => {
                                                                                 <div className="form-group">
                                                                                     <select
                                                                                         disabled={verifySts === 2}
+                                                                                        name={"nCountryId"}
                                                                                         value={education.nCountryId}
                                                                                         onChange={(e) => handleChangeCountry(e, index)}
                                                                                     >
@@ -729,13 +713,8 @@ const Education = () => {
                                                                                             )
                                                                                         })}
                                                                                     </select>
-                                                                                    {/*<input*/}
-                                                                                    {/*    readOnly={verifySts === 2}*/}
-                                                                                    {/*    onChange={(e) => handleChangeTitle(e, index)}*/}
-                                                                                    {/*    value={certification.sCerti_title}*/}
-                                                                                    {/*    type="text"*/}
-                                                                                    {/*    placeholder="Certification Title"/>*/}
-                                                                                    {/*<span className="focus-border"></span>*/}
+                                                                                    <ErrorMessage name='nCountryId' component='div'
+                                                                                                  className='field-error text-danger' />
                                                                                 </div>
                                                                             </div>
                                                                             <div className="col-lg-6">
@@ -748,7 +727,10 @@ const Education = () => {
                                                                                         onChange={(e) => handleChangeUniversity(e, index)}
                                                                                         value={education.sUniversity}
                                                                                         type="text"
+                                                                                        name={"sUniversity"}
                                                                                         placeholder="university"/>
+                                                                                    <ErrorMessage name='sUniversity' component='div'
+                                                                                                  className='field-error text-danger' />
                                                                                     <span className="focus-border"></span>
                                                                                 </div>
                                                                             </div>
@@ -760,9 +742,12 @@ const Education = () => {
                                                                                     type="text"
                                                                                     readOnly={verifySts === 2}
                                                                                     value={education.sDegree}
+                                                                                    name={"sDegree"}
                                                                                     onChange={(e) => handleChangeDegree(e, index)}
                                                                                 />
-
+                                                                                <ErrorMessage name='sDegree' component='div'
+                                                                                              className='field-error text-danger' />
+                                                                                <span className="focus-border"></span>
                                                                             </div>
                                                                             <div className={'col-lg-6 mt-3'}>
                                                                                 <label>
@@ -771,27 +756,38 @@ const Education = () => {
                                                                                 <input
                                                                                     type="text"
                                                                                     readOnly={verifySts === 2}
+                                                                                    name={"sSpecialization"}
                                                                                     value={education.sSpecialization}
                                                                                     onChange={(e) => handleChangeSpecialization(e, index)}
                                                                                 />
+                                                                                <ErrorMessage name='sSpecialization' component='div'
+                                                                                              className='field-error text-danger' />
+                                                                                <span className="focus-border"></span>
                                                                             </div>
                                                                             <div className={'col-lg-6'}>
                                                                                 <label>Year of study from</label>
                                                                                 <select value={education.sFrom_year}
+                                                                                        name={"sFrom_year"}
                                                                                         disabled={verifySts === 2}
                                                                                         onChange={(e) => handleYearFromChange(e, index)}>
                                                                                     {options}
                                                                                 </select>
+                                                                                <ErrorMessage name='sFrom_year' component='div'
+                                                                                              className='field-error text-danger' />
+                                                                                <span className="focus-border"></span>
                                                                             </div>
                                                                             <div className={'col-lg-6'}>
                                                                                 <label>Year of study to</label>
                                                                                 <select disabled={verifySts === 2}
                                                                                         value={education.sTo_year}
+                                                                                        name={"sTo_year"}
                                                                                         onChange={(e) => handleYearToChange(e, index)}>
                                                                                     <option value="Present">Present</option>
                                                                                     {options}
                                                                                 </select>
-
+                                                                                <ErrorMessage name='sTo_year' component='div'
+                                                                                              className='field-error text-danger' />
+                                                                                <span className="focus-border"></span>
                                                                             </div>
                                                                             <div className={'col-lg-12 mt-5 mb-3'}>
                                                                                 <div className={'rounded-2 p-3'}
@@ -807,7 +803,6 @@ const Education = () => {
                                                                                         be deleted.
                                                                                         JPG or PNG format; maximum size of
                                                                                         2MB</small>
-
                                                                                     <div>
                                                                                         <label id='label'
                                                                                                className='rbt-btn btn-md btn-gradient hover-icon-reverse'>Upload
@@ -825,7 +820,6 @@ const Education = () => {
                                                                                                      style={{width: 100}}/>
                                                                                             )}
                                                                                         </div>
-
                                                                                     </div>
 
                                                                                 </div>
@@ -974,23 +968,29 @@ const Education = () => {
 
                                             <div className="col-lg-12 mt-5">
                                                 <div className="form-submit-group">
-                                                    <button
-                                                        type="submit"
-                                                        className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
-                                                    >
-                                                        {/*<Link href={"/become-a-tutor/teaching-experience"} className={'text-white'}>*/}
-                                                        <span className="icon-reverse-wrapper">
-                                      <span className="btn-text">Continue</span>
-                                      <span className="btn-icon">
-                                        <i className="feather-arrow-right"></i>
-                                      </span>
-                                      <span className="btn-icon">
-                                        <i className="feather-arrow-right"></i>
-                                      </span>
-                                    </span>
-                                                        {/*</Link>*/}
-
-                                                    </button>
+                                                    {isLoading ? <>
+                                                        <button
+                                                            disabled={true}
+                                                            type="submit"
+                                                            className="rbt-btn btn-md btn-gradient w-100"
+                                                        >
+                                                            <span className="btn-text"><i
+                                                                className="feather-loader"></i>isLoading...</span>
+                                                        </button>
+                                                    </> : <>
+                                                        <button type="submit"
+                                                                className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                                         <span className="icon-reverse-wrapper">
+                                                           <span className="btn-text">Continue</span>
+                                                           <span className="btn-icon">
+                                                             <i className="feather-arrow-right"></i>
+                                                           </span>
+                                                           <span className="btn-icon">
+                                                            <i className="feather-arrow-right"></i>
+                                                           </span>
+                                                        </span>
+                                                        </button>
+                                                    </>}
                                                 </div>
                                             </div>
                                         </div>
@@ -1007,31 +1007,6 @@ const Education = () => {
                 </div>
             </div>
 
-            {/*<div className="rbt-dashboard-content bg-color-white rbt-shadow-box">*/}
-            {/*  <div className="content">*/}
-            {/*    <div className="section-title">*/}
-            {/*      <h4 className="rbt-title-style-3">Certification</h4>*/}
-            {/*    </div>*/}
-            {/*<div className="row g-5">*/}
-            {/*  {Courses.slice(0, 6)?.map((slide, index) => (*/}
-            {/*    <div*/}
-            {/*      className="col-lg-4 col-md-6 col-12"*/}
-            {/*      key={`course-wishlist-${index}`}*/}
-            {/*    >*/}
-            {/*      <CourseWidgets*/}
-            {/*        data={slide}*/}
-            {/*        courseStyle="two"*/}
-            {/*        isCompleted={false}*/}
-            {/*        isProgress={false}*/}
-            {/*        showDescription={false}*/}
-            {/*        showAuthor={false}*/}
-            {/*        isEdit={false}*/}
-            {/*      />*/}
-            {/*    </div>*/}
-            {/*  ))}*/}
-            {/*</div>*/}
-            {/*  </div>*/}
-            {/*</div>*/}
         </>
     );
 };

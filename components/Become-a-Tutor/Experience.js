@@ -33,6 +33,7 @@ const Experience = () => {
       sTo_years:''
     }
   ]);
+  const [TotalExp, setTotalExp] = useState('')
 
   ExperienceList.push(expFields);
   const bindCountry = () => {
@@ -60,14 +61,10 @@ const Experience = () => {
     } else {
       showFields(false)
     }
-    // const { value } = e.target;
-    // const updatedFields = [...expFields];
-    // updatedFields[index].bIs_fresher = value;
-    // setExpFields(updatedFields);
   }
 
   const handleChangeTotalExp = (e, index) => {
-    console.log(e.target.value)
+    // console.log(e.target.value)
     const { value } = e.target;
     if(expFields >= 1){
       const updatedFields = [...expFields];
@@ -81,6 +78,23 @@ const Experience = () => {
     }
 
   };
+
+  const handleTotalExp = (e, index) => {
+    console.log(e.target.value)
+    const { value } = e.target;
+    // if(expFields >= 1){
+    //   const updatedFields = [...expFields];
+    //   updatedFields[index].nTotal_exper = parseInt(value);
+    //   setExpFields(updatedFields);
+    // }
+    // else {
+      const updatedFields = expFields;
+
+      updatedFields[0].nTotal_exper = parseInt(value);
+      console.log('updatedFields', updatedFields)
+      setExpFields(updatedFields);
+    // }
+  }
 
   const handleChangeOnlineExp = (e, index) => {
     console.log(e)
@@ -137,7 +151,6 @@ const Experience = () => {
 
   };
 
-
   const options = [];
 
   for (let i = minOffset; i <= maxOffset; i++) {
@@ -184,34 +197,7 @@ const Experience = () => {
 
     setExpFields(updatedFields);
   };
-  // const handleYearFromChange = (e, index) => {
-  //   const { value } = e.target;
-  //   if(expFields.length >= 1){
-  //     const updatedFields = [...expFields];
-  //     updatedFields[index].sFrom_years = value;
-  //     setExpFields(updatedFields);
-  //   } else {
-  //     const updatedFields = expFields;
-  //     updatedFields.sFrom_years = value;
-  //     setExpFields(updatedFields);
-  //   }
-  // };
-  // const handleYearToChange = (e, index) => {
-  //   const { value } = e.target;
-  //   if(expFields.length >= 1){
-  //     const updatedFields = [...expFields];
-  //     updatedFields[index].sTo_years = value;
-  //     setExpFields(updatedFields);
-  //   } else {
-  //     const updatedFields = expFields;
-  //     updatedFields.sTo_years = value;
-  //     setExpFields(updatedFields);
-  //   }
-  //
-  // };
 
-  // const [educationFields, setEducationFields] = useState([{ id: 1 }]);
-  const [cancelButton, setCancelButton] = useState(false);
 
   const handleAddExperience = () => {
     const newId = expFields.length + 1;
@@ -594,11 +580,10 @@ const Experience = () => {
                       </div>
 
                       <div className={'row'}>
-
                         {fields ? <>
                           {expFields.length >= 1 ? <>
                             {expFields.map((education, index) => {
-                              // console.log(education)
+                              console.log(education)
                               return (
                                   <>
                                     <div key={education.nTTEId}>
@@ -607,20 +592,31 @@ const Experience = () => {
                                           <label style={{fontSize: '15px'}}>
                                             How many years of total experience in teaching?
                                           </label>
-                                          <div className="input-group mb-3">
+                                          {/*<div className="input-group mb-3">*/}
+                                          {/*  <input*/}
+                                          {/*      readOnly={verifySts === 2}*/}
+                                          {/*      type="number"*/}
+                                          {/*      className="form-control"*/}
+                                          {/*      placeholder="Total experience"*/}
+                                          {/*      value={education.nTotal_exper}*/}
+                                          {/*      // value={TotalExp}*/}
+                                          {/*      // onChange={(e) => handleChangeTotalExp(e, index)}*/}
+                                          {/*      onChange={(e) => handleTotalExp(e, index)}*/}
+                                          {/*  />*/}
+                                          {/*  <div className="input-group-append">*/}
+                                          {/*    <span style={{fontSize: '16px'}}*/}
+                                          {/*          className="input-group-text h-100">years</span>*/}
+                                          {/*  </div>*/}
+                                          {/*</div>*/}
+                                          <div className="form-group">
                                             <input
                                                 readOnly={verifySts === 2}
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Total experience"
+                                                onChange={(e) => handleTotalExp(e, index)}
                                                 value={education.nTotal_exper}
-                                                onChange={(e) => handleChangeTotalExp(e, index)}
-
-                                            />
-                                            <div className="input-group-append">
-                                            <span style={{fontSize: '16px'}}
-                                                  className="input-group-text h-100">years</span>
-                                            </div>
+                                                type="number"
+                                                name={"Total Experience"}
+                                                placeholder="Total Experience"/>
+                                            <span className="focus-border"></span>
                                           </div>
                                         </div>
                                         <div className={'col-lg-6 mt-4'}>
@@ -723,9 +719,8 @@ const Experience = () => {
                                   </>
                               )
                             })}
+                            {console.log(verifySts)}
                             {verifySts !== 2 ? <>
-
-                            </> : <>
                               <div className={'col-lg-12 mt-5 mb-5'}>
                                 <button
                                     type={'button'}
@@ -735,6 +730,8 @@ const Experience = () => {
                                   <i className="feather-plus"></i>Add Experience
                                 </button>
                               </div>
+                            </> : <>
+
                             </>}
                           </> : <>
 
@@ -747,16 +744,15 @@ const Experience = () => {
                                   <div className="input-group mb-3">
                                     <input
                                         readOnly={verifySts === 2}
-                                        type="text"
+                                        type="number"
                                         className="form-control"
                                         placeholder="Total experience"
-                                        value={expFields.nTotal_exper}
-                                        onChange={(e) => handleChangeTotalExp(e)}
-
+                                        // value={expFields.nTotal_exper}
+                                        value={expFields[0].nTotal_exper}
+                                        onChange={(e) => handleTotalExp(e, index)}
                                     />
                                     <div className="input-group-append">
-                                            <span style={{fontSize: '16px'}}
-                                                  className="input-group-text h-100">years</span>
+                                      <span style={{fontSize: '16px'}} className="input-group-text h-100">years</span>
                                     </div>
                                   </div>
                                 </div>

@@ -31,6 +31,7 @@ const Interest = () => {
     const [selfCourse, setselfCourse] = useState('')
     const [content, setContent] = useState('')
     const [regId, setregId] = useState('')
+    const [isLoading, setisLoading] = useState(false)
 
     const handleChangeInterest = (e, values) => {
         // console.log(values)
@@ -178,7 +179,7 @@ const Interest = () => {
                             router.push('/become-a-tutor/time-availability')
                         } else {
                             if(tutorcnt !== 0) {
-
+                                setisLoading(true)
                                 await Axios.put(`${API_URL}/api/TutorInterestQue/UpdateTutorInterestQue`, values, {
                                     headers: {
                                         ApiKey: `${API_KEY}`
@@ -199,7 +200,7 @@ const Interest = () => {
                                         }
                                     })
                             } else {
-
+                                setisLoading(true)
                                 await Axios.post(`${API_URL}/api/TutorInterestQue/InsertTutorInterestQue`, values, {
                                     headers: {
                                         ApiKey: `${API_KEY}`
@@ -294,7 +295,7 @@ const Interest = () => {
                                                     </label>
                                                 </div>
                                                 <ErrorMessage name='sOwnCourse' component='div'
-                                                              className='field-error text-danger'/>
+                                                              className='field-error text-danger mt-3 ms-3'/>
                                                 <span className="focus-border"></span>
                                             </div>
                                         </div>
@@ -330,32 +331,36 @@ const Interest = () => {
                                                     </label>
                                                 </div>
                                                 <ErrorMessage name='sContentCourse' component='div'
-                                                              className='field-error text-danger'/>
+                                                              className='field-error text-danger mt-3 ms-3'/>
                                                 <span className="focus-border"></span>
                                             </div>
                                         </div>
 
                                         <div className="col-lg-12 mt-5">
                                             <div className="form-submit-group">
-                                                <button
-                                                    type="submit"
-                                                    className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100"
-                                                >
-                                                    {/*<Link href={"/become-a-tutor/time-availability"}*/}
-                                                    {/*      className={'text-white'}>*/}
-
+                                                {isLoading ? <>
+                                                    <button
+                                                        disabled={true}
+                                                        type="submit"
+                                                        className="rbt-btn btn-md btn-gradient w-100"
+                                                    >
+                                                            <span className="btn-text"><i
+                                                                className="feather-loader"></i>isLoading...</span>
+                                                    </button>
+                                                </> : <>
+                                                    <button type="submit"
+                                                            className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
                                                          <span className="icon-reverse-wrapper">
-                                                          <span className="btn-text">Continue</span>
-                                                          <span className="btn-icon">
+                                                           <span className="btn-text">Continue</span>
+                                                           <span className="btn-icon">
+                                                             <i className="feather-arrow-right"></i>
+                                                           </span>
+                                                           <span className="btn-icon">
                                                             <i className="feather-arrow-right"></i>
-                                                          </span>
-                                                          <span className="btn-icon">
-                                                            <i className="feather-arrow-right"></i>
-                                                          </span>
+                                                           </span>
                                                         </span>
-                                                    {/*</Link>*/}
-
-                                                </button>
+                                                    </button>
+                                                </>}
                                             </div>
                                         </div>
                                     </div>
