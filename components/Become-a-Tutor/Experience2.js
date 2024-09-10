@@ -50,7 +50,7 @@ const Experience = () => {
     const handleChange = (e, index) => {
         console.log(e.target.value)
         setIsFresher(e.target.checked)
-        if(e.target.value === '1') {
+        if(e.target.value === 'Experience') {
             showFields(true)
         } else {
             showFields(false)
@@ -630,10 +630,11 @@ const Experience = () => {
                                                     Are you a fresher or an experienced teacher?
                                                 </label>
                                             </div>
-                                            <div className={'d-flex'}>
+                                            <div className={'d-flex mb-3'}>
                                                 <div>
                                                     {Isfresher === 1 ? <>
-                                                        <input id="sIs_fresher" disabled={verifySts === 2} value={Isfresher}
+                                                        <input id="sIs_fresher" disabled={verifySts === 2}
+                                                               value={'Fresher'}
                                                                checked
                                                                onChange={handleChange} type="radio"
                                                                name="sIs_fresher"
@@ -642,7 +643,8 @@ const Experience = () => {
                                                             Fresher
                                                         </label>
                                                     </> : <>
-                                                        <input id="sIs_fresher" disabled={verifySts === 2} value={Isfresher}
+                                                        <input id="sIs_fresher" disabled={verifySts === 2}
+                                                               value={'Fresher'}
                                                                onChange={handleChange} type="radio"
                                                                name="sIs_fresher"
                                                                className="custom-radio"/>
@@ -651,26 +653,48 @@ const Experience = () => {
                                                         </label>
                                                     </>}
                                                 </div>
-                                                <div className={"ms-3 mb-3"}>
+                                                <div className={'ms-3'}>
                                                     {Isfresher === 0 ? <>
                                                         <input id="sIs_fresher" disabled={verifySts === 2}
-                                                               value={Isfresher} checked
+                                                               value={'Experience'}
+                                                               checked
                                                                onChange={handleChange} type="radio"
-                                                               name="sIs_fresher"/>
+                                                               name="sIs_fresher"
+                                                               className="custom-radio"/>
                                                         <label htmlFor="sIs_fresher">
                                                             Experience
                                                         </label>
                                                     </> : <>
                                                         <input id="sIs_fresher" disabled={verifySts === 2}
-                                                               value={Isfresher}
+                                                               value={'Experience'}
                                                                onChange={handleChange} type="radio"
-                                                               name="sIs_fresher"/>
+                                                               name="sIs_fresher"
+                                                               className="custom-radio"/>
                                                         <label htmlFor="sIs_fresher">
                                                             Experience
                                                         </label>
                                                     </>}
-
                                                 </div>
+                                                {/*<div className={""}>*/}
+                                                {/*    {Isfresher === 0 ? <>*/}
+                                                {/*        <input id="sIs_fresher" disabled={verifySts === 2}*/}
+                                                {/*               value={'Experience'} checked*/}
+                                                {/*               onChange={handleChange} type="radio"*/}
+                                                {/*               name="sIs_fresher"/>*/}
+                                                {/*        <label htmlFor="sIs_fresher">*/}
+                                                {/*            Experience*/}
+                                                {/*        </label>*/}
+                                                {/*    </> : <>*/}
+                                                {/*        <input id="sIs_fresher" disabled={verifySts === 2}*/}
+                                                {/*               value={'Experience'}*/}
+                                                {/*               onChange={handleChange} type="radio"*/}
+                                                {/*               name="sIs_fresher"/>*/}
+                                                {/*        <label htmlFor="sIs_fresher">*/}
+                                                {/*            Experience*/}
+                                                {/*        </label>*/}
+                                                {/*    </>}*/}
+
+                                                {/*</div>*/}
 
                                                 <ErrorMessage name='sIs_fresher' component='div'
                                                               className='field-error text-danger'/>
@@ -976,7 +1000,6 @@ const Experience = () => {
                                             {/*            </>}*/}
                                             {/*        </div>*/}
                                             {/*    </div>*/}
-
 
                                             </>}
 

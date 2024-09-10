@@ -1165,11 +1165,10 @@ const MainDemo = () => {
                             >
                               <div className="rbt-card-img">
                                 <Link href={`/blog-details/${data.nBId}`}>
-                                  <Image className={"position-relative"} objectFit="none" fill={true}
+                                  <Image className={"position-relative"} objectFit="none"
                                          src={data.sImagePath}
                                          width={580}
                                          height={300}
-                                      // priority
                                          alt="Card image"
                                   />{" "}
                                 </Link>
@@ -1264,7 +1263,7 @@ const MainDemo = () => {
                             >
                               <div className="rbt-card-img">
                                 <Link href={`/blog-details/${data.nBId}`}>
-                                  <Image className={"position-relative"} objectFit="none" fill={true}
+                                  <Image className={"position-relative"} objectFit="none"
                                          src={data.sImagePath}
                                          width={580}
                                          height={300}

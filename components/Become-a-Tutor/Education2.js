@@ -404,7 +404,7 @@ const Education = () => {
                 }
             })
                 .then(res => {
-                    console.log(res.data, verifyeduSts)
+                    console.log(res.data)
                     if (verifyeduSts === 2) {
                         // if () {
                         //
@@ -413,7 +413,7 @@ const Education = () => {
                         sethideFields(false)
                     }
                     const array = res.data.map((item, index) => {
-                        return item.nTCId
+                        return item.nTEId
                     })
 
                     // console.log(array)
@@ -447,8 +447,10 @@ const Education = () => {
                             sEducation : EducationList[0]
                         }}
                         enableReinitialize={true}
+
+
                         onSubmit={async (values, {resetForm}) => {
-                            console.log(values)
+                            console.log([values])
                             // console.log([values])s
                             if(verifySts === 2) {
                                 router.push('/become-a-tutor/certification')
@@ -490,7 +492,7 @@ const Education = () => {
                                             deleteId: deletedArray,
                                             sEducation : EducationList[0]
                                         }]
-                                        // console.log(updateValues)
+                                        console.log('updateValues', updateValues)
                                         setisLoading(true)
                                         await Axios.put(`${API_URL}/api/TutorEducation/UpdateTutorEducation  `, updateValues, {
                                             headers: {

@@ -143,6 +143,8 @@ const Basics = () => {
 
     const  handleChangeCountry = (e) => {
     if (e.target.value) {
+        setstateId('')
+        setcityId('')
       setcountryId(e.target.value)
         if (e.target.value !== '') {
             Axios.get(`${API_URL}/api/registration/BindState/${e.target.value}`, {
@@ -168,6 +170,7 @@ const Basics = () => {
 
     const  handleChangeState = (e) => {
     if (e.target.value) {
+        setcityId('')
       setstateId(e.target.value)
         if (e.target.value !== '') {
           Axios.get(`${API_URL}/api/registration/BindCity/${e.target.value}`, {
@@ -193,6 +196,7 @@ const Basics = () => {
     const [showEmailCheck, setshowEmailcheck] = useState(false)
 
     const handleChangeCity = (e) => {
+
     setcityId(e.target.value)
   }
 
@@ -1139,7 +1143,8 @@ const Basics = () => {
                                   </label>
                                   {/*<div className="rbt-modern-select bg-transparent height-45">*/}
                                   {verifysts.sBasic_verify === 2 ? <>
-                                      <select disabled={true} value={cityId} style={{fontSize: '15px', color: '#6b7385'}}
+                                      <select disabled={true} value={cityId}
+                                              style={{fontSize: '15px', color: '#6b7385'}}
                                               name={"nCityId"}
                                               className={`form-control bg-secondary-opacity ${errors.nCityId && touched.nCityId && 'is-invalid'}`}
                                               onChange={handleChangeCity}>
@@ -1158,6 +1163,7 @@ const Basics = () => {
                                               name={"nCityId"}
                                               className={`form-control ${errors.nCityId && touched.nCityId && 'is-invalid'}`}
                                               onChange={handleChangeCity}>
+                                          <option value={''}>Select</option>
                                           {city.map((item, index) => {
                                               return (
                                                   <>

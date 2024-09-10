@@ -536,7 +536,7 @@ const Experience = () => {
                           <label style={{fontSize: '16px'}}>
                             Are you a fresher or an experienced teacher?
                           </label>
-                          <div className={'d-flex'}>
+                          <div className={''}>
                             <div>
                               {Isfresher === 1 ? <>
                                 <input id="fresher" disabled={verifySts === 2} value={'fresher'} checked
