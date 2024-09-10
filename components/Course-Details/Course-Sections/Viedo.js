@@ -378,7 +378,7 @@ const Viedo = ({ checkMatchCourses }) => {
         <div className="video-content">
           <Image className={'position-relative'} src={checkMatchCourses.sImagePath} height={255} width={355}></Image>
 
-          {checkMatchCourses.sVideoURL !== "" || checkMatchCourses.sVideoPath !== null ? <>
+          {checkMatchCourses.sVideoPath !== null ? <>
             <div className="position-to-top">
             <span className="rbt-btn rounded-player-2 with-animation">
               <span className="play-icon"></span>
