@@ -194,7 +194,7 @@ const Availability = () => {
                 </>}
             </>}
           <Formik
-              validationSchema={UserValidationSchema}
+              // validationSchema={UserValidationSchema}
               initialValues={{
                   nRegId : regId,
                   nCountryId: countryId ? countryId : '',

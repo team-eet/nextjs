@@ -420,7 +420,7 @@ const Experience = () => {
                 <div className="content">
 
                     <Formik
-                        validationSchema={UserValidationSchema}
+                        // validationSchema={UserValidationSchema}
                         initialValues={{
                             nRegId : regId,
                             sExperience : ExperienceList[0]
@@ -1007,26 +1007,21 @@ const Experience = () => {
                                             <div className="col-lg-12 mt-5">
                                                 <div className="form-submit-group">
                                                     {isLoading ? <>
-                                                        <button
-                                                            disabled={true}
-                                                            type="submit"
-                                                            className="rbt-btn btn-md btn-gradient w-100"
-                                                        >
-                                                            <span className="btn-text"><i
-                                                                className="feather-loader"></i>isLoading...</span>
+                                                        <button disabled={true} type="submit" className="rbt-btn btn-md btn-gradient w-100">
+                                                            <span className="btn-text">
+                                                                <i className="feather-loader"></i>isLoading...</span>
                                                         </button>
                                                     </> : <>
-                                                        <button type="submit"
-                                                                className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
-                                                         <span className="icon-reverse-wrapper">
-                                                           <span className="btn-text">Continue</span>
-                                                           <span className="btn-icon">
-                                                             <i className="feather-arrow-right"></i>
-                                                           </span>
-                                                           <span className="btn-icon">
-                                                            <i className="feather-arrow-right"></i>
-                                                           </span>
-                                                        </span>
+                                                        <button type="submit" className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                                                 <span className="icon-reverse-wrapper">
+                                                                   <span className="btn-text">Continue</span>
+                                                                   <span className="btn-icon">
+                                                                     <i className="feather-arrow-right"></i>
+                                                                   </span>
+                                                                   <span className="btn-icon">
+                                                                    <i className="feather-arrow-right"></i>
+                                                                   </span>
+                                                                </span>
                                                         </button>
                                                     </>}
                                                 </div>

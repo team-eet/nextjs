@@ -56,7 +56,7 @@ const TeacherPage = () => {
 
           <MobileMenu />
           <Cart />
-          {verifysts === 1 ? <>
+          {verifysts === 2 ? <>
               <VerifyBreadCrumb title="Cheers to your success as a tutor"  />
           </> : <>
               <BreadCrumb title="Start Your Tutoring Journey Today" text="Become a Tutor"/>
