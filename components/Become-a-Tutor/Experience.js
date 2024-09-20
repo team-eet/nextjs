@@ -630,11 +630,9 @@ const Experience = () => {
                                                 value={education.nTotal_online_exper}
                                                 className="form-control"
                                                 placeholder="online experience"
-                                                onChange={(e) => handleChangeOnlineExp(e, index)}
-                                            />
+                                                onChange={(e) => handleChangeOnlineExp(e, index)}/>
                                             <div className="input-group-append">
-                                            <span style={{fontSize: '14px'}}
-                                                  className="input-group-text h-100">years</span>
+                                              <span style={{fontSize: '14px'}} className="input-group-text h-100">years</span>
                                             </div>
                                           </div>
                                         </div>
