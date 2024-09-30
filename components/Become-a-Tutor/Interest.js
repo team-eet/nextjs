@@ -112,12 +112,12 @@ const Interest = () => {
             }
         })
             .then(res => {
-                // console.log(res.data)
+                console.log(res.data)
                 if(res.data.length !== 0){
                     const daysString = res.data[0]['sFieldOfInterest'];
 
                     const daysArray = daysString.split(",");
-                    // console.log(daysArray)
+                    // console.log('daysArray', daysArray)
                     setInterest(daysArray)
                     setselfCourse(res.data[0]['sOwnCourse'])
                     setContent(res.data[0]['sContentCourse'])
@@ -129,6 +129,25 @@ const Interest = () => {
                 { ErrorDefaultAlert(err) }
 
             })
+
+            Axios.get(`${API_URL}/api/TutorBasics/GetTutorDetails/${JSON.parse(localStorage.getItem('userData')).regid}`, {
+                headers: {
+                    ApiKey: `${API_KEY}`
+                }
+            })
+                .then(res => {
+                    if(res.data.length !== 0) {
+                        if(res.data[0].bIsReview !== 0) {
+                            router.push('/become-a-tutor/Review')
+                        } else {
+
+                        }
+                    }
+                    console.log(res.data)
+                })
+                .catch(err => {
+                    { ErrorDefaultAlert(err) }
+                })
 
         }
     }, []);
@@ -174,7 +193,7 @@ const Interest = () => {
                     }}
                     enableReinitialize={true}
                     onSubmit={async (values, {resetForm}) => {
-                        // console.log(values)
+                        console.log(values)
                         if(verifySts === 2) {
                             router.push('/become-a-tutor/time-availability')
                         } else {
@@ -247,6 +266,7 @@ const Interest = () => {
                                                     name={'sFieldOfInterest'}
                                                     limitTags={3} // displays only 3 max tags of autocomplete when not in focus
                                                     options={category}
+                                                    value={Interest}
                                                     onChange={handleChangeInterest}
                                                     getOptionLabel={(option) => option.sCategory}
                                                     renderInput={(params) => (

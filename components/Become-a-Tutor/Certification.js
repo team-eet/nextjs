@@ -147,12 +147,21 @@ const Certification = () => {
   //    setcertificationFields(updatedFields);
   //  }
   // };
+  const [gettutorDetails, settutorDetails] = useState([])
+
 
   const handleYearFromChange = (e, index) => {
     const { value } = e.target;
     const updatedFields = [...certificationFields];
+    const yearOfBirth = new Date(gettutorDetails[0].dDOB).getFullYear(); // Extract the year from DOB
+
 
     updatedFields[index].sFrom_year = value;
+
+    if (parseInt(value) < yearOfBirth) {
+      alert(`Year of study "From" should not be greater than the year of birth (${yearOfBirth}).`);
+      return; // Stop further execution
+    }
 
     // Validation: Check if "To" year is less than "From" year
     if (
@@ -364,6 +373,14 @@ const Certification = () => {
 
           // ---------------------
           if(res.data.length !== 0) {
+            const certivalue = res.data.map((item, index) => {
+              return item.sCertification_comment
+            })
+            console.log(certivalue)
+            if(certivalue[0] === 'No Certification') {
+              sethideFields(false)
+            }
+            setisCertified(certivalue[0])
             setcertificationFields(res.data)
           } else {
 
@@ -376,6 +393,26 @@ const Certification = () => {
           { ErrorDefaultAlert(err) }
         })
 
+      Axios.get(`${API_URL}/api/TutorBasics/GetTutorDetails/${JSON.parse(localStorage.getItem('userData')).regid}`, {
+        headers: {
+          ApiKey: `${API_KEY}`
+        }
+      })
+          .then(res => {
+            if(res.data.length !== 0) {
+              settutorDetails(res.data)
+              if(res.data[0].bIsReview !== 0) {
+                router.push('/become-a-tutor/Review')
+              } else {
+
+              }
+            }
+            console.log('GetTutorDetails' ,res.data)
+
+          })
+          .catch(err => {
+            { ErrorDefaultAlert(err) }
+          })
     }
   }, []);
 
@@ -605,19 +642,36 @@ const Certification = () => {
                             </>}
                           </>}
                           <p>Let us know about teaching certification</p>
-                          {verifySts === 2 ? <>
-                            <input id="Certifcation" type="checkbox" checked value={isCertified} name="isCertification"
-                                   onChange={handleIsCertification}/>
-                            <label htmlFor="Certifcation">
-                              I have not pursued any professional teaching certification
-                            </label>
+                          {isCertified === 'No Certification' ? <>
+                            {verifySts === 2 ? <>
+                              <input id="Certifcation" type="checkbox" checked value={isCertified} name="isCertification"
+                                     onChange={handleIsCertification}/>
+                              <label htmlFor="Certifcation">
+                                I have not pursued any professional teaching certification
+                              </label>
+                            </> : <>
+                              <input id="Certifcation" type="checkbox" checked value={isCertified} name="isCertification"
+                                     onChange={handleIsCertification}/>
+                              <label htmlFor="Certifcation">
+                                I have not pursued any professional teaching certification
+                              </label>
+                            </>}
                           </> : <>
-                            <input id="Certifcation" type="checkbox" value={isCertified} name="isCertification"
-                                   onChange={handleIsCertification}/>
-                            <label htmlFor="Certifcation">
-                              I have not pursued any professional teaching certification
-                            </label>
+                            {verifySts === 2 ? <>
+                              <input id="Certifcation" type="checkbox" checked value={isCertified} name="isCertification"
+                                     onChange={handleIsCertification}/>
+                              <label htmlFor="Certifcation">
+                                I have not pursued any professional teaching certification
+                              </label>
+                            </> : <>
+                              <input id="Certifcation" type="checkbox" value={isCertified} name="isCertification"
+                                     onChange={handleIsCertification}/>
+                              <label htmlFor="Certifcation">
+                                I have not pursued any professional teaching certification
+                              </label>
+                            </>}
                           </>}
+
 
                         </div>
                         <div className={'row'}>

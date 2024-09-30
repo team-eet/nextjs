@@ -166,10 +166,19 @@ const Cover = () => {
             }
         })
             .then(res => {
-                // console.log(res.data)
-                setSImagePathRight(res.data[0]['sCoverPhotoRightPath'])
-                setSImagePathLeft(res.data[0]['sCoverPhotoLeftPath'])
-                setSImagePathCenter(res.data[0]['sCoverPhotoCenterPath'])
+                if(res.data.length !== 0) {
+
+                    // console.log(res.data)
+                    setSImagePathRight(res.data[0]['sCoverPhotoRightPath'])
+                    setSImagePathLeft(res.data[0]['sCoverPhotoLeftPath'])
+                    setSImagePathCenter(res.data[0]['sCoverPhotoCenterPath'])
+                    if(res.data[0].bIsReview !== 0) {
+                        router.push('/become-a-tutor/Review')
+                    } else {
+
+                    }
+                }
+
                 // setTutorDetail(res.data[0])
 
             })
@@ -308,14 +317,14 @@ const Cover = () => {
                                                     let array = array2[0].split(',').map(Number);
                                                     const url1 = window.location.href.split('/')
                                                     // console.log(url1[4])
-                                                    console.log('---------------', array);
+                                                    // console.log('---------------', array);
                                                     let array1 = ['basics', 'profile-photo', 'cover-photo', 'cover-photo', 'cover-photo', 'education', 'certification', 'teaching-experience', 'description', 'intro-video', 'interest', 'time-availability'];
                                                     const filter = array1.findIndex((item) => item === url1[4])
                                                     // console.log(filter)
                                                     let url = array1
                                                     let verify_string = array;
                                                     const final_verifySts = verify_string.slice(filter)
-                                                    console.log('-----------------', final_verifySts)
+                                                    // console.log('-----------------', final_verifySts)
                                                     if(final_verifySts.length !== 0){
                                                         // Check the 0th position in array2 and get the corresponding string from array1
                                                         let positionToCheck = verify_string[0];
@@ -404,7 +413,7 @@ const Cover = () => {
                                             <div className={'col-lg-6'}>
                                                 <FormGroup>
                                                     <input type="file" name="sCoverPhotoLeftPath" className={'p-0'}
-                                                           onChange={onChangeLeftImage}/>
+                                                           onChange={onChangeLeftImage} accept="image/*" />
                                                     <small>JPG or PNG format, maximum 2 MB</small>
                                                     {sImagePathLeft ?
                                                         <img src={sImagePathLeft} height={200} width={200}/> : ''}
@@ -421,7 +430,7 @@ const Cover = () => {
                                             <div className={'col-lg-6 mt-5'}>
                                                 <FormGroup>
                                                     <input type="file" name={"sCoverPhotoCenterPath"} className={'p-0'}
-                                                           onChange={onChangeCenterImage}/>
+                                                           onChange={onChangeCenterImage} accept="image/*"/>
                                                     <small>JPG or PNG format, maximum 2 MB</small>
                                                     {sImagePathCenter ?
                                                         <img src={sImagePathCenter} height={200} width={200}/> : ''}
@@ -438,7 +447,7 @@ const Cover = () => {
                                             <div className={'col-lg-6 mt-5'}>
                                                 <FormGroup>
                                                     <input type="file" name={"sCoverPhotoRightPath"} className={'p-0'}
-                                                           onChange={onChangeRightImage}/>
+                                                           onChange={onChangeRightImage} accept="image/*"/>
                                                     <small>JPG or PNG format, maximum 2 MB</small>
                                                     {sImagePathRight ? <img src={sImagePathRight} height={200} width={200}/> : ''}
                                                 </FormGroup>

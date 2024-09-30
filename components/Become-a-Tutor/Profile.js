@@ -85,7 +85,7 @@ const Profile = () => {
                 }
             })
                 .then(res => {
-                    console.log(res.data)
+                    // console.log(res.data)
                     if(res.data.length !== 0) {
                         setverifySts(res.data[0])
                     }
@@ -105,6 +105,11 @@ const Profile = () => {
                 // console.log(res.data)
                 if (res.data.length !== 0) {
                     setSImagePath(res.data[0]['sProfilePhotoPath'])
+                    if(res.data[0].bIsReview !== 0) {
+                        router.push('/become-a-tutor/Review')
+                    } else {
+
+                    }
                 }
 
                 // setTutorDetail(res.data[0])
@@ -165,7 +170,7 @@ const Profile = () => {
                     }}
                     enableReinitialize={true}
                     onSubmit={async (values, {resetForm}) => {
-                        console.log(values)
+                        // console.log(values)
                         if(verifysts.sProfilePhoto_verify === 2) {
                             router.push('/become-a-tutor/cover-photo')
                         } else {
@@ -176,7 +181,7 @@ const Profile = () => {
                                 }
                             }).then(res => {
                                 // console.log(values)
-                                console.log(res.data)
+                                // console.log(res.data)
 
                                 const retData = JSON.parse(res.data)
                                 resetForm({})
@@ -187,7 +192,7 @@ const Profile = () => {
                                         }
                                     })
                                         .then(res => {
-                                            console.log(res.data)
+                                            // console.log(res.data)
 
                                             if(res.data.length !== 0) {
                                                 const array2 = res.data.map((item) => {

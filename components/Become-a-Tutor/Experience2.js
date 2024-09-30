@@ -80,6 +80,13 @@ const Experience = () => {
         const { value } = e.target;
         let totalExp = parseFloat(value);
 
+        if (value === "") {
+            const updatedFields = [...expFields];
+            updatedFields[index].nTotal_exper = ""; // Set to empty string when input is cleared
+            setExpFields(updatedFields);
+            return; // Stop further execution
+        }
+
         // Validate that totalExp is a number
         if (isNaN(totalExp) || totalExp < 0) {
             return; // Ignore invalid inputs
@@ -100,6 +107,14 @@ const Experience = () => {
 
     const handleChangeOnlineExp = (e, index) => {
         const { value } = e.target;
+
+        if (value === "") {
+            const updatedFields = [...expFields];
+            updatedFields[index].nTotal_online_exper = ""; // Set to empty string when input is cleared
+            setExpFields(updatedFields);
+            return; // Stop further execution
+        }
+
         let onlineExp = parseFloat(value);
 
         // Validate that onlineExp is a number
@@ -110,7 +125,7 @@ const Experience = () => {
         const updatedFields = [...expFields];
 
         // Ensure online experience does not exceed total experience
-        if (onlineExp >= parseFloat(updatedFields[index].nTotal_exper)) {
+        if (onlineExp > parseFloat(updatedFields[index].nTotal_exper)) {
             alert('online exp cannot be grater than total exp')
             updatedFields[index].nTotal_online_exper = '';
             // onlineExp = updatedFields[index].nTotal_online_exper; // Cap online experience to the total experience
@@ -214,11 +229,19 @@ const Experience = () => {
         }
     };
 
+    const [gettutorDetails, settutorDetails] = useState([])
+
     const handleYearFromChange = (e, index) => {
         const { value } = e.target;
         const updatedFields = [...expFields];
+        const yearOfBirth = new Date(gettutorDetails[0].dDOB).getFullYear(); // Extract the year from DOB
 
         updatedFields[index].sFrom_years = value;
+
+        if (parseInt(value) < yearOfBirth) {
+            alert(`Year of study "From" should not be greater than the year of birth (${yearOfBirth}).`);
+            return; // Stop further execution
+        }
 
         // Validation: Check if "To" year is less than "From" year
         if (
@@ -340,6 +363,7 @@ const Experience = () => {
     const [verifySts, setverifySts] = useState()
     const [nocertificate, setnocertificate] = useState(false)
 
+
     useEffect(() => {
         if(localStorage.getItem('userData')) {
             setregId(JSON.parse(localStorage.getItem('userData')).regid)
@@ -376,7 +400,7 @@ const Experience = () => {
                     { ErrorDefaultAlert(err) }
                 })
 
-            Axios.get(`${API_URL}/api/TutorTeachExperience/GetTutorTeachExper/${JSON.parse(localStorage.getItem('userData')).regid}`, {
+            Axios.get(`${API_URL}/api/TutorTeachExperience/GetTutorExpData/${JSON.parse(localStorage.getItem('userData')).regid}`, {
                 headers: {
                     ApiKey: `${API_KEY}`
                 }
@@ -384,18 +408,17 @@ const Experience = () => {
                 .then(res => {
                     console.log(res.data)
                     if(res.data.length !== 0){
-                        setIsFresher(res.data[0]['sIs_fresher'])
-                        if(res.data[0]['sIs_fresher'] === 0){
-                            showFields(true)
-                        } else {
+                        if(res.data[0]['sTeachExper_comment'] === 'Fresher'){
                             showFields(false)
+                            setIsFresher(res.data[0]['sTeachExper_comment'])
+                        } else {
+                            setIsFresher('Experience')
+                            showFields(true)
                         }
-
                         const array = res.data.map((item, index) => {
                             return item.nTTEId
                         })
 
-                        // console.log(array)
                         setUpdatearray(array)
                     }
 
@@ -406,6 +429,27 @@ const Experience = () => {
                         setExpFields(expFields)
                     }
                     // ---------------------
+
+                })
+                .catch(err => {
+                    { ErrorDefaultAlert(err) }
+                })
+
+            Axios.get(`${API_URL}/api/TutorBasics/GetTutorDetails/${JSON.parse(localStorage.getItem('userData')).regid}`, {
+                headers: {
+                    ApiKey: `${API_KEY}`
+                }
+            })
+                .then(res => {
+                    if(res.data.length !== 0){
+                        settutorDetails(res.data)
+                        if(res.data[0].bIsReview !== 0) {
+                            router.push('/become-a-tutor/Review')
+                        } else {
+
+                        }
+                    }
+                    console.log('GetTutorDetails' ,res.data)
 
                 })
                 .catch(err => {
@@ -470,68 +514,102 @@ const Experience = () => {
                                             deleteId: deletedArray,
                                             sExperience : ExperienceList[0]
                                         }]
-                                        // console.log(updateValues)
+                                        console.log(updateValues)
                                         // console.log(hideFields)
                                         setisLoading(true)
-                                        await Axios.put(`${API_URL}/api/TutorTeachExperience/UpdateTutorTeachExper`, updateValues, {
-                                            headers: {
-                                                ApiKey: `${API_KEY}`
+                                       // first time
+                                        // status == 0 call InsertTutorBasicTeachExp
+
+
+                                        if(Isfresher === 'Fresher') {
+                                            const noExperience = {
+                                                nRegId : regId,
+                                                sIsExperience : "fresher"
                                             }
-                                        }).then(res => {
-                                            console.log(res.data)
-                                            const retData = JSON.parse(res.data)
-                                            // localStorage.removeItem('verify_uname')
-                                            // console.log(retData)
-                                            resetForm({})
-
-                                            if(retData.success === '1') {
-                                                Axios.get(`${API_URL}/api/TutorBasics/GetTutorDetails/${JSON.parse(localStorage.getItem('userData')).regid}`, {
-                                                    headers: {
-                                                        ApiKey: `${API_KEY}`
-                                                    }
-                                                })
-                                                    .then(res => {
-                                                        // console.log(res.data)
-                                                        if(res.data.length !== 0) {
-                                                            const array2 = res.data.map((item) => {
-                                                                return item.verify_list
-                                                            })
-                                                            // console.log(array2)
-                                                            let array = array2[0].split(',').map(Number);
-                                                            // console.log('---------------', array);
-                                                            let array1 = ['basics', 'profile-photo', 'cover-photo', 'cover-photo', 'cover-photo', 'education', 'certification', 'teaching-experience', 'description', 'intro-video', 'interest', 'time-availability'];
-
-                                                            let url = array1
-                                                            let verify_string = array;
-                                                            if(verify_string.length !== 0){
-                                                                // Check the 0th position in array2 and get the corresponding string from array1
-                                                                let positionToCheck = verify_string[0];
-                                                                // let conditionString = url[positionToCheck - 1];
-
-                                                                // Check the position of the first 3 numbers in array2
-                                                                let positionOfThree = verify_string.findIndex(num => num === 3);
-
-                                                                // Get the string at that position from array1
-                                                                let stringForUrl = url[positionOfThree];
-
-                                                                console.log('stringForUrl', stringForUrl)
-                                                                router.push(`/become-a-tutor/description`)
-                                                            } else {
-                                                                router.push('/become-a-tutor/description')
-                                                            }
-                                                        }
-                                                    })
-                                                    .catch(err => {
-                                                        { ErrorDefaultAlert(err) }
-                                                    })
-
-                                            }
-                                        })
-                                            .catch(err => {
-                                                {
-                                                    ErrorDefaultAlert(JSON.stringify(err.response))
+                                            setisLoading(true)
+                                            // console.log(noExperience)
+                                            await Axios.post(`${API_URL}/api/TutorTeachExperience/InsertTutorBasicTeachExp`, noExperience, {
+                                                headers: {
+                                                    ApiKey: `${API_KEY}`
+                                                    // 'Content-Type' : 'application/json'
+                                                }
+                                            }).then(res => {
+                                                console.log(res.data)
+                                                const retData = JSON.parse(res.data)
+                                                // localStorage.removeItem('verify_uname')
+                                                // console.log(retData)
+                                                resetForm({})
+                                                if(retData.success === '1') {
+                                                    router.push('/become-a-tutor/description')
                                                 }
                                             })
+                                                .catch(err => {
+                                                    {
+                                                        ErrorDefaultAlert(JSON.stringify(err.response))
+                                                    }
+                                                })
+                                        } else {
+                                            await Axios.put(`${API_URL}/api/TutorTeachExperience/UpdateTutorTeachExper`, updateValues, {
+                                                headers: {
+                                                    ApiKey: `${API_KEY}`
+                                                }
+                                            }).then(res => {
+                                                console.log(res.data)
+                                                const retData = JSON.parse(res.data)
+                                                // localStorage.removeItem('verify_uname')
+                                                // console.log(retData)
+                                                resetForm({})
+
+                                                if(retData.success === '1') {
+                                                    Axios.get(`${API_URL}/api/TutorBasics/GetTutorDetails/${JSON.parse(localStorage.getItem('userData')).regid}`, {
+                                                        headers: {
+                                                            ApiKey: `${API_KEY}`
+                                                        }
+                                                    })
+                                                        .then(res => {
+                                                            // console.log(res.data)
+                                                            if(res.data.length !== 0) {
+                                                                const array2 = res.data.map((item) => {
+                                                                    return item.verify_list
+                                                                })
+                                                                // console.log(array2)
+                                                                let array = array2[0].split(',').map(Number);
+                                                                // console.log('---------------', array);
+                                                                let array1 = ['basics', 'profile-photo', 'cover-photo', 'cover-photo', 'cover-photo', 'education', 'certification', 'teaching-experience', 'description', 'intro-video', 'interest', 'time-availability'];
+
+                                                                let url = array1
+                                                                let verify_string = array;
+                                                                if(verify_string.length !== 0){
+                                                                    // Check the 0th position in array2 and get the corresponding string from array1
+                                                                    let positionToCheck = verify_string[0];
+                                                                    // let conditionString = url[positionToCheck - 1];
+
+                                                                    // Check the position of the first 3 numbers in array2
+                                                                    let positionOfThree = verify_string.findIndex(num => num === 3);
+
+                                                                    // Get the string at that position from array1
+                                                                    let stringForUrl = url[positionOfThree];
+
+                                                                    console.log('stringForUrl', stringForUrl)
+                                                                    router.push(`/become-a-tutor/description`)
+                                                                } else {
+                                                                    router.push('/become-a-tutor/description')
+                                                                }
+                                                            }
+                                                        })
+                                                        .catch(err => {
+                                                            { ErrorDefaultAlert(err) }
+                                                        })
+
+                                                }
+                                            })
+                                                .catch(err => {
+                                                    {
+                                                        ErrorDefaultAlert(JSON.stringify(err.response))
+                                                    }
+                                                })
+                                        }
+
                                     }
                                 } else {
                                     // console.log(hideFields)
@@ -630,75 +708,130 @@ const Experience = () => {
                                                     Are you a fresher or an experienced teacher?
                                                 </label>
                                             </div>
-                                            <div className={'d-flex mb-3'}>
-                                                <div>
-                                                    {Isfresher === 1 ? <>
-                                                        <input id="sIs_fresher" disabled={verifySts === 2}
-                                                               value={'Fresher'}
-                                                               checked
-                                                               onChange={handleChange} type="radio"
-                                                               name="sIs_fresher"
-                                                               className="custom-radio"/>
-                                                        <label htmlFor="sIs_fresher">
+                                            {/*<div className={'d-flex mb-3'}>*/}
+                                            {/*    <div>*/}
+                                            {/*        {Isfresher === 1 ? <>*/}
+                                            {/*            <input id="sIs_fresher" disabled={verifySts === 2}*/}
+                                            {/*                   value={'Fresher'}*/}
+                                            {/*                   checked*/}
+                                            {/*                   onChange={handleChange} type="radio"*/}
+                                            {/*                   name="sIs_fresher"*/}
+                                            {/*                   className="custom-radio"/>*/}
+                                            {/*            <label htmlFor="sIs_fresher">*/}
+                                            {/*                Fresher*/}
+                                            {/*            </label>*/}
+                                            {/*        </> : <>*/}
+                                            {/*            <input id="sIs_fresher" disabled={verifySts === 2}*/}
+                                            {/*                   value={'Fresher'}*/}
+                                            {/*                   onChange={handleChange} type="radio"*/}
+                                            {/*                   name="sIs_fresher"*/}
+                                            {/*                   className="custom-radio"/>*/}
+                                            {/*            <label htmlFor="sIs_fresher">*/}
+                                            {/*                Fresher*/}
+                                            {/*            </label>*/}
+                                            {/*        </>}*/}
+                                            {/*    </div>*/}
+                                            {/*    <div className={'ms-3'}>*/}
+                                            {/*        {Isfresher === 0 ? <>*/}
+                                            {/*            <input id="sIs_fresher" disabled={verifySts === 2}*/}
+                                            {/*                   value={'Experience'}*/}
+                                            {/*                   checked*/}
+                                            {/*                   onChange={handleChange} type="radio"*/}
+                                            {/*                   name="sIs_fresher"*/}
+                                            {/*                   className="custom-radio"/>*/}
+                                            {/*            <label htmlFor="sIs_fresher">*/}
+                                            {/*                Experience*/}
+                                            {/*            </label>*/}
+                                            {/*        </> : <>*/}
+                                            {/*            <input id="sIs_fresher" disabled={verifySts === 2}*/}
+                                            {/*                   value={'Experience'}*/}
+                                            {/*                   onChange={handleChange} type="radio"*/}
+                                            {/*                   name="sIs_fresher"*/}
+                                            {/*                   className="custom-radio"/>*/}
+                                            {/*            <label htmlFor="sIs_fresher">*/}
+                                            {/*                Experience*/}
+                                            {/*            </label>*/}
+                                            {/*        </>}*/}
+                                            {/*    </div>*/}
+                                            {/*    /!*<div className={""}>*!/*/}
+                                            {/*    /!*    {Isfresher === 0 ? <>*!/*/}
+                                            {/*    /!*        <input id="sIs_fresher" disabled={verifySts === 2}*!/*/}
+                                            {/*    /!*               value={'Experience'} checked*!/*/}
+                                            {/*    /!*               onChange={handleChange} type="radio"*!/*/}
+                                            {/*    /!*               name="sIs_fresher"/>*!/*/}
+                                            {/*    /!*        <label htmlFor="sIs_fresher">*!/*/}
+                                            {/*    /!*            Experience*!/*/}
+                                            {/*    /!*        </label>*!/*/}
+                                            {/*    /!*    </> : <>*!/*/}
+                                            {/*    /!*        <input id="sIs_fresher" disabled={verifySts === 2}*!/*/}
+                                            {/*    /!*               value={'Experience'}*!/*/}
+                                            {/*    /!*               onChange={handleChange} type="radio"*!/*/}
+                                            {/*    /!*               name="sIs_fresher"/>*!/*/}
+                                            {/*    /!*        <label htmlFor="sIs_fresher">*!/*/}
+                                            {/*    /!*            Experience*!/*/}
+                                            {/*    /!*        </label>*!/*/}
+                                            {/*    /!*    </>}*!/*/}
+
+                                            {/*    /!*</div>*!/*/}
+
+                                            {/*    <ErrorMessage name='sIs_fresher' component='div'*/}
+                                            {/*                  className='field-error text-danger'/>*/}
+                                            {/*    <span className="focus-border"></span>*/}
+                                            {/*</div>*/}
+                                            <div className="col-lg-6 mt-4">
+                                                <div className="form-group d-flex">
+                                                    <div>
+                                                        {Isfresher === 'Fresher' ? <>
+                                                            <input
+                                                                disabled={verifySts === 2}
+                                                                value={'Fresher'}
+                                                                id="yes"
+                                                                type="radio"
+                                                                checked
+                                                                onChange={handleChange}
+                                                                name="sIs_fresher"/>
+                                                        </> : <>
+                                                            <input
+                                                                disabled={verifySts === 2}
+                                                                value={'Fresher'}
+                                                                id="yes"
+                                                                type="radio"
+                                                                onChange={handleChange}
+                                                                name="sIs_fresher"/>
+                                                        </>}
+
+                                                        <label htmlFor="yes">
                                                             Fresher
                                                         </label>
-                                                    </> : <>
-                                                        <input id="sIs_fresher" disabled={verifySts === 2}
-                                                               value={'Fresher'}
-                                                               onChange={handleChange} type="radio"
-                                                               name="sIs_fresher"
-                                                               className="custom-radio"/>
-                                                        <label htmlFor="sIs_fresher">
-                                                            Fresher
-                                                        </label>
-                                                    </>}
-                                                </div>
-                                                <div className={'ms-3'}>
-                                                    {Isfresher === 0 ? <>
-                                                        <input id="sIs_fresher" disabled={verifySts === 2}
-                                                               value={'Experience'}
-                                                               checked
-                                                               onChange={handleChange} type="radio"
-                                                               name="sIs_fresher"
-                                                               className="custom-radio"/>
-                                                        <label htmlFor="sIs_fresher">
+                                                    </div>
+                                                    <div className={"ms-3"}>
+                                                        {Isfresher === 'Experience' ? <>
+                                                            <input
+                                                                disabled={verifySts === 2}
+                                                                value={'Experience'}
+                                                                id="no"
+                                                                type="radio"
+                                                                checked
+                                                                onChange={handleChange}
+                                                                name="sIs_fresher"/>
+                                                        </> : <>
+                                                            <input
+                                                                disabled={verifySts === 2}
+                                                                value={'Experience'}
+                                                                id="no"
+                                                                type="radio"
+                                                                onChange={handleChange}
+                                                                name="sIs_fresher"/>
+                                                        </>}
+
+                                                        <label htmlFor="no">
                                                             Experience
                                                         </label>
-                                                    </> : <>
-                                                        <input id="sIs_fresher" disabled={verifySts === 2}
-                                                               value={'Experience'}
-                                                               onChange={handleChange} type="radio"
-                                                               name="sIs_fresher"
-                                                               className="custom-radio"/>
-                                                        <label htmlFor="sIs_fresher">
-                                                            Experience
-                                                        </label>
-                                                    </>}
+                                                    </div>
+                                                    <ErrorMessage name='sWeekend_batches' component='div'
+                                                                  className='field-error text-danger ms-3 mt-3'/>
+                                                    <span className="focus-border"></span>
                                                 </div>
-                                                {/*<div className={""}>*/}
-                                                {/*    {Isfresher === 0 ? <>*/}
-                                                {/*        <input id="sIs_fresher" disabled={verifySts === 2}*/}
-                                                {/*               value={'Experience'} checked*/}
-                                                {/*               onChange={handleChange} type="radio"*/}
-                                                {/*               name="sIs_fresher"/>*/}
-                                                {/*        <label htmlFor="sIs_fresher">*/}
-                                                {/*            Experience*/}
-                                                {/*        </label>*/}
-                                                {/*    </> : <>*/}
-                                                {/*        <input id="sIs_fresher" disabled={verifySts === 2}*/}
-                                                {/*               value={'Experience'}*/}
-                                                {/*               onChange={handleChange} type="radio"*/}
-                                                {/*               name="sIs_fresher"/>*/}
-                                                {/*        <label htmlFor="sIs_fresher">*/}
-                                                {/*            Experience*/}
-                                                {/*        </label>*/}
-                                                {/*    </>}*/}
-
-                                                {/*</div>*/}
-
-                                                <ErrorMessage name='sIs_fresher' component='div'
-                                                              className='field-error text-danger'/>
-                                                <span className="focus-border"></span>
                                             </div>
                                             {fields ? <>
                                                 {verifySts !== 2 ? <>
@@ -708,7 +841,7 @@ const Experience = () => {
                                                             return (
                                                                 <>
                                                                     <div key={experience.nTTEId}>
-                                                                        <div className={'row'}>
+                                                                        <div className={'row mt-4'}>
                                                                             <div className="col-lg-6">
                                                                                 <label style={{fontSize: '15px'}}>
                                                                                     How many years of total experience
@@ -723,9 +856,11 @@ const Experience = () => {
                                                                                         placeholder="Total Experience"
                                                                                         name="nTotal_exper"
                                                                                     />
-                                                                                    <ErrorMessage name='nTotal_exper' component='div'
+                                                                                    <ErrorMessage name='nTotal_exper'
+                                                                                                  component='div'
                                                                                                   className='field-error text-danger'/>
-                                                                                    <span className="focus-border"></span>
+                                                                                    <span
+                                                                                        className="focus-border"></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div className="col-lg-6">
@@ -741,9 +876,12 @@ const Experience = () => {
                                                                                         type="text"
                                                                                         name="nTotal_online_exper"
                                                                                         placeholder="Online Experience"/>
-                                                                                    <ErrorMessage name='nTotal_online_exper' component='div'
-                                                                                                  className='field-error text-danger'/>
-                                                                                    <span className="focus-border"></span>
+                                                                                    <ErrorMessage
+                                                                                        name='nTotal_online_exper'
+                                                                                        component='div'
+                                                                                        className='field-error text-danger'/>
+                                                                                    <span
+                                                                                        className="focus-border"></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div className="col-lg-6 mt-3">
@@ -765,7 +903,8 @@ const Experience = () => {
                                                                                         )
                                                                                     })}
                                                                                 </select>
-                                                                                <ErrorMessage name='nCountryId' component='div'
+                                                                                <ErrorMessage name='nCountryId'
+                                                                                              component='div'
                                                                                               className='field-error text-danger'/>
                                                                                 <span className="focus-border"></span>
                                                                             </div>
@@ -782,9 +921,11 @@ const Experience = () => {
                                                                                         type="text"
                                                                                         placeholder="Organization"
                                                                                     />
-                                                                                    <ErrorMessage name='sOrganization' component='div'
+                                                                                    <ErrorMessage name='sOrganization'
+                                                                                                  component='div'
                                                                                                   className='field-error text-danger'/>
-                                                                                    <span className="focus-border"></span>
+                                                                                    <span
+                                                                                        className="focus-border"></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div className={'col-lg-6 mt-3'}>
@@ -800,9 +941,11 @@ const Experience = () => {
                                                                                         type="text"
                                                                                         placeholder="Position"
                                                                                     />
-                                                                                    <ErrorMessage name='sPosition' component='div'
+                                                                                    <ErrorMessage name='sPosition'
+                                                                                                  component='div'
                                                                                                   className='field-error text-danger'/>
-                                                                                    <span className="focus-border"></span>
+                                                                                    <span
+                                                                                        className="focus-border"></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div className={'col-lg-6 mt-3'}>
@@ -815,7 +958,8 @@ const Experience = () => {
                                                                                         onChange={(e) => handleYearFromChange(e, index)}>
                                                                                     {options}
                                                                                 </select>
-                                                                                <ErrorMessage name='sFrom_years' component='div'
+                                                                                <ErrorMessage name='sFrom_years'
+                                                                                              component='div'
                                                                                               className='field-error text-danger'/>
                                                                                 <span className="focus-border"></span>
                                                                             </div>
@@ -831,7 +975,8 @@ const Experience = () => {
                                                                                     </option>
                                                                                     {options}
                                                                                 </select>
-                                                                                <ErrorMessage name='sTo_years' component='div'
+                                                                                <ErrorMessage name='sTo_years'
+                                                                                              component='div'
                                                                                               className='field-error text-danger'/>
                                                                                 <span className="focus-border"></span>
                                                                             </div>
@@ -874,132 +1019,132 @@ const Experience = () => {
                                                 </> : <></>}
 
                                             </> : <>
-                                            {/*    <div key={expFields.nTTEId}>*/}
-                                            {/*        <div className={'row'}>*/}
-                                            {/*            <div className={'col-lg-6 mt-4'}>*/}
-                                            {/*                <label style={{fontSize: '15px'}}>*/}
-                                            {/*                    How many years of total experience in teaching?*/}
-                                            {/*                </label>*/}
-                                            {/*                <div className="input-group mb-3">*/}
-                                            {/*                    <input*/}
-                                            {/*                        readOnly={verifySts === 2}*/}
-                                            {/*                        type="number"*/}
-                                            {/*                        className="form-control"*/}
-                                            {/*                        placeholder="Total experience"*/}
-                                            {/*                        // value={expFields.nTotal_exper}*/}
-                                            {/*                        value={expFields[0].nTotal_exper}*/}
-                                            {/*                        onChange={(e) => handleTotalExp(e, index)}*/}
-                                            {/*                    />*/}
-                                            {/*                    <div className="input-group-append">*/}
-                                            {/*                        <span style={{fontSize: '16px'}}*/}
-                                            {/*                              className="input-group-text h-100">years</span>*/}
-                                            {/*                    </div>*/}
-                                            {/*                </div>*/}
-                                            {/*            </div>*/}
-                                            {/*            <div className={'col-lg-6 mt-4'}>*/}
-                                            {/*                <label style={{fontSize: '16px'}}>*/}
-                                            {/*                    Out of total how many years of online teaching*/}
-                                            {/*                    experience?*/}
-                                            {/*                </label>*/}
-                                            {/*                <div className="input-group">*/}
-                                            {/*                    <input*/}
-                                            {/*                        type="text"*/}
-                                            {/*                        readOnly={verifySts === 2}*/}
-                                            {/*                        value={expFields.nTotal_online_exper}*/}
-                                            {/*                        className="form-control"*/}
-                                            {/*                        placeholder="online experience"*/}
-                                            {/*                        onChange={(e) => handleChangeOnlineExp(e)}*/}
-                                            {/*                    />*/}
-                                            {/*                    <div className="input-group-append">*/}
-                                            {/*<span style={{fontSize: '14px'}}*/}
-                                            {/*      className="input-group-text h-100">years</span>*/}
-                                            {/*                    </div>*/}
-                                            {/*                </div>*/}
-                                            {/*            </div>*/}
+                                                {/*    <div key={expFields.nTTEId}>*/}
+                                                {/*        <div className={'row'}>*/}
+                                                {/*            <div className={'col-lg-6 mt-4'}>*/}
+                                                {/*                <label style={{fontSize: '15px'}}>*/}
+                                                {/*                    How many years of total experience in teaching?*/}
+                                                {/*                </label>*/}
+                                                {/*                <div className="input-group mb-3">*/}
+                                                {/*                    <input*/}
+                                                {/*                        readOnly={verifySts === 2}*/}
+                                                {/*                        type="number"*/}
+                                                {/*                        className="form-control"*/}
+                                                {/*                        placeholder="Total experience"*/}
+                                                {/*                        // value={expFields.nTotal_exper}*/}
+                                                {/*                        value={expFields[0].nTotal_exper}*/}
+                                                {/*                        onChange={(e) => handleTotalExp(e, index)}*/}
+                                                {/*                    />*/}
+                                                {/*                    <div className="input-group-append">*/}
+                                                {/*                        <span style={{fontSize: '16px'}}*/}
+                                                {/*                              className="input-group-text h-100">years</span>*/}
+                                                {/*                    </div>*/}
+                                                {/*                </div>*/}
+                                                {/*            </div>*/}
+                                                {/*            <div className={'col-lg-6 mt-4'}>*/}
+                                                {/*                <label style={{fontSize: '16px'}}>*/}
+                                                {/*                    Out of total how many years of online teaching*/}
+                                                {/*                    experience?*/}
+                                                {/*                </label>*/}
+                                                {/*                <div className="input-group">*/}
+                                                {/*                    <input*/}
+                                                {/*                        type="text"*/}
+                                                {/*                        readOnly={verifySts === 2}*/}
+                                                {/*                        value={expFields.nTotal_online_exper}*/}
+                                                {/*                        className="form-control"*/}
+                                                {/*                        placeholder="online experience"*/}
+                                                {/*                        onChange={(e) => handleChangeOnlineExp(e)}*/}
+                                                {/*                    />*/}
+                                                {/*                    <div className="input-group-append">*/}
+                                                {/*<span style={{fontSize: '14px'}}*/}
+                                                {/*      className="input-group-text h-100">years</span>*/}
+                                                {/*                    </div>*/}
+                                                {/*                </div>*/}
+                                                {/*            </div>*/}
 
-                                            {/*            <div className={'col-lg-6 mt-3'}>*/}
-                                            {/*                <label style={{fontSize: '16px'}}>*/}
-                                            {/*                    Organization*/}
-                                            {/*                </label>*/}
-                                            {/*                <div className="form-group">*/}
-                                            {/*                    <input*/}
-                                            {/*                        readOnly={verifySts === 2}*/}
-                                            {/*                        onChange={(e) => handleChangeOrganization(e)}*/}
-                                            {/*                        value={expFields.sOrganization}*/}
-                                            {/*                        name="organization"*/}
-                                            {/*                        type="text"*/}
-                                            {/*                        placeholder="Organization"*/}
-                                            {/*                    />*/}
-                                            {/*                    <span className="focus-border"></span>*/}
-                                            {/*                </div>*/}
-                                            {/*            </div>*/}
-                                            {/*            <div className={'col-lg-6 mt-3'}>*/}
-                                            {/*                <label style={{fontSize: '16px'}}>*/}
-                                            {/*                    Position*/}
-                                            {/*                </label>*/}
-                                            {/*                <div className="form-group">*/}
-                                            {/*                    <input*/}
-                                            {/*                        readOnly={verifySts === 2}*/}
-                                            {/*                        onChange={(e) => handleChangePosition(e)}*/}
-                                            {/*                        value={expFields.sPosition}*/}
-                                            {/*                        name="position"*/}
-                                            {/*                        type="text"*/}
-                                            {/*                        placeholder="Position"*/}
-                                            {/*                    />*/}
-                                            {/*                    <span className="focus-border"></span>*/}
-                                            {/*                </div>*/}
-                                            {/*            </div>*/}
-                                            {/*            <div className={'col-lg-6 mt-3'}>*/}
-                                            {/*                <label style={{fontSize: '16px'}}>*/}
-                                            {/*                    Year of study from*/}
-                                            {/*                </label>*/}
-                                            {/*                <select disabled={verifySts === 2}*/}
-                                            {/*                        value={expFields.sFrom_years}*/}
-                                            {/*                        onChange={(e) => handleYearFromChange(e)}>*/}
-                                            {/*                    {options}*/}
-                                            {/*                </select>*/}
-                                            {/*            </div>*/}
-                                            {/*            <div className={'col-lg-6 mt-3'}>*/}
-                                            {/*                <label style={{fontSize: '16px'}}>*/}
-                                            {/*                    Year of study to*/}
-                                            {/*                </label>*/}
-                                            {/*                <select disabled={verifySts === 2}*/}
-                                            {/*                        value={expFields.sTo_years}*/}
-                                            {/*                        onChange={(e) => handleYearToChange(e)}>*/}
-                                            {/*                    <option value="Present">Present</option>*/}
-                                            {/*                    {options}*/}
-                                            {/*                </select>*/}
-                                            {/*            </div>*/}
-                                            {/*            <div className="col-lg-6 mt-3">*/}
-                                            {/*                <label style={{fontSize: '16px'}}>*/}
-                                            {/*                    Country of experience*/}
-                                            {/*                </label>*/}
-                                            {/*                /!*<div className="rbt-modern-select bg-transparent height-45">*!/*/}
-                                            {/*                <select disabled={verifySts === 2} className="w-100"*/}
-                                            {/*                        value={expFields.nCountryId}*/}
-                                            {/*                        onChange={(e) => handleChangeCountry(e)}>*/}
-                                            {/*                    {country.map((item, index) => {*/}
-                                            {/*                        return (*/}
-                                            {/*                            <>*/}
-                                            {/*                                <option key={index}*/}
-                                            {/*                                        value={item.nCountryId}>{item.sCountryname}</option>*/}
-                                            {/*                            </>*/}
-                                            {/*                        )*/}
-                                            {/*                    })}*/}
-                                            {/*                </select>*/}
-                                            {/*            </div>*/}
-                                            {/*            {verifySts !== 2 ? <></> : <>*/}
-                                            {/*                <div className="col-lg-12 text-end mt-2">*/}
-                                            {/*                    {expFields.length > 1 ? <>*/}
-                                            {/*                        <button type={'button'} className="btn btn-danger"*/}
-                                            {/*                                onClick={() => handleRemoveExperience(expFields.nTTEId)}>Remove*/}
-                                            {/*                        </button>*/}
-                                            {/*                    </> : <></>}*/}
+                                                {/*            <div className={'col-lg-6 mt-3'}>*/}
+                                                {/*                <label style={{fontSize: '16px'}}>*/}
+                                                {/*                    Organization*/}
+                                                {/*                </label>*/}
+                                                {/*                <div className="form-group">*/}
+                                                {/*                    <input*/}
+                                                {/*                        readOnly={verifySts === 2}*/}
+                                                {/*                        onChange={(e) => handleChangeOrganization(e)}*/}
+                                                {/*                        value={expFields.sOrganization}*/}
+                                                {/*                        name="organization"*/}
+                                                {/*                        type="text"*/}
+                                                {/*                        placeholder="Organization"*/}
+                                                {/*                    />*/}
+                                                {/*                    <span className="focus-border"></span>*/}
+                                                {/*                </div>*/}
+                                                {/*            </div>*/}
+                                                {/*            <div className={'col-lg-6 mt-3'}>*/}
+                                                {/*                <label style={{fontSize: '16px'}}>*/}
+                                                {/*                    Position*/}
+                                                {/*                </label>*/}
+                                                {/*                <div className="form-group">*/}
+                                                {/*                    <input*/}
+                                                {/*                        readOnly={verifySts === 2}*/}
+                                                {/*                        onChange={(e) => handleChangePosition(e)}*/}
+                                                {/*                        value={expFields.sPosition}*/}
+                                                {/*                        name="position"*/}
+                                                {/*                        type="text"*/}
+                                                {/*                        placeholder="Position"*/}
+                                                {/*                    />*/}
+                                                {/*                    <span className="focus-border"></span>*/}
+                                                {/*                </div>*/}
+                                                {/*            </div>*/}
+                                                {/*            <div className={'col-lg-6 mt-3'}>*/}
+                                                {/*                <label style={{fontSize: '16px'}}>*/}
+                                                {/*                    Year of study from*/}
+                                                {/*                </label>*/}
+                                                {/*                <select disabled={verifySts === 2}*/}
+                                                {/*                        value={expFields.sFrom_years}*/}
+                                                {/*                        onChange={(e) => handleYearFromChange(e)}>*/}
+                                                {/*                    {options}*/}
+                                                {/*                </select>*/}
+                                                {/*            </div>*/}
+                                                {/*            <div className={'col-lg-6 mt-3'}>*/}
+                                                {/*                <label style={{fontSize: '16px'}}>*/}
+                                                {/*                    Year of study to*/}
+                                                {/*                </label>*/}
+                                                {/*                <select disabled={verifySts === 2}*/}
+                                                {/*                        value={expFields.sTo_years}*/}
+                                                {/*                        onChange={(e) => handleYearToChange(e)}>*/}
+                                                {/*                    <option value="Present">Present</option>*/}
+                                                {/*                    {options}*/}
+                                                {/*                </select>*/}
+                                                {/*            </div>*/}
+                                                {/*            <div className="col-lg-6 mt-3">*/}
+                                                {/*                <label style={{fontSize: '16px'}}>*/}
+                                                {/*                    Country of experience*/}
+                                                {/*                </label>*/}
+                                                {/*                /!*<div className="rbt-modern-select bg-transparent height-45">*!/*/}
+                                                {/*                <select disabled={verifySts === 2} className="w-100"*/}
+                                                {/*                        value={expFields.nCountryId}*/}
+                                                {/*                        onChange={(e) => handleChangeCountry(e)}>*/}
+                                                {/*                    {country.map((item, index) => {*/}
+                                                {/*                        return (*/}
+                                                {/*                            <>*/}
+                                                {/*                                <option key={index}*/}
+                                                {/*                                        value={item.nCountryId}>{item.sCountryname}</option>*/}
+                                                {/*                            </>*/}
+                                                {/*                        )*/}
+                                                {/*                    })}*/}
+                                                {/*                </select>*/}
+                                                {/*            </div>*/}
+                                                {/*            {verifySts !== 2 ? <></> : <>*/}
+                                                {/*                <div className="col-lg-12 text-end mt-2">*/}
+                                                {/*                    {expFields.length > 1 ? <>*/}
+                                                {/*                        <button type={'button'} className="btn btn-danger"*/}
+                                                {/*                                onClick={() => handleRemoveExperience(expFields.nTTEId)}>Remove*/}
+                                                {/*                        </button>*/}
+                                                {/*                    </> : <></>}*/}
 
-                                            {/*                </div>*/}
-                                            {/*            </>}*/}
-                                            {/*        </div>*/}
-                                            {/*    </div>*/}
+                                                {/*                </div>*/}
+                                                {/*            </>}*/}
+                                                {/*        </div>*/}
+                                                {/*    </div>*/}
 
                                             </>}
 
@@ -1007,12 +1152,14 @@ const Experience = () => {
                                             <div className="col-lg-12 mt-5">
                                                 <div className="form-submit-group">
                                                     {isLoading ? <>
-                                                        <button disabled={true} type="submit" className="rbt-btn btn-md btn-gradient w-100">
+                                                        <button disabled={true} type="submit"
+                                                                className="rbt-btn btn-md btn-gradient w-100">
                                                             <span className="btn-text">
                                                                 <i className="feather-loader"></i>isLoading...</span>
                                                         </button>
                                                     </> : <>
-                                                        <button type="submit" className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                                        <button type="submit"
+                                                                className="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
                                                                  <span className="icon-reverse-wrapper">
                                                                    <span className="btn-text">Continue</span>
                                                                    <span className="btn-icon">

@@ -84,8 +84,16 @@ const Description = () => {
       }
     })
         .then(res => {
+          if(res.data.length !== 0) {
+            setText(res.data[0]['sDesc'])
+            if(res.data[0].bIsReview !== 0) {
+              router.push('/become-a-tutor/Review')
+            } else {
+
+            }
+          }
           console.log(res.data)
-          setText(res.data[0]['sDesc'])
+
           // setTutorDetail(res.data[0])
 
         })

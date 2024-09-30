@@ -54,6 +54,7 @@ const Availability = () => {
 
       if (checked) {
           // Add the value to sDays array if checkbox is checked
+          // console.log('values', value)
           setTeachingDays((prevDays) => [...prevDays, value]);
       } else {
           // Remove the value from sDays array if checkbox is unchecked
@@ -98,6 +99,7 @@ const Availability = () => {
   const [regId, setregId] = useState('')
     const [verifySts, setverifySts] = useState()
     const [tutorcnt, setTutorcnt] = useState('')
+    const [tutoravailcnt, settutoravailcnt] = useState('')
   useEffect(() => {
       bindCountry()
     if(localStorage.getItem('userData')) {
@@ -138,14 +140,15 @@ const Availability = () => {
           }
       })
           .then(res => {
-              // console.log(res.data)
+              console.log(res.data)
+              settutoravailcnt(res.data.length)
               if(res.data.length !== 0 ){
                   setcountryId(res.data[0]['nCountryId'])
                   setDuration(res.data[0]['sMax_hours'])
                   setTimeSlot(res.data[0]['sTime_slot'])
                   setWeekendBatch(res.data[0]['sWeekend_batches'])
                   const daysString = res.data[0]['sPreferable_days'];
-
+                    // console.log('daysString', daysString)
                   const daysArray = daysString.split(",");
 
                   // console.log(daysArray)
@@ -160,6 +163,25 @@ const Availability = () => {
           .catch(err => {
               { ErrorDefaultAlert(err) }
           })
+
+        Axios.get(`${API_URL}/api/TutorBasics/GetTutorDetails/${JSON.parse(localStorage.getItem('userData')).regid}`, {
+            headers: {
+                ApiKey: `${API_KEY}`
+            }
+        })
+            .then(res => {
+                if(res.data.length !== 0) {
+                    if(res.data[0].bIsReview !== 0) {
+                        router.push('/become-a-tutor/Review')
+                    } else {
+
+                    }
+                }
+                console.log(res.data)
+            })
+            .catch(err => {
+                { ErrorDefaultAlert(err) }
+            })
     }
 
   }, []);
@@ -199,17 +221,18 @@ const Availability = () => {
                   nRegId : regId,
                   nCountryId: countryId ? countryId : '',
                   sTime_slot: timeSlot? timeSlot: '',
-                  sPreferable_days: teachingDays ? teachingDays : '',
+                  sPreferable_days: teachingDays ? [teachingDays].toString() : '',
                   sWeekend_batches: weekendBatch ? weekendBatch : '',
                   sMax_hours: duration ? `${duration}` : ''
               }}
               enableReinitialize={true}
               onSubmit={async (values, {resetForm}) => {
                 // console.log(values)
+                //   console.log([teachingDays].toString())
                   if(verifySts === 2){
 
                   } else {
-                      if(tutorcnt !== 0) {
+                      if(tutoravailcnt !== 0) {
                           setisLoading(true)
                           await Axios.put(`${API_URL}/api/TutorAvailQue/UpdateTutorAvailQue`, values, {
                               headers: {
@@ -274,8 +297,7 @@ const Availability = () => {
                               )
                             })}
                           </select>
-                            <ErrorMessage name='nCountryId' component='div'
-                                          className='field-error text-danger'/>
+                            <ErrorMessage name='nCountryId' component='div' className='field-error text-danger'/>
                         </div>
                         <div className={'col-lg-6'}>
                           <label style={{ whiteSpace: 'nowrap' }}>
@@ -293,8 +315,7 @@ const Availability = () => {
                             <option>9 hours</option>
                             <option>10 hours</option>
                           </select>
-                            <ErrorMessage name='sMax_hours' component='div'
-                                          className='field-error text-danger'/>
+                            <ErrorMessage name='sMax_hours' component='div' className='field-error text-danger'/>
                         </div>
                         <div className="col-lg-6">
                           <label>
@@ -309,7 +330,6 @@ const Availability = () => {
                                     <input disabled={verifySts === 2} onChange={handleChangeTimeSlot} value={'morning'}
                                            id="morning" type="radio" name="sTime_slot"/>
                                 </>}
-
                                 <label htmlFor="morning">
                                     Morning
                                 </label>

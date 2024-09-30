@@ -161,12 +161,22 @@ const Experience = () => {
         </option>
     );
   }
+
+  const [gettutorDetails, settutorDetails] = useState([])
+
   const handleYearFromChange = (e, index) => {
     const { value } = e.target;
     const updatedFields = [...expFields];
+    const yearOfBirth = new Date(gettutorDetails[0].dDOB).getFullYear(); // Extract the year from DOB
+
 
     updatedFields[index].sFrom_year = value;
 
+
+    if (parseInt(value) < yearOfBirth) {
+      alert(`Year of study "From" should not be greater than the year of birth (${yearOfBirth}).`);
+      return; // Stop further execution
+    }
     // Validation: Check if "To" year is less than "From" year
     if (
         updatedFields[index].sTo_year &&

@@ -96,10 +96,15 @@ const IntroVideo = () => {
       }
     })
         .then(res => {
-          // console.log(res.data)
+          console.log(res.data)
             if(res.data.length !== 0){
                 setVideo(res.data[0]['sIntroVideoPath'])
                 setvideoUrl(res.data[0]['sIntroVideoUrl'])
+                if(res.data[0].bIsReview !== 0) {
+                    router.push('/become-a-tutor/Review')
+                } else {
+
+                }
             }
 
         })
@@ -167,7 +172,7 @@ const IntroVideo = () => {
                   }).then(res => {
                     console.log(values)
                     const retData = JSON.parse(res.data)
-                    // console.log(retData)
+                    console.log(retData)
                     resetForm({})
                     if(retData.success === '1') {
                       router.push('/become-a-tutor/interest')
@@ -192,7 +197,7 @@ const IntroVideo = () => {
                                   <label id='label'
                                          className='rbt-btn btn-md btn-gradient hover-icon-reverse'>Upload video
                                       <input type="file" id="videofile" name="sIntroVideoPath" onChange={handleChange}
-                                             accept="video/*"/>
+                                             accept="video/* "/>
                                   </label>
                                   <div className={'mt-3'}>
                                       {video ? <ReactPlayer

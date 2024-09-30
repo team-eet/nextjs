@@ -201,7 +201,7 @@ const Basics = () => {
   }
 
     const VerifyEmail = () => {
-      // console.log(sEmail)
+      console.log(sEmail)
 
       if(emailpattern.test(sEmail)) {
           sendSignInLinkToEmail(auth, sEmail, {
@@ -219,9 +219,9 @@ const Basics = () => {
               // localStorage.setItem('userRegData', JSON.stringify(userData))
               alert('We have sent you an email with a link to sign in')
           }).catch(err => {
-              // console.error('Firebase Error:', err.code, err.message)
+              console.error('Firebase Error:', err.code, err.message)
 
-              // alert(err)
+              alert('Firebase Error:', err)
           })
       }
   }
@@ -350,32 +350,14 @@ const Basics = () => {
           })
               .then(res => {
                   console.log(res.data)
-                  // if(res.data.length !== 0) {
-                  //     const array2 = res.data.map((item) => {
-                  //         return item.verify_list
-                  //     })
-                  //     // console.log(array2)
-                  //     let array = array2[0].split(',').map(Number);
-                  //     // console.log('---------------', array);
-                  //     let array1 = ['basics', 'profile-photo', 'cover-photo', 'cover-photo', 'cover-photo', 'education', 'certification', 'teaching-experience', 'description', 'intro-video', 'interest', 'time-availability'];
-                  //
-                  //     let url = array1
-                  //     let verify_string = array;
-                  //       if(verify_string.length !== 0){
-                  //           // Check the 0th position in array2 and get the corresponding string from array1
-                  //           let positionToCheck = verify_string[0];
-                  //           // let conditionString = url[positionToCheck - 1];
-                  //
-                  //           // Check the position of the first 3 numbers in array2
-                  //           let positionOfThree = verify_string.findIndex(num => num === 3);
-                  //
-                  //           // Get the string at that position from array1
-                  //           let stringForUrl = url[positionOfThree];
-                  //           console.log(stringForUrl)
-                  //           router.push(`/become-a-tutor/${stringForUrl}`)
-                  //       }
-                  //
-                  // }
+
+                  if(res.data.length !== 0) {
+                      if(res.data[0].bIsReview !== 0) {
+                           router.push('/become-a-tutor/Review')
+                      } else {
+
+                      }
+                  }
               })
               .catch(err => {
                   { ErrorDefaultAlert(err) }
@@ -564,7 +546,7 @@ const Basics = () => {
               }}
               enableReinitialize={true}
               onSubmit={async (values, {resetForm}) => {
-                // console.log(values)
+                console.log(values)
                   if(verifysts.sBasic_verify === 2) {
                     // router.push('/become-a-tutor/profile-photo')
                     router.push(`/become-a-tutor/profile-photo`)
@@ -903,7 +885,7 @@ const Basics = () => {
                                                       {/*</button>*/}
                                                       <select
 
-                                                          value={new Date().getFullYear(date)}
+                                                          // value={new Date().getFullYear(date)}
                                                           onChange={({ target: { value } }) => changeYear(value)}
                                                       >
                                                           {years.map((option) => (
@@ -914,7 +896,8 @@ const Basics = () => {
                                                       </select>
 
                                                       <select
-                                                          value={new Date().getMonth(date)}
+
+                                                          // value={new Date().getMonth(date)}
                                                           // value={months[getMonth(date)]}
                                                           onChange={({ target: { value } }) =>
                                                               changeMonth(months.indexOf(value))

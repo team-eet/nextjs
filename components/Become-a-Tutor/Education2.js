@@ -41,7 +41,7 @@ const Education = () => {
     // const [thisYear, setthisYear] = useState(defaultValue);
     const minOffset = 0;
     const maxOffset = 53;
-
+    const [gettutorDetails, settutorDetails] = useState([])
 
     // const [file, setFile] = useState();
 
@@ -182,8 +182,14 @@ const Education = () => {
     const handleYearFromChange = (e, index) => {
         const { value } = e.target;
         const updatedFields = [...educationFields];
+        const yearOfBirth = new Date(gettutorDetails[0].dDOB).getFullYear(); // Extract the year from DOB
 
         updatedFields[index].sFrom_year = value;
+
+        if (parseInt(value) < yearOfBirth) {
+            alert(`Year of study "From" should not be greater than the year of birth (${yearOfBirth}).`);
+            return; // Stop further execution
+        }
 
         // Validation: Check if "To" year is less than "From" year
         if (
@@ -365,7 +371,6 @@ const Education = () => {
         if(localStorage.getItem('userData')) {
             setregId(JSON.parse(localStorage.getItem('userData')).regid)
 
-
             Axios.get(`${API_URL}/api/TutorVerify/GetTutorVerify/${JSON.parse(localStorage.getItem('userData')).regid}`, {
                 headers: {
                     ApiKey: `${API_KEY}`
@@ -406,9 +411,6 @@ const Education = () => {
                 .then(res => {
                     console.log(res.data)
                     if (verifyeduSts === 2) {
-                        // if () {
-                        //
-                        // }
                         setnoeducation(true)
                         sethideFields(false)
                     }
@@ -421,7 +423,17 @@ const Education = () => {
 
                     // ---------------------
                     if(res.data.length !== 0) {
+
+                        const eduvalue = res.data.map((item, index) => {
+                            return item.sEducation_comment
+                        })
+                        // console.log(eduvalue)
+                        if(eduvalue[0] === 'No Education') {
+                            sethideFields(false)
+                        }
+                        setEducated(eduvalue[0])
                         seteducationFields(res.data)
+
                     } else {
                         seteducationFields(educationFields)
                     }
@@ -432,6 +444,26 @@ const Education = () => {
                     { ErrorDefaultAlert(err) }
                 })
 
+            Axios.get(`${API_URL}/api/TutorBasics/GetTutorDetails/${JSON.parse(localStorage.getItem('userData')).regid}`, {
+                headers: {
+                    ApiKey: `${API_KEY}`
+                }
+            })
+                .then(res => {
+                    console.log('GetTutorDetails' ,res.data)
+                    if(res.data.length !== 0) {
+                        settutorDetails(res.data)
+                        if(res.data[0].bIsReview !== 0) {
+                            router.push('/become-a-tutor/Review')
+                        } else {
+
+                        }
+                    }
+
+                })
+                .catch(err => {
+                    { ErrorDefaultAlert(err) }
+                })
         }
     }, []);
 
@@ -664,20 +696,40 @@ const Education = () => {
                                                     </>}
                                                 </>}
                                             </>}
+                                            <small className={'text-warning'}>Note : Add the Highest Qualification only</small>
                                             <p>Let us know about Education</p>
-                                            {verifyeduSts === 2 ? <>
-                                                <input id="Education" type="checkbox" checked value={isEducated}
-                                                       name="Education" onChange={handleIsCertification} />
-                                                <label htmlFor="Education">
-                                                    I have not pursued any professional degree
-                                                </label>
+                                            {isEducated === 'No Education' ? <>
+                                                {verifyeduSts === 2 ? <>
+                                                    <input id="Education" type="checkbox" checked value={isEducated}
+                                                           name="Education" onChange={handleIsCertification} />
+                                                    <label htmlFor="Education">
+                                                        I have not pursued any professional degree
+                                                    </label>
+                                                </> : <>
+                                                    <input id="Education" type="checkbox" checked value={isEducated}
+                                                           name="Education" onChange={handleIsCertification}/>
+                                                    <label htmlFor="Education">
+                                                        I have not pursued any professional degree
+                                                    </label>
+                                                </>}
                                             </> : <>
-                                                <input id="Education" type="checkbox" value={isEducated}
-                                                       name="Education" onChange={handleIsCertification}/>
-                                                <label htmlFor="Education">
-                                                    I have not pursued any professional degree
-                                                </label>
+                                                {verifyeduSts === 2 ? <>
+                                                    <input id="Education" type="checkbox" checked value={isEducated}
+                                                           name="Education" onChange={handleIsCertification} />
+                                                    <label htmlFor="Education">
+                                                        I have not pursued any professional degree
+                                                    </label>
+                                                </> : <>
+                                                    <input id="Education" type="checkbox" value={isEducated}
+                                                           name="Education" onChange={handleIsCertification}/>
+                                                    <label htmlFor="Education">
+                                                        I have not pursued any professional degree
+                                                    </label>
+                                                </>}
                                             </>}
+
+
+
 
                                         </div>
                                         <div className={'row'}>
