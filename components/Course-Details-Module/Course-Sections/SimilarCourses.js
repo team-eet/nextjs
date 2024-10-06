@@ -256,7 +256,7 @@ const SimilarCourses = ({ checkMatchCourses }) => {
                                         title="Bookmark"
                                         href="#"
                                     >
-                                      <i className="feather-bookmark"></i>
+                                      <i className="feather-heart"></i>
                                     </Link>
                                   </div>
                                 </div>

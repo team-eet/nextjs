@@ -43,9 +43,30 @@ const AllCoursetwo = () => {
 
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(6);
+    const [itemsPerPage] = useState(10);
+    // const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 6
 
-    const totalPages = Math.ceil(getcourseData.length / itemsPerPage);
+    const lastIndex = currentPage * recordsPerPage;
+    const firstIndex = lastIndex - recordsPerPage;
+    const currentRecords = getcourseData.slice(firstIndex, lastIndex);
+    const totalPages = Math.ceil(getcourseData.length / recordsPerPage);
+
+    // Handlers for changing page
+    const goToNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage((prev) => prev + 1);
+        }
+    };
+
+    const goToPreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prev) => prev - 1);
+        }
+    };
+
+
+    // const totalPages = Math.ceil(getcourseData.length / itemsPerPage);
 
     const currentData = getcourseData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
@@ -119,7 +140,7 @@ const AllCoursetwo = () => {
         })
             .then(res => {
                 if (res.data) {
-                    // console.log(res.data)
+                    console.log('getcoursedata', res.data)
                     if (res.data.length !== 0) {
                         setcourseData(res.data)
                         setcoursecount(res.data[0]['remain_course_count'])
@@ -238,8 +259,8 @@ const AllCoursetwo = () => {
         setSelectedCategories(updatedCategories);
 
         const levelParam = updatedLevels.join('-');
-        console.log(levelParam)
-        console.log(EncryptData(levelParam));
+        // console.log(levelParam)
+        // console.log(EncryptData(levelParam));
         // levelId = EncryptData(levelParam)
         // console.log(categoryId, levelParam, levelId);
         Axios.get(`${API_URL}/api/coursemain/GetCoursesMem/2/L/${category}/${level}/${searchvalue}/${price}`, {
@@ -1100,7 +1121,7 @@ const AllCoursetwo = () => {
                                             </> : <></>}
                                         </> : <>
                                             {getcourseData.length !== 0 ? <>
-                                                {currentData.map((data, index) => {
+                                                {currentRecords.map((data, index) => {
                                                     return (
                                                         <>
                                                             <div className="course-grid-3" key={index}>
@@ -1460,7 +1481,7 @@ const AllCoursetwo = () => {
 
                                             })}
                                         </> : <>
-                                            {currentData.map((data, index) => {
+                                            {currentRecords.map((data, index) => {
                                                 return (
                                                     <>
                                                         <div className="course-grid-12 mt-5" key={index}
@@ -1565,6 +1586,36 @@ const AllCoursetwo = () => {
 
                             <div className="row">
                                 <div className="col-lg-12 mt--60">
+
+
+                                    {recordsPerPage >= 6 ? <>
+                                        <div className="pagination-controls mt-4">
+                                            <button className="prev-btn" onClick={goToPreviousPage}
+                                                    disabled={currentPage === 1}>
+                                                {/*Previous*/}
+                                                <i className="feather-chevrons-left"></i>
+                                            </button>
+
+                                            {/* Page Number Buttons */}
+                                            {Array.from({length: totalPages}, (_, index) => (
+                                                <button
+                                                    key={index}
+                                                    onClick={() => setCurrentPage(index + 1)}  // Set the current page to the clicked page number
+                                                    className={`page-number-btn ${currentPage === index + 1 ? 'active' : ''}`}  // Add 'active' class to the current page
+                                                >
+                                                    {index + 1}
+                                                </button>
+                                            ))}
+
+                                            <button className="next-btn" onClick={goToNextPage}
+                                                    disabled={currentPage === totalPages}>
+                                                {/*Next*/}
+                                                <i className="feather-chevrons-right"></i>
+
+                                            </button>
+                                        </div>
+                                    </> : <></>}
+
 
                                     {/*<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />*/}
 

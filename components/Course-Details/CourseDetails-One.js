@@ -11,8 +11,6 @@ import {useRouter} from "next/router";
 import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
-
-
 const CourseDetailsOne = ({ checkMatchCourses }) => {
   const [isLoading, setisLoading] = useState(true)
 
@@ -26,7 +24,6 @@ const CourseDetailsOne = ({ checkMatchCourses }) => {
     <>
       <div className="col-lg-8 mt-0">
         <div className="course-details-content">
-
 
           <div className="rbt-inner-onepage-navigation sticky-top">
             {isLoading ? <>

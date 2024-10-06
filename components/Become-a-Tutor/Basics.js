@@ -358,6 +358,7 @@ const Basics = () => {
 
                       }
                   }
+
               })
               .catch(err => {
                   { ErrorDefaultAlert(err) }

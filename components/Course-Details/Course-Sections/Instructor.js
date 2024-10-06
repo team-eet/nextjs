@@ -18,7 +18,14 @@ const Instructor = ({ checkMatchCourses }) => {
               <Link href={``}>
                 {checkMatchCourses.tutor_image !== "" ?
                     <img src={checkMatchCourses.tutor_image} className={'shadow position-relative'} width={250} height={250}></img> :
-                    <Image
+                    // <Image
+                    //     src={img}
+                    //     width={250}
+                    //     height={250}
+                    //     className={'position-relative'}
+                    //     alt="Author Images"
+                    // />}
+                    <img
                         src={img}
                         width={250}
                         height={250}

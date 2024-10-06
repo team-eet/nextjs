@@ -26,7 +26,7 @@ const AllCourses = () => {
 
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [recordsPerPage] = useState(6);
+    const [recordsPerPage] = useState(8);
     const indexOfLastRecord = currentPage * recordsPerPage;
     // console.log(indexOfLastRecord)
     const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
@@ -47,7 +47,7 @@ const AllCourses = () => {
         })
             .then(res => {
                 if (res.data) {
-                    console.log(res.data)
+                    console.log('getcoursedata', res.data)
                     if (res.data.length !== 0) {
                         setcourseData(res.data)
                         setcoursecount(res.data[0]['remain_course_count'])

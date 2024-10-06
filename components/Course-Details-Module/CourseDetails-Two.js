@@ -23,7 +23,7 @@ import {ErrorDefaultAlert} from "@/components/Services/SweetAlert";
 import {API_URL, API_KEY} from "../../constants/constant";
 
 const CourseDetailsTwo = ({ checkMatchCourses }) => {
-  // console.log(checkMatchCourses)
+  console.log(checkMatchCourses)
   const REACT_APP = API_URL
 
   const [getModule, setModule] = useState([])
@@ -53,7 +53,7 @@ const CourseDetailsTwo = ({ checkMatchCourses }) => {
               }
             })
                 .then(res => {
-                  // console.log('section items', res.data)
+                  console.log('section items1', res.data)
                   if (res.data.length !== 0) {
                     setSectionItems(res.data)
                   } else {
@@ -80,22 +80,22 @@ const CourseDetailsTwo = ({ checkMatchCourses }) => {
     const courseId = parts[parts.length - 1];
     // console.log(EncryptData(courseId), courseId)
     // console.log(EncryptData(mid), mid)
-    // Axios.get(`${REACT_APP.API_URL}/api/section/GetCourseSummaryAll/${courseId}/${EncryptData(mid)}`, {
-    //   headers: {
-    //     ApiKey: `${REACT_APP.API_KEY}`
-    //   }
-    // })
-    //     .then(res => {
-    //       // console.log('section items', res.data)
-    //       if (res.data.length !== 0) {
-    //         setSectionItems(res.data)
-    //       } else {
-    //
-    //       }
-    //     })
-    //     .catch(err => {
-    //       { ErrorDefaultAlert(err) }
-    //     })
+    Axios.get(`${API_URL}/api/section/GetCourseSummaryAll/${courseId}/${EncryptData(mid)}`, {
+      headers: {
+        ApiKey: `${API_KEY}`
+      }
+    })
+        .then(res => {
+          // console.log('section items 2', res.data)
+          if (res.data.length !== 0) {
+            setSectionItems(res.data)
+          } else {
+
+          }
+        })
+        .catch(err => {
+          { ErrorDefaultAlert(err) }
+        })
   }
   const [currentSection, setCurrentSection] = useState("overview");
 
@@ -250,6 +250,7 @@ const CourseDetailsTwo = ({ checkMatchCourses }) => {
             <Content checkMatchCourses={getSectionItems}/>
             {/*  ))}*/}
           </div>
+
     
           <div
               className="rbt-course-feature-box rbt-shadow-box details-wrapper mt--30"

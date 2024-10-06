@@ -4,6 +4,7 @@ import React from "react";
 import img from "@/public/images/testimonial/client-01.png";
 
 const Instructor = ({ checkMatchCourses }) => {
+    console.log(checkMatchCourses)
   return (
       <>
           <div className="about-author border-0 pb--0 pt--0">
@@ -15,7 +16,7 @@ const Instructor = ({ checkMatchCourses }) => {
                   <div className="thumbnail">
                       {/*<Link href={`/profile/${teacher.id}`}>*/}
                       <Link href={``}>
-                          {/*<img src={img} width={250} height={250}></img>*/}
+                          {/*<img src={checkMatchCourses.tutor_image} width={250} height={250}></img>*/}
                           <Image
                               className={'position-relative'}
                               src={img}

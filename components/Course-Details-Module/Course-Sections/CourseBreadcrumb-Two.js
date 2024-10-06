@@ -83,8 +83,15 @@ const CourseBreadcrumbTwo = ({ getMatchCourse }) => {
 
           <ul className="rbt-meta">
             <li>
-              <i className="feather-calendar"></i>Last updated{" "}
-              {formatDate(getMatchCourse.dUpdatedDate)}
+
+              {getMatchCourse.dUpdatedDate === null ? <>
+                <i className="feather-calendar"></i>Last updated{" "}
+                {formatDate(getMatchCourse.dCreatedDate)}
+              </> : <>
+                <i className="feather-calendar"></i>Last updated{" "}
+                {formatDate(getMatchCourse.dUpdatedDate)}
+              </>}
+
             </li>
             <li>
               <i className="feather-globe"></i>

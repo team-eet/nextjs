@@ -226,7 +226,14 @@ const SimilarCourses = ({ checkMatchCourses }) => {
                                         <div className="single-slide">
                                             <div className="rbt-card variation-01 rbt-hover">
                                                 <div className="rbt-card-img">
-                                                    <Image
+                                                    {/*<Image*/}
+                                                    {/*    src={data.sImagePath}*/}
+                                                    {/*    className={'position relative'}*/}
+                                                    {/*    width={355}*/}
+                                                    {/*    height={244}*/}
+                                                    {/*    alt="Card image"*/}
+                                                    {/*/>*/}
+                                                    <img
                                                         src={data.sImagePath}
                                                         className={'position relative'}
                                                         width={355}
@@ -278,7 +285,15 @@ const SimilarCourses = ({ checkMatchCourses }) => {
                                                     <div className="rbt-author-meta mb--20">
                                                         <div className="rbt-avater">
                                                             <Link href={``}>
-                                                                <Image
+                                                                {/*<Image*/}
+                                                                {/*    src={data.sPhoto}*/}
+                                                                {/*    width={33}*/}
+                                                                {/*    className={'position-relative'}*/}
+                                                                {/*    height={33}*/}
+                                                                {/*    alt="Sophia Jaymes"*/}
+                                                                {/*/>*/}
+
+                                                                <img
                                                                     src={data.sPhoto}
                                                                     width={33}
                                                                     className={'position-relative'}

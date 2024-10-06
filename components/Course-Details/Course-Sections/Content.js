@@ -87,9 +87,7 @@ const Content = ({ checkMatchCourses }) => {
                           {/*<Link href={`/${courselesson/list.nMId/lid/pnviewid/cid}`}>*/}
                           <Link href={`/courselesson/${EncryptData(list.nCId)}/${EncryptData(list.nMId)}/${EncryptData(list.nLId)}/${EncryptData('N')}/${EncryptData(list.nCId)}`}>
                             <div className="course-content-left">
-
                                 <i className="feather-play-circle"></i>
-
                               <span className="text">{list.sLessionTitle}</span>
                             </div>
                             {/*{list.status ? (*/}

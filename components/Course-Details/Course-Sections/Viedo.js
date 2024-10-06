@@ -376,7 +376,8 @@ const Viedo = ({ checkMatchCourses }) => {
       >
         {/*{console.log(checkMatchCourses)}*/}
         <div className="video-content">
-          <Image className={'position-relative'} src={checkMatchCourses.sImagePath} height={255} width={355}></Image>
+          {/*<Image className={'position-relative'} src={checkMatchCourses.sImagePath} height={255} width={355}></Image>*/}
+          <img className={'position-relative'} src={checkMatchCourses.sImagePath} height={255} width={355}></img>
 
           {checkMatchCourses.sVideoPath !== null ? <>
             <div className="position-to-top">

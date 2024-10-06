@@ -12,7 +12,14 @@ const CourseBreadcrumbTwo = ({ getMatchCourse }) => {
                 <span className="image">
                   {" "}
                   {getMatchCourse.awardImg && (
-                    <Image
+                    // <Image
+                    //   src={getMatchCourse.awardImg}
+                    //   width={30}
+                    //   height={30}
+                    //   className={'position-relative'}
+                    //   alt="Best Seller Icon"
+                    // />
+                      <img
                       src={getMatchCourse.awardImg}
                       width={30}
                       height={30}
@@ -57,13 +64,20 @@ const CourseBreadcrumbTwo = ({ getMatchCourse }) => {
             <div className="rbt-avater">
               <Link href={`/profile/${getMatchCourse.id}`}>
                 {getMatchCourse.tutor_image && (
-                  <Image
-                    width={40}
-                    height={40}
-                    className={'position-relative'}
-                    src={getMatchCourse.tutor_image}
-                    alt={getMatchCourse.userName}
-                  />
+                  // <Image
+                  //   width={40}
+                  //   height={40}
+                  //   className={'position-relative'}
+                  //   src={getMatchCourse.tutor_image}
+                  //   alt={getMatchCourse.userName}
+                  // />
+                    <img
+                        width={40}
+                        height={40}
+                        className={'position-relative'}
+                        src={getMatchCourse.tutor_image}
+                        alt={getMatchCourse.userName}
+                    />
                 )}
               </Link>
             </div>
